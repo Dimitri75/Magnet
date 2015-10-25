@@ -18,6 +18,7 @@ CREATE TABLE `user` (
   `password` VARCHAR(50) NOT NULL,
   `last_latitude` DECIMAL NULL DEFAULT NULL,
   `last_longitude` DECIMAL NULL DEFAULT NULL,
+  `token` VARCHAR(32) NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 );
 

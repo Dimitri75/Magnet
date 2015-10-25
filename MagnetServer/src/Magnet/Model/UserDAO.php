@@ -14,11 +14,30 @@ class UserDAO extends DAO {
 			$parameters = array(':id' => $id);
 
 			$stmt = $this->getConnection()->prepare('
-				SELECT * FROM users WHERE id = :id
+				SELECT * FROM user WHERE id = :id
 			');
 			$stmt->execute($parameters);
 
-			if($stmt->rowCount > 0) {
+			if($stmt->rowCount() > 0) {
+				$result = new User($stmt->fetch());
+			}
+		}
+
+		return $result;
+	}
+
+	public function findByLogin($login) {
+		$result = null;
+
+		if(is_string($login)) {
+			$parameters = array(':login' => $login);
+
+			$stmt = $this->getConnection()->prepare('
+				SELECT * FROM user WHERE login = :login
+			');
+			$stmt->execute($parameters);
+
+			if($stmt->rowCount() > 0) {
 				$result = new User($stmt->fetch());
 			}
 		}
@@ -30,7 +49,7 @@ class UserDAO extends DAO {
 		$result = array();
 
 		$stmt = $this->getConnection()->prepare('
-			SELECT * FROM users WHERE id = :id ORDER BY login
+			SELECT * FROM user ORDER BY login
 		');
 		$stmt->execute();
 
@@ -49,12 +68,12 @@ class UserDAO extends DAO {
 				$id = $this->update($data);
 			}
 			else {
-				$parameters = array('login' => $data->getLogin(), 'password' => $data->getPassword(),
-					'last_latitude' => $data->getLastLatitude(), 'last_longitude' => $data->getLastLongitude());
+				$parameters = array(':login' => $data->getLogin(), ':password' => $data->getPassword(), ':last_latitude' => $data->getLastLatitude(),
+					':last_longitude' => $data->getLastLongitude(), ':token' => $data->getToken());
 
 				$stmt = $this->getConnection()->prepare('
-					INSERT INTO user (login, password, last_latitude, last_longitude)
-					VALUES (:login, :password, :last_latitude, :last_longitude)
+					INSERT INTO user (login, password, last_latitude, last_longitude, token)
+					VALUES (:login, :password, :last_latitude, :last_longitude, :token)
 				');
 				$stmt->execute($parameters);
 
@@ -69,16 +88,16 @@ class UserDAO extends DAO {
 		$id = null;
 
 		if($data !== null && $data instanceof User) {
-			$parameters = array('id' => $data->getId(), 'login' => $data-getLogin(), 'password' => $data->getPassword(),
-					'last_latitude' => $data->getLastLatitude(), 'last_longitude' => $data->getLastLongitude());
+			$parameters = array(':id' => $data->getId(), ':login' => $data->getLogin(), ':password' => $data->getPassword(),
+					':last_latitude' => $data->getLastLatitude(), ':last_longitude' => $data->getLastLongitude(), ':token' => $data->getToken());
 
 			$stmt = $this->getConnection()->prepare('
-				UPDATE user SET login = :login, password = :password, last_latitude = :last_latitude, last_longitude = :last_longitude
-				WHERE id = :id
+				UPDATE user SET login = :login, password = :password, last_latitude = :last_latitude, last_longitude = :last_longitude,
+				token = :token WHERE id = :id
 			');
 			$stmt->execute($parameters);
 
-			$id = $data['id'];
+			$id = $data->getId();
 		}
 
 		return $id;
@@ -88,7 +107,7 @@ class UserDAO extends DAO {
 		$result = false;
 
 		if($data !== null && $data instanceof User) {
-			$parameters = array('id' => $dat->getId());
+			$parameters = array(':id' => $dat->getId());
 
 			$stmt = $this->getConnection()->prepare('
 				DELETE FROM user WHERE id = :id

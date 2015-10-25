@@ -10,11 +10,12 @@ class User implements JsonSerializable {
 	private $password;
 	private $lastLatitude;
 	private $lastLongitude;
+	private $token;
 
 	public function __construct($data = array()) {
 		if(is_array($data)) {
 			if(isset($data['id'])) {
-				$this->id = $sdata['id'];
+				$this->id = $data['id'];
 			}
 
 			if(isset($data['login'])) {
@@ -31,6 +32,10 @@ class User implements JsonSerializable {
 
 			if(isset($data['lastLongitude'])) {
 				$this->setLastLongitude($data['lastLongitude']);
+			}
+
+			if(isset($data['token'])) {
+				$this->setToken($data['token']);
 			}
 		}
 	}
@@ -85,13 +90,19 @@ class User implements JsonSerializable {
 		}
 	}
 
+	public function getToken() {
+		return $this->token;
+	}
+
+	public function setToken($token) {
+		$this->token = $token;
+	}
+
 	public function jsonSerialize() {
 		return [
-			'id' => $this->getId(),
 			'login' => $this->getLogin(),
-			'password' => $this->getPassword(),
-			'lastLatitude' => $this->getLastLatitude(),
-			'lastLongitude' => $this->getLastLongitude()
+			'last_latitude' => $this->getLastLatitude(),
+			'last_longitude' => $this->getLastLongitude()
 		];
 	}
 }

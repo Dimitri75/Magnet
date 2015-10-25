@@ -13,7 +13,7 @@ class Group implements JsonSerializable {
 	public function __construct($data = array()) {
 		if(is_array($data)) {
 			if(isset($data['id'])) {
-				$this->id = $sdata['id'];
+				$this->id = $data['id'];
 			}
 
 			if(isset($data['name'])) {
@@ -72,7 +72,6 @@ class Group implements JsonSerializable {
 
 	public function jsonSerialize() {
 		return [
-			'id' => $this->getId(),
 			'name' => $this->getName(),
 			'creator' => $this->getCreator(),
 			'users' => $this->getUsers()

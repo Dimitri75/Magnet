@@ -10,9 +10,9 @@ class GroupDAO extends DAO {
 	private function findCreator($creatorId) {
 		$creator = null;
 
-		if(isset($group) && $group->getId() !== null) {
+		if(is_numeric($creatorId) && $creatorId > 0) {
 			$userDAO = new UserDAO($this->getConnection());
-			$creator = $userDAO->find($creatorId)
+			$creator = $userDAO->find($creatorId);
 		}
 
 		return $creator;
@@ -28,9 +28,9 @@ class GroupDAO extends DAO {
 			');
 			$stmt->execute($parameters);
 
-			if($stmt->rowCount > 0) {
+			if($stmt->rowCount() > 0) {
 				$userDAO = new UserDAO($this->getConnection());
-				foreach($stmt->findAll as $row)
+				foreach($stmt->fetchAll() as $row) {
 					$users[] = $userDAO->find($row['id_user']);
 				}
 			}
@@ -40,7 +40,7 @@ class GroupDAO extends DAO {
 	}
 
 	private function saveUsers($group) {
-		$users = $group->getUsers()
+		$users = $group->getUsers();
 		$userDAO = new UserDAO($this->getConnection());
 		$stmt = $this->getConnection()->prepare('
 			INSERT INTO group_has_users (id_group, id_user) VALUES (:id_group, :id_user)
@@ -61,11 +61,11 @@ class GroupDAO extends DAO {
 			$parameters = array(':id' => $id);
 
 			$stmt = $this->getConnection()->prepare('
-				SELECT * FROM group WHERE id = :id
+				SELECT * FROM groups WHERE id = :id
 			');
 			$stmt->execute($parameters);
 
-			if($stmt->rowCount > 0) {
+			if($stmt->rowCount() > 0) {
 				$row = $stmt->fetch();
 				$result = new Group($row);
 				$result->setCreator($this->findCreator($row['id_user']));
@@ -80,7 +80,7 @@ class GroupDAO extends DAO {
 		$result = array();
 
 		$stmt = $this->getConnection()->prepare('
-			SELECT * FROM group ORDER BY name
+			SELECT * FROM groups ORDER BY name
 		');
 		$stmt->execute();
 
@@ -108,7 +108,7 @@ class GroupDAO extends DAO {
 				$parameters = array('name' => $data->getName(), 'id_user' => $idCreator);
 
 				$stmt = $this->getConnection()->prepare('
-					INSERT INTO user name, id_user) VALUES (:name, :id_user)
+					INSERT INTO groups name, id_user) VALUES (:name, :id_user)
 				');
 				$stmt->execute($parameters);
 
@@ -130,7 +130,7 @@ class GroupDAO extends DAO {
 
 			$parameters = array('id' => $data->getId(), 'name' => $data-getLogin(), 'id_user' => $data->getPassword());
 			$stmt = $this->getConnection()->prepare('
-				UPDATE user SET name = :name, id_user = :id_user WHERE id = :id
+				UPDATE groups SET name = :name, id_user = :id_user WHERE id = :id
 			');
 			$stmt->execute($parameters);
 
@@ -153,7 +153,7 @@ class GroupDAO extends DAO {
 			$parameters = array('id' => $dat->getId());
 
 			$stmt = $this->getConnection()->prepare('
-				DELETE FROM user WHERE id = :id
+				DELETE FROM groups WHERE id = :id
 			');
 			$result = $stmt->execute($parameters);
 		}
