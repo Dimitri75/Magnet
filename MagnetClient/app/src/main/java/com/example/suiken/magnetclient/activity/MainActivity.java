@@ -1,6 +1,7 @@
-package com.example.suiken.magnetclient;
+package com.example.suiken.magnetclient.activity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,6 +10,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.example.suiken.magnetclient.R;
+import com.example.suiken.magnetclient.asynctask.GetUserTask;
 
 import org.json.JSONObject;
 
@@ -62,27 +66,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void checkLogin(View V){
-        Thread thread = new Thread(){
-            public void run(){
-                try {
-                    URL url = new URL(serverURL);
-                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                    connection.setRequestMethod("GET");
-                    connection.setDoInput(true);
-                    connection.connect();
+        try {
 
-                    InputStream stream = connection.getInputStream();
+            JSONObject jsonObject = new GetUserTask().execute(new URL(serverURL)).get();
 
-                    JSONObject jsonObject = new JSONObject(convertStreamToString(stream));
+            System.out.println("Finished");
 
-                    System.out.println("Finished");
-
-                }catch(Exception e){
-                    System.out.println("Connection to " + serverURL + " failed");
-                }
-            }
-        };
-        thread.start();
+        }catch(Exception e){
+            System.out.println("Connection to " + serverURL + " failed");
+        }
     }
 
     public void signUp(View V){
@@ -90,25 +82,4 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private String convertStreamToString(InputStream is) {
-
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        StringBuilder sb = new StringBuilder();
-
-        String line = null;
-        try {
-            while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return sb.toString();
-    }
 }
