@@ -18,7 +18,8 @@ import kei.magnet.GetJSONTask;
 import kei.magnet.R;
 
 public class MainActivity extends AppCompatActivity {
-    private static String serverURL = "http://91.121.161.11/magnet/user"; //TODO à changer
+    private static String tokenURL = "http://91.121.161.11/magnet/user"; //TODO à changer
+
     private EditText txtLogin;
     private EditText txtPassword;
 
@@ -57,23 +58,36 @@ public class MainActivity extends AppCompatActivity {
 
     public void checkLogin(View V){
         try {
-            JSONObject jsonObject = new GetJSONTask().execute(
-                    new AbstractMap.SimpleEntry<>("url", serverURL),
+            JSONObject tokenJSON = new GetJSONTask().execute(
+                    new AbstractMap.SimpleEntry<>("url", tokenURL),
                     new AbstractMap.SimpleEntry<>("method", "GET"),
                     new AbstractMap.SimpleEntry<>("request", "slash"),
                     new AbstractMap.SimpleEntry<>("login", txtLogin.getText().toString()),
                     new AbstractMap.SimpleEntry<>("password", txtPassword.getText().toString())
             ).get();
 
-            if(jsonObject != null){
+            if(tokenJSON != null){
+
+                JSONObject userJSON = new GetJSONTask().execute(
+                        new AbstractMap.SimpleEntry<>("url", tokenURL),
+                        new AbstractMap.SimpleEntry<>("method", "GET"),
+                        new AbstractMap.SimpleEntry<>("request", "slash"),
+                        new AbstractMap.SimpleEntry<>("token", tokenJSON.getString("token"))
+                ).get();
+
+                ApplicationUser applicationUser = new ApplicationUser(userJSON);
+
+
+
                 Intent intent = new Intent(this, MagnetActivity.class);
+                intent.putExtra(applicationUser);
                 startActivity(intent);
             }
             else
                 Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
 
         }catch(Exception e){
-            Toast.makeText(getApplicationContext(), "Connection to " + serverURL + " failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Connection to " + tokenURL + " failed", Toast.LENGTH_SHORT).show();
         }
     }
 
