@@ -15,6 +15,25 @@ class UserControllerProvider implements ControllerProviderInterface {
     	// creates a new controller based on the default route
         $controllers = $app['controllers_factory'];
 
+        $controllers->get('/{token}', function(Request $request, $token) use($app) {
+			$result = array();
+            $status = 200;
+            $userDAO = new UserDAO();
+            $groupDAO = new GroupDAO($userDAO->getConnection());
+            $user = $userDAO->findByToken($token);
+
+            if($user !== null) {
+            	$user->setGroups($groupDAO->findByUserId($user->getId()));
+            	$result = $user;
+            }
+            else {
+                $result['message'] = 'Token not valid.';
+                $status = 401;
+            }
+
+            return $app->json($result, $status);
+		});
+
         //Gets a authentication token for a user, allowing him to be recognized as logged in.
         $controllers->get('/{login}/{password}', function(Request $request, $login, $password) use($app) {
 			$result = array();
