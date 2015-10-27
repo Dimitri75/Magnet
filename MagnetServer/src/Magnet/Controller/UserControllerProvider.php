@@ -6,6 +6,7 @@ use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Magnet\Model\UserDAO;
+use Magnet\Model\User;
 
 class UserControllerProvider implements ControllerProviderInterface {
 	public function connect(Application $app)
@@ -31,32 +32,35 @@ class UserControllerProvider implements ControllerProviderInterface {
 			$response = array();
 			$login = $request->get('login');
 			$password= $request->get('password');
+			
+			if($login !== null && $password !== null) {
+				$userDAO = new UserDAO();
+				$user = $userDAO->findByLogin($login);
 
-			$userDAO = new UserDAO();
-			$user = $userDAO->findByLogin($login);
+				if($user === null) {
+					$user = new User(array('login' => $login, 'password' => $password));
+					$id = $userDAO->save($user);
 
-			if($user === null) {
-				$user = new User(array('login' => $login, 'password' => $password));
-				$id = $userDAO->save($user);
-
-				if($id !== null) {
-					$response['success'] = 'User created';
+					if($id !== null) {
+						$response['success'] = 'User created';
+					}
+					else {
+						$response['error'] = 'Error while savig user';
+					}
 				}
 				else {
-					$response['error'] = 'Error while savig user';
+					$response['error'] = 'Login already used';
 				}
 			}
 			else {
-				$response['error'] = 'Login already used';
+				$response['error'] = 'Login or password empty';
 			}
 
 			return $app->json($response);
 		});
 
-		$controllers->post('/login', function(Request $request) use($app) {
+		$controllers->get('/login/{login}/{password}', function(Request $request, $login, $password) use($app) {
 			$response = array();
-			$login = $request->get('login');
-			$password= $request->get('password');
 
 			$userDAO = new UserDAO();
 			$user = $userDAO->findByLogin($login);

@@ -45,6 +45,25 @@ class UserDAO extends DAO {
 		return $result;
 	}
 
+	public function findByToken($token) {
+		$result = null;
+
+		if(is_string($token)) {
+			$parameters = array(':token' => $token);
+
+			$stmt = $this->getConnection()->prepare('
+				SELECT * FROM user WHERE token = :token
+			');
+			$stmt->execute($parameters);
+
+			if($stmt->rowCount() > 0) {
+				$result = new User($stmt->fetch());
+			}
+		}
+
+		return $result;
+	}
+
 	public function findAll() {
 		$result = array();
 

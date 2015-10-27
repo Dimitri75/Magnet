@@ -5,6 +5,7 @@ namespace Magnet\Controller;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Magnet\Model\GroupDAO;
+use Magnet\Model\UserDAO;
 
 class GroupControllerProvider implements ControllerProviderInterface {
 	public function connect(Application $app)
@@ -27,12 +28,19 @@ class GroupControllerProvider implements ControllerProviderInterface {
         });
 
         $controllers->get('/user/{token}', function (Application $app, $token)  {
+            $groups = null;
             $userDAO = new UserDAO();
             $groupDAO = new GroupDAO($userDAO->getConnection());
-            
-            
+            $user = $userDAO->findByToken($token);
 
-            return $app->json($group);
+            if($user !== null) {
+                $groups = $groupDAO->findByUserId($user->getId());
+            }
+            else {
+                $groups = array('error', 'Token not valid');
+            }
+
+            return $app->json($groups);
         });
 
         return $controllers;

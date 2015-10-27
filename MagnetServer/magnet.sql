@@ -18,7 +18,8 @@ CREATE TABLE `user` (
   `password` VARCHAR(50) NOT NULL,
   `last_latitude` DECIMAL NULL DEFAULT NULL,
   `last_longitude` DECIMAL NULL DEFAULT NULL,
-  `token` VARCHAR(32) NULL DEFAULT NULL,
+  `visible` BOOLEAN DEFAULT TRUE,
+  `token` VARCHAR(64) NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 );
 
@@ -27,9 +28,9 @@ CREATE TABLE `user` (
 -- 
 -- ---
 
-DROP TABLE IF EXISTS `group`;
+DROP TABLE IF EXISTS `groups`;
     
-CREATE TABLE `group` (
+CREATE TABLE `groups` (
   `id` INTEGER NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(50) NOT NULL,
   `id_user` INTEGER NOT NULL,

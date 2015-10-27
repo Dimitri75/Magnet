@@ -76,6 +76,25 @@ class GroupDAO extends DAO {
 		return $result;
 	}
 
+	public function findByUserId($userId) {
+		$result = array();
+
+		$parameters = array(':id_user' => $userId);
+		$stmt = $this->getConnection()->prepare('
+			SELECT * FROM groups g INNER JOIN group_has_users ghu ON ghu.id_group = g.id WHERE ghu.id_user = :id_user ORDER BY name
+		');
+		$stmt->execute($parameters);
+
+		foreach($stmt->fetchAll() as $row) {
+			$group = new Group($row);
+			$group->setCreator($this->findCreator($row['id_user']));
+			$group->setUsers($this->findUsers($row['id']));
+			$result[] = $group;
+		}
+
+		return $result;
+	}
+
 	public function findAll() {
 		$result = array();
 

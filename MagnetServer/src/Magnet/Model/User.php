@@ -96,7 +96,7 @@ class User implements JsonSerializable {
 	}
 
 	public function getVisible() {
-		return $this->status;
+		return $this->visible;
 	}
 
 	public function setVisible($visible) {
