@@ -1,5 +1,9 @@
 package kei.magnet.classes;
 
+import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -12,7 +16,7 @@ import java.util.List;
 /**
  * Created by Dimitri on 27/10/2015.
  */
-public class ApplicationUser extends User {
+public class ApplicationUser extends User{
     private List<Group> groups;
 
     public ApplicationUser(JSONObject jsonObject){
@@ -29,5 +33,25 @@ public class ApplicationUser extends User {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+
+        Bundle b = new Bundle();
+        b.putParcelableArrayList("groups", (ArrayList) groups);
+        dest.writeBundle(b);
+    }
+
+    /**
+     * Instanciate a game using Parcelable
+     * @param in
+     */
+    public ApplicationUser(Parcel in) {
+        super(in);
+
+        Bundle b = in.readBundle(Group.class.getClassLoader());
+        groups = b.getParcelableArrayList("groups");
     }
 }

@@ -15,6 +15,7 @@ import kei.magnet.BluetoothConnector;
 import kei.magnet.Compass;
 import kei.magnet.GPSHandler;
 import kei.magnet.R;
+import kei.magnet.classes.ApplicationUser;
 
 public class MagnetActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
@@ -23,6 +24,7 @@ public class MagnetActivity extends AppCompatActivity {
     private BluetoothConnector bluetoothConnector;
     private Compass compass;
     private SensorManager mSensorManager;
+    private ApplicationUser applicationUser;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
