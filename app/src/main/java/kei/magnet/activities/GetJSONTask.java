@@ -25,37 +25,19 @@ public class GetJSONTask extends AsyncTask<AbstractMap.SimpleEntry<String, Strin
 
     /**
      *
-     * @param entries : entries of String. The first entry represents the url where the task has to connect
+     * @param entries : entries of String. The first entry represents the url where the task has to connect, the second entry represents the method of the request (POST or GET), the third entry tells if you are using the slashes or the body of the request
      * @return response of the request
      */
     protected JSONObject doInBackground(AbstractMap.SimpleEntry<String, String>... entries) {
         JSONObject jsonObject = null;
         try {
-            HttpURLConnection connection = (HttpURLConnection) new URL(entries[0].getValue()).openConnection();
-            connection.setRequestMethod("POST");
-            connection.setDoInput(true);
-
-            Uri.Builder builder = new Uri.Builder();
-            for(int i = 1; i < entries.length; i++) {
-                builder.appendQueryParameter((String) entries[i].getKey(), (String) entries[i].getValue());
+            if(entries[2].getValue().equals("slash")){
+                jsonObject = getSlashJSONObject(entries);
+            }else if(entries[2].getValue().equals("body")){
+                jsonObject = getJSONObject(entries);
             }
-            String query = builder.build().getEncodedQuery();
-
-            OutputStream os = connection.getOutputStream();
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-            writer.write(query);
-            writer.flush();
-            writer.close();
-            os.close();
-
-            connection.connect();
-
-            InputStream stream = connection.getInputStream();
-
-            jsonObject = new JSONObject(convertStreamToString(stream));
-
         }catch(Exception e){
-            System.out.println("Connection to " + entries[0].getValue().toString() + " failed");
+            System.out.println("Connection to " + entries[0].getValue() + " failed");
         }
         return jsonObject;
     }
@@ -82,4 +64,60 @@ public class GetJSONTask extends AsyncTask<AbstractMap.SimpleEntry<String, Strin
         return sb.toString();
     }
 
+    private JSONObject getJSONObject(AbstractMap.SimpleEntry<String, String>... entries){
+        JSONObject jsonObject = null;
+        try {
+            HttpURLConnection connection = (HttpURLConnection) new URL("/" + entries[0].getValue()).openConnection();
+            connection.setRequestMethod(entries[1].getValue().toString());
+            connection.setDoInput(true);
+
+            Uri.Builder builder = new Uri.Builder();
+            for (int i = 2; i < entries.length; i++) {
+                builder.appendQueryParameter(entries[i].getKey(), entries[i].getValue());
+            }
+            String query = builder.build().getEncodedQuery();
+
+            OutputStream os = connection.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+            writer.write(query);
+            writer.flush();
+            writer.close();
+            os.close();
+
+            connection.connect();
+
+            InputStream stream = connection.getInputStream();
+
+            jsonObject = new JSONObject(convertStreamToString(stream));
+        }catch(Exception e){
+            System.out.println("Connection failed");
+        }
+        return jsonObject;
+    }
+
+    private JSONObject getSlashJSONObject(AbstractMap.SimpleEntry<String, String>... entries){
+        JSONObject jsonObject = null;
+        try {
+
+            StringBuilder sb = new StringBuilder();
+            sb.append(entries[0].getValue());
+            for(int i = 3; i < entries.length; i++){
+                sb.append("/");
+                sb.append(entries[i].getValue());
+            }
+
+            HttpURLConnection connection = (HttpURLConnection) new URL(sb.toString()).openConnection();
+            connection.setRequestMethod(entries[1].getValue().toString());
+            connection.setDoInput(true);
+
+            connection.connect();
+
+            InputStream stream = connection.getInputStream();
+
+            jsonObject = new JSONObject(convertStreamToString(stream));
+        }catch(Exception e){
+            System.out.println("Connection failed");
+        }
+        return jsonObject;
+    }
 }
