@@ -40,8 +40,6 @@ public class BluetoothConnector {
         }
     };
 
-
-
     public BluetoothConnector(FragmentActivity parentActivity) {
         this.parentActivity = parentActivity;
         this.mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -49,7 +47,7 @@ public class BluetoothConnector {
             // Device does not support Bluetooth
             Toast.makeText(parentActivity, "Pas de Bluetooth",
                     Toast.LENGTH_SHORT).show();
-        }else{
+        }else {
             Toast.makeText(parentActivity, "Avec Bluetooth",
                     Toast.LENGTH_SHORT).show();
             if (!mBluetoothAdapter.isEnabled()) {
@@ -63,15 +61,10 @@ public class BluetoothConnector {
             parentActivity.registerReceiver(bluetoothReceiver, filter);
             mBluetoothAdapter.startDiscovery();
 
-            serverThread= new AcceptThread();
+            serverThread = new AcceptThread();
             serverThread.run();
-
         }
-
-
-
     }
-
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -83,8 +76,6 @@ public class BluetoothConnector {
                 mBluetoothAdapter.enable();
             }
             showKnownDevices();
-        } else {
-
         }
     }
 
@@ -102,7 +93,6 @@ public class BluetoothConnector {
         parentActivity.startActivity(discoverableIntent);
     }
 
-
     public void playClientRole(){
 
     }
@@ -111,6 +101,7 @@ public class BluetoothConnector {
         AcceptThread thread = new AcceptThread();
         thread.run();
     }
+
     private class ConnectThread extends Thread {
         private final BluetoothSocket mmSocket;
         private final BluetoothDevice mmDevice;
@@ -142,8 +133,8 @@ public class BluetoothConnector {
                 mmSocket.close();
             } catch (IOException e) { }
         }
-
     }
+
     private class AcceptThread extends Thread {
         private final BluetoothServerSocket mmServerSocket;
 
@@ -186,7 +177,6 @@ public class BluetoothConnector {
 
     public void manageConnectedSocket(BluetoothSocket socket){
         Toast.makeText(parentActivity.getApplicationContext(),"connected",Toast.LENGTH_LONG);
-
     }
 
 

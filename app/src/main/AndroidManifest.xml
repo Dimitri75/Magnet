@@ -25,7 +25,7 @@
         android:theme="@style/AppTheme">
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBKXn7rTc7QzcgJJOO1UzQ_E69_SoP0uG4"/>
         <activity
-            android:name=".LocationActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
@@ -37,6 +37,10 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".LocationActivity"
+            android:label="LocationActivity" >
         </activity>
         <activity
             android:name=".activities.SignUpActivity"

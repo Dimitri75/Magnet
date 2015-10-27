@@ -22,7 +22,7 @@ import kei.magnet.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static String serverURL = "http://91.121.161.11/magnet/user/";
+    private static String serverURL = "http://91.121.161.11/magnet/user/"; //TODO à changer
 
     private EditText txtLogin;
     private EditText txtPassword;
