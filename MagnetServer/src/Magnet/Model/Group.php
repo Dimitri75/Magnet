@@ -21,11 +21,14 @@ class Group implements JsonSerializable {
 			}
 
 			if(isset($data['creator'])) {
-				$this->setName($data['creator']);
+				$this->setCreator($data['creator']);
 			}
 
 			if(isset($data['users'])) {
 				$this->setUsers($data['users']);
+			}
+			else {
+				$this->setUsers(array());
 			}
 		}
 	}

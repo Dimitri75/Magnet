@@ -42,7 +42,12 @@ class GroupDAO extends DAO {
 	private function saveUsers($group) {
 		$users = $group->getUsers();
 		$userDAO = new UserDAO($this->getConnection());
-		$stmt = $this->getConnection()->prepare('
+
+		$stmt1 = $this->getConnection()->prepare('
+			SELECT * FROM group_has_users WHERE id_group = :id_group AND id_user = :id_user
+		');
+
+		$stmt2 = $this->getConnection()->prepare('
 			INSERT INTO group_has_users (id_group, id_user) VALUES (:id_group, :id_user)
 		');
 		$parameters = array('id_group' => $group->getId(), 'id_user' => 0);
@@ -50,7 +55,11 @@ class GroupDAO extends DAO {
 		foreach($users as $user) {
 			$idUser = $userDAO->save($user);
 			$parameters['id_user'] = $idUser;
-			$stmt->execute($parameters);
+
+			$stmt1->execute($parameters);
+			if($stmt1->rowCount() === 0) {
+				$stmt2->execute($parameters);
+			}			
 		}
 	}
 
@@ -124,10 +133,10 @@ class GroupDAO extends DAO {
 				$userDAO = new UserDAO($this->getConnection());
 				$idCreator = $userDAO->save($data->getCreator());
 				$this->saveUsers($data);
-				$parameters = array('name' => $data->getName(), 'id_user' => $idCreator);
+				$parameters = array(':name' => $data->getName(), ':id_user' => $idCreator);
 
 				$stmt = $this->getConnection()->prepare('
-					INSERT INTO groups name, id_user) VALUES (:name, :id_user)
+					INSERT INTO groups (name, id_user) VALUES (:name, :id_user)
 				');
 				$stmt->execute($parameters);
 
@@ -142,18 +151,15 @@ class GroupDAO extends DAO {
 		$id = null;
 
 		if($data !== null && $data instanceof Group) {
-			$userDAO = new UserDAO($this->getConnection());
-			$idCreator = $userDAO->save($data->getCreator());
 			$this->saveUsers($data);
-			$parameters = array('name' => $data->getName(), 'id_user' => $idCreator);
 
-			$parameters = array('id' => $data->getId(), 'name' => $data-getLogin(), 'id_user' => $data->getPassword());
+			$parameters = array(':id' => $data->getId(), ':name' => $data->getName(), ':id_user' => $data->getCreator()->getId());
 			$stmt = $this->getConnection()->prepare('
 				UPDATE groups SET name = :name, id_user = :id_user WHERE id = :id
 			');
 			$stmt->execute($parameters);
 
-			$id = $data['id'];
+			$id = $data->getId();
 		}
 
 		return $id;

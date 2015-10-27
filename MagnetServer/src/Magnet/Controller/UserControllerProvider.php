@@ -14,22 +14,32 @@ class UserControllerProvider implements ControllerProviderInterface {
     	// creates a new controller based on the default route
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('/', function (Application $app) {
-        	$userDAO = new UserDAO();
-        	$users = $userDAO->findAll();
+        //Gets a authentication token for a user, allowing him to be recognized as logged on.
+        $controllers->get('/{login}/{password}', function(Request $request, $login, $password) use($app) {
+			$result = array();
+			$status = 200;
 
-            return $app->json($users);
-        });
+			$userDAO = new UserDAO();
+			$user = $userDAO->findByLogin($login);
 
-        $controllers->get('/{id}', function (Application $app, $id)  {
-        	$userDAO = new UserDAO();
-        	$user = $userDAO->find($id);
+			if($user !== null && $password === $user->getPassword()) {
+				$token = bin2hex(openssl_random_pseudo_bytes(32));
+				$user->setToken($token);
+				$userDAO->save($user);
+				$result['token'] = $token;
+			}
+			else {
+				$result['message'] = 'Login or password doesn\'t match.';
+				$status = 400;
+			}
 
-            return $app->json($user);
-        });
+			return $app->json($result, $status);
+		});
 
-        $controllers->post('/register', function(Request $request) use($app) {
-			$response = array();
+        //Creates a new user, using a login and a password. Used when a user signs up.
+        $controllers->post('/', function(Request $request) use($app) {
+			$result = array();
+			$status = 200;
 			$login = $request->get('login');
 			$password= $request->get('password');
 			
@@ -42,40 +52,24 @@ class UserControllerProvider implements ControllerProviderInterface {
 					$id = $userDAO->save($user);
 
 					if($id !== null) {
-						$response['success'] = 'User created';
+						$result = $user;
 					}
 					else {
-						$response['error'] = 'Error while savig user';
+						$result['message'] = 'Error while savig user.';
+						$status = 400;
 					}
 				}
 				else {
-					$response['error'] = 'Login already used';
+					$result['message'] = 'Login already used.';
+					$status = 400;
 				}
 			}
 			else {
-				$response['error'] = 'Login or password empty';
+				$result['message'] = 'Login or password empty.';
+				$status = 400;
 			}
 
-			return $app->json($response);
-		});
-
-		$controllers->get('/login/{login}/{password}', function(Request $request, $login, $password) use($app) {
-			$response = array();
-
-			$userDAO = new UserDAO();
-			$user = $userDAO->findByLogin($login);
-
-			if($user !== null && $password === $user->getPassword()) {
-				$token = bin2hex(openssl_random_pseudo_bytes(32));
-				$user->setToken($token);
-				$userDAO->save($user);
-				$response['token'] = $token;
-			}
-			else {
-				$response['error'] = $login . ' ' . $password;
-			}
-
-			return $app->json($response);
+			return $app->json($result, $status);
 		});
 
         return $controllers;

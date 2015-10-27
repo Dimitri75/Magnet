@@ -76,6 +76,7 @@ CREATE TABLE `pin` (
 ALTER TABLE `group` ADD FOREIGN KEY (id_user) REFERENCES `user` (`id`);
 ALTER TABLE `group_has_users` ADD FOREIGN KEY (id_group) REFERENCES `group` (`id`);
 ALTER TABLE `group_has_users` ADD FOREIGN KEY (id_user) REFERENCES `user` (`id`);
+ALTER TABLE `group_has_users` ADD UNIQUE `unique_index`(`id_group`, `id_user`);
 ALTER TABLE `pin` ADD FOREIGN KEY (id_user) REFERENCES `user` (`id`);
 ALTER TABLE `pin` ADD FOREIGN KEY (id_group) REFERENCES `group` (`id`);
 
