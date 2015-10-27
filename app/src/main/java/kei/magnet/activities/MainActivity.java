@@ -6,7 +6,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,9 +13,7 @@ import android.widget.EditText;
 
 import org.json.JSONObject;
 
-import java.security.KeyStore;
 import java.util.AbstractMap;
-import java.util.Map;
 
 import kei.magnet.R;
 
