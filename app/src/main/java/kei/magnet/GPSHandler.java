@@ -25,10 +25,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
     public static final String TAG = LocationActivity.class.getSimpleName();
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
-
     private LocationRequest mLocationRequest;
 
     private GoogleMap googleMap;
+    private MarkerOptions markerOptions;
     private GoogleApiClient mGoogleApiClient;
 
 
@@ -98,21 +98,24 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
     }
 
     private void handleNewLocation(Location location) {
+        LatLng latLng = getLatLng(location);
+
+        if (markerOptions == null) {
+            markerOptions = new MarkerOptions();
+            markerOptions.position(latLng).title("I am here");
+            googleMap.addMarker(markerOptions);
+        }
+
         Log.d(TAG, location.toString());
-        double currentLatitude = location.getLatitude();
-        double currentLongitude = location.getLongitude();
-        LatLng latLng = new LatLng(currentLatitude, currentLongitude);
-
-        MarkerOptions options = new MarkerOptions()
-                .position(latLng)
-                .title("I am here!");
-
-        googleMap.addMarker(options);
-
+        markerOptions.position(latLng).title("I am here!");
+        //googleMap.addMarker(markerOptions);
 
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(16), 2000, null);
+        //googleMap.animateCamera(CameraUpdateFactory.zoomTo(16), 2000, null);
+    }
 
+    private LatLng getLatLng(Location location){
+        return new LatLng(location.getLatitude(), location.getLongitude());
     }
 
     private void setUpMap() {
@@ -129,7 +132,6 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
             // Check if we were successful in obtaining the map.
             if (googleMap != null) {
                 setUpMap();
-
             }
         }
     }

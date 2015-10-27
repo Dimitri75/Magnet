@@ -1,6 +1,7 @@
 package kei.magnet.activities;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,6 +13,8 @@ import android.view.MenuItem;
 
 import org.json.JSONObject;
 import java.net.URL;
+
+import kei.magnet.LocationActivity;
 import kei.magnet.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -58,11 +61,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void checkLogin(View V){
         try {
+            /*JSONObject jsonObject = new GetUserTask().execute(new URL(serverURL)).get();
+            System.out.println("Finished");*/
 
-            JSONObject jsonObject = new GetUserTask().execute(new URL(serverURL)).get();
-
-            System.out.println("Finished");
-
+            Intent intent = new Intent(this, LocationActivity.class);
+            startActivity(intent);
         }catch(Exception e){
             System.out.println("Connection to " + serverURL + " failed");
         }
@@ -72,5 +75,4 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SignUpActivity.class);
         startActivity(intent);
     }
-
 }

@@ -6,10 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
 public class LocationActivity extends FragmentActivity {
-
-
-
-
     public GPSHandler gpsHandler;
     private BluetoothConnector bluetoothConnector;
     private Compass compass;
