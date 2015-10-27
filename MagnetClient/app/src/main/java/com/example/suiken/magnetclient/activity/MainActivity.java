@@ -1,31 +1,28 @@
 package com.example.suiken.magnetclient.activity;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 
 import com.example.suiken.magnetclient.R;
 import com.example.suiken.magnetclient.asynctask.GetUserTask;
 
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
     private static String serverURL = "http://192.168.42.170:8080/";
+    private EditText txtLogin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +38,10 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        txtLogin = (EditText) findViewById(R.id.txtLogin);
+
+        String text = "test";
     }
 
     @Override
@@ -71,6 +72,9 @@ public class MainActivity extends AppCompatActivity {
             JSONObject jsonObject = new GetUserTask().execute(new URL(serverURL)).get();
 
             System.out.println("Finished");
+
+            Intent intent = new Intent(this, MagnetActivity.class);
+            startActivity(intent);
 
         }catch(Exception e){
             System.out.println("Connection to " + serverURL + " failed");
