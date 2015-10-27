@@ -17,7 +17,7 @@ public class LocationActivity extends FragmentActivity {
         gpsHandler = new GPSHandler(this);
         //bluetoothConnector = new BluetoothConnector(this);
         mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
-        compass = new Compass(mSensorManager,this);
+//        compass = new Compass(mSensorManager,this);
     }
 
     @Override

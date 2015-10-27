@@ -1,19 +1,17 @@
 package kei.magnet;
 
-import android.app.Activity;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
+
+import kei.magnet.activities.MagnetActivity;
 
 /**
  * Created by carlo_000 on 22/10/2015.
  */
 public class Compass implements SensorEventListener {
-    private LocationActivity parentActivity = null;
+    private MagnetActivity parentActivity = null;
     private SensorManager mSensorManager = null;
     private Sensor mAccelerometer = null;
     private Sensor mMagnetometer = null;
@@ -43,7 +41,7 @@ public class Compass implements SensorEventListener {
     private float mDeclination=0;
     private float[] mRotationMatrix=new float[16];
 
-    public Compass(SensorManager mSensorManager, LocationActivity activity) {
+    public Compass(SensorManager mSensorManager, MagnetActivity activity) {
         this.parentActivity = activity;
         this.mSensorManager = mSensorManager;
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
