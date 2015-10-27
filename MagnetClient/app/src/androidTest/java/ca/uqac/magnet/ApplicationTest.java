@@ -1,4 +1,4 @@
-package kei.magnet;
+package com.example.suiken.magnetclient;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
