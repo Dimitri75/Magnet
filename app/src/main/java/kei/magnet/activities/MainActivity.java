@@ -1,10 +1,7 @@
 package kei.magnet.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -21,7 +18,7 @@ import kei.magnet.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static String serverURL = "http://91.121.161.11/magnet/user/"; //TODO à changer
+    private static String serverURL = "http://91.121.161.11/magnet/user"; //TODO à changer
 
     private EditText txtLogin;
     private EditText txtPassword;
@@ -63,8 +60,10 @@ public class MainActivity extends AppCompatActivity {
         try {
             JSONObject jsonObject = new GetJSONTask().execute(
                     new AbstractMap.SimpleEntry<>("url", serverURL),
+                    new AbstractMap.SimpleEntry<>("method", "GET"),
+                    new AbstractMap.SimpleEntry<>("request", "slash"),
                     new AbstractMap.SimpleEntry<>("login", txtLogin.getText().toString()),
-                    new AbstractMap.SimpleEntry<>("password", txtPassword.getText().toString())       //TODO à changer
+                    new AbstractMap.SimpleEntry<>("password", txtPassword.getText().toString())
             ).get();
 
             if(jsonObject != null){

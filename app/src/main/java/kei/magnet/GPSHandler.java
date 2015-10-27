@@ -36,7 +36,6 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
     public GPSHandler(FragmentActivity parentActivity) {
 
         this.parentActivity = parentActivity;
-
         /*compass = new Compass(m,view);
         view.compass=compass;*/
 
@@ -64,7 +63,6 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
     }
 
     public void onPause() {
-
         if (mGoogleApiClient.isConnected()) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
             mGoogleApiClient.disconnect();
@@ -105,6 +103,8 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
     private LatLng getLatLng(Location location){
         return new LatLng(location.getLatitude(), location.getLongitude());
     }
+
+    
 
     private void setUpMap() {
         googleMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
