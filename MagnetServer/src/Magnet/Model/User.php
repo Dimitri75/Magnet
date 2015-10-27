@@ -8,8 +8,7 @@ class User implements JsonSerializable {
 	private $id;
 	private $login;
 	private $password;
-	private $lastLatitude;
-	private $lastLongitude;
+	private $location;
 	private $visible;
 	private $token;
 	private $lastActivity;
@@ -28,13 +27,14 @@ class User implements JsonSerializable {
 				$this->setPassword($data['password']);
 			}
 
-			if(isset($data['lastLatitude'])) {
-				$this->setLastLatitude($data['lastLatitude']);
+			$location = new Location();
+			if(isset($data['latitude'])) {
+				$location->setLatitude($data['latitude']);
 			}
-
-			if(isset($data['lastLongitude'])) {
-				$this->setLastLongitude($data['lastLongitude']);
+			if(isset($data['longitude'])) {
+				$location->setLatitude($data['longitude']);
 			}
+			$this->setLocation($location);
 
 			if(isset($data['visible'])) {
 				$this->setVisible($data['visible']);
@@ -80,26 +80,6 @@ class User implements JsonSerializable {
 		}
 	}
 
-	public function getLastLatitude() {
-		return $this->lastLatitude;
-	}
-
-	public function setLastLatitude($lastLongitude) {
-		if(is_numeric($lastLatitude)) {
-			$this->lastLatitude = $lastLatitude;
-		}
-	}
-
-	public function getLastLongitude() {
-		return $this->lastLongitude;
-	}
-
-	public function setLastLongitude($lastLongitude) {
-		if(is_numeric($lastLongitude)) {
-			$this->lastLongitude = $lastLongitude;
-		}
-	}
-
 	public function getVisible() {
 		return $this->visible;
 	}
@@ -108,6 +88,14 @@ class User implements JsonSerializable {
 		if(is_bool($visible)) {
 			$this->visible = $visible;
 		}
+	}
+
+	public function getLocation() {
+		return $this->location;
+	}
+
+	public function setLocation($location) {
+		$this->location = $location;
 	}
 
 	public function getToken() {
@@ -129,8 +117,7 @@ class User implements JsonSerializable {
 	public function jsonSerialize() {
 		return [
 			'login' => $this->getLogin(),
-			'last_latitude' => $this->getLastLatitude(),
-			'last_longitude' => $this->getLastLongitude(),
+			'location' => $this->getLocation(),
 			'visible' => $this->getVisible(),
 			'last_activity' => $this->getLastActivity()
 		];

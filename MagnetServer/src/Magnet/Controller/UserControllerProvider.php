@@ -6,6 +6,7 @@ use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Magnet\Model\UserDAO;
+use Magnet\Model\GroupDAO;
 use Magnet\Model\User;
 
 class UserControllerProvider implements ControllerProviderInterface {
@@ -37,7 +38,7 @@ class UserControllerProvider implements ControllerProviderInterface {
 			return $app->json($result, $status);
 		});
 
-		$controllers->get('/', function(Request $request) use($app) {
+		$controllers->get('/connected', function(Request $request) use($app) {
 			$result = array();
 			$status = 200;
 
@@ -89,6 +90,48 @@ class UserControllerProvider implements ControllerProviderInterface {
 			}
 
 			return $app->json($result, $status);
+		});
+
+		$controllers->put('/{token}', function(Request $request, $token) use($app) {
+			$result = array();
+            $status = 200;
+            $userDAO = new UserDAO();
+            $groupDAO = new GroupDAO($userDAO->getConnection());
+            $user = $userDAO->findByToken($token);
+
+            if($user !== null) {
+                if($request->get('password') !== null) {
+                	$user->setPassword($request->get('password'));
+                }
+
+                if($request->get('last_latitude') !== null) {
+                	$user->setLastLatitude($request->get('last_latitude'));
+                }
+
+                if($request->get('last_longitude') !== null) {
+                	$user->setLastLongitude($request->get('last_longitude'));
+                }
+
+                if($request->get('visible') !== null) {
+                	$user->setVisible($request->get('visible'));
+                }
+
+                $id = $userDAO->save($user);
+
+				if($id !== null) {
+					$result = $user;
+				}
+				else {
+					$result['message'] = 'Error while savig user.';
+					$status = 400;
+				}
+            }
+            else {
+                $result['message'] = 'Token not valid.';
+                $status = 401;
+            }
+
+            return $app->json($result, $status);
 		});
 
         return $controllers;

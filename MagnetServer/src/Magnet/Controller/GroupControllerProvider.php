@@ -85,7 +85,7 @@ class GroupControllerProvider implements ControllerProviderInterface {
                     $groupUsers[] = $newUser;
                     $group->setUsers($groupUsers);
                     $groupId = $groupDAO->save($group);
-                    //Add a test to check if a user is the group before adding (cannot add a user to somebody else's group)
+                    //Add a test to check if a user is in the group before adding (cannot add a user to somebody else's group)
                     if($groupId !== null) {
                         $result['message'] = 'User added to the group';
                     }
