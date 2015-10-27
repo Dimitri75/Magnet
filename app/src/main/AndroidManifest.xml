@@ -28,23 +28,25 @@
             android:name=".LocationActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
-
+        </activity>
+        <activity
+            android:name=".activities.MainActivity"
+            android:label="MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.MainActivity"
-            android:label="MainActivity" >
-        </activity>
-        <activity
             android:name=".activities.SignUpActivity"
-            android:label="SignUpActivity" >
+            android:label="SignUpActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".activities.MagnetActivity"
-            android:label="MagnetActivity" >
+            android:label="MagnetActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 

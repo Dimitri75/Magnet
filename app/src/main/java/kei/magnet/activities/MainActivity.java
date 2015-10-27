@@ -6,17 +6,27 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 
 import org.json.JSONObject;
-import java.net.URL;
+
+import java.security.KeyStore;
+import java.util.AbstractMap;
+import java.util.Map;
+
 import kei.magnet.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static String serverURL = "http://192.168.42.170:8080/";
+    private static String serverURL = "http://91.121.161.11/magnet/user/";
+
+    private EditText txtLogin;
+    private EditText txtPassword;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        txtLogin = (EditText) findViewById(R.id.txtLogin);
+        txtPassword = (EditText) findViewById(R.id.txtLogin);
     }
 
     @Override
@@ -59,8 +72,16 @@ public class MainActivity extends AppCompatActivity {
     public void checkLogin(View V){
         try {
 
-            JSONObject jsonObject = new GetUserTask().execute(new URL(serverURL)).get();
+            JSONObject jsonObject = new GetJSONTask().execute(
+                    new AbstractMap.SimpleEntry<>("url", serverURL),
+                    new AbstractMap.SimpleEntry<>("login", txtLogin.getText().toString()),
+                    new AbstractMap.SimpleEntry<>("password", txtPassword.getText().toString())       //TODO à changer
+            ).get();
 
+            if(jsonObject != null){
+                Intent intent = new Intent(this, MagnetActivity.class);
+                startActivity(intent);
+            }
             System.out.println("Finished");
 
         }catch(Exception e){
