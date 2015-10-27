@@ -49,6 +49,4 @@ public class LocationActivity extends FragmentActivity {
         //bluetoothConnector.onActivityResult(requestCode,resultCode,data);
 
     }
-
-
 }

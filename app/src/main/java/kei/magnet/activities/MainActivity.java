@@ -1,5 +1,6 @@
 package kei.magnet.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -30,15 +32,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         txtLogin = (EditText) findViewById(R.id.txtLogin);
         txtPassword = (EditText) findViewById(R.id.txtLogin);
@@ -68,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void checkLogin(View V){
         try {
-
             JSONObject jsonObject = new GetJSONTask().execute(
                     new AbstractMap.SimpleEntry<>("url", serverURL),
                     new AbstractMap.SimpleEntry<>("login", txtLogin.getText().toString()),
@@ -79,10 +71,11 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, MagnetActivity.class);
                 startActivity(intent);
             }
-            System.out.println("Finished");
+            else
+                Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
 
         }catch(Exception e){
-            System.out.println("Connection to " + serverURL + " failed");
+            Toast.makeText(getApplicationContext(), "Connection to " + serverURL + " failed", Toast.LENGTH_SHORT).show();
         }
     }
 
