@@ -1,9 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
+<<<<<<< HEAD:MagnetClient/app/build.gradle
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
 
+=======
+    signingConfigs {
+    }
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
+>>>>>>> mehdi:app/build.gradle
     defaultConfig {
         applicationId "com.example.suiken.magnetclient"
         minSdkVersion 15
@@ -21,7 +28,14 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+<<<<<<< HEAD:MagnetClient/app/build.gradle
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.0'
     compile 'com.android.support:design:23.1.0'
+=======
+    compile 'com.android.support:appcompat-v7:23.1.0'
+    compile 'com.android.support:design:23.1.0'
+    compile 'com.google.android.gms:play-services:8.1.0'
+    compile 'com.google.android.gms:play-services-maps:8.1.0'
+>>>>>>> mehdi:app/build.gradle
 }
