@@ -14,7 +14,7 @@ class UserControllerProvider implements ControllerProviderInterface {
     	// creates a new controller based on the default route
         $controllers = $app['controllers_factory'];
 
-        //Gets a authentication token for a user, allowing him to be recognized as logged on.
+        //Gets a authentication token for a user, allowing him to be recognized as logged in.
         $controllers->get('/{login}/{password}', function(Request $request, $login, $password) use($app) {
 			$result = array();
 			$status = 200;
@@ -25,12 +25,31 @@ class UserControllerProvider implements ControllerProviderInterface {
 			if($user !== null && $password === $user->getPassword()) {
 				$token = bin2hex(openssl_random_pseudo_bytes(32));
 				$user->setToken($token);
+				$user->setLastActivity(date("Y-m-d H:i:s"));
 				$userDAO->save($user);
 				$result['token'] = $token;
 			}
 			else {
 				$result['message'] = 'Login or password doesn\'t match.';
 				$status = 400;
+			}
+
+			return $app->json($result, $status);
+		});
+
+		$controllers->get('/', function(Request $request) use($app) {
+			$result = array();
+			$status = 200;
+
+			$userDAO = new UserDAO();
+			$users = $userDAO->findAll();
+			$now = strtotime(date("Y-m-d H:i:s"));
+
+			foreach($users as $user) {
+				$lastActivity = strtotime($user->getLastActivity());
+				if($user->getToken() !== null && (($now - $lastActivity) < 300)) {
+					$result[] = $user;
+				}
 			}
 
 			return $app->json($result, $status);

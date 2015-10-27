@@ -20,6 +20,7 @@ CREATE TABLE `user` (
   `last_longitude` DECIMAL NULL DEFAULT NULL,
   `visible` BOOLEAN DEFAULT TRUE,
   `token` VARCHAR(64) NULL DEFAULT NULL,
+  `last_activity` DATETIME NULL DEFAULT NULL
   PRIMARY KEY (`id`)
 );
 

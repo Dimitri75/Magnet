@@ -89,11 +89,11 @@ class UserDAO extends DAO {
 			else {
 				$parameters = array(':login' => $data->getLogin(), ':password' => $data->getPassword(),
 					':last_latitude' => $data->getLastLatitude(), ':last_longitude' => $data->getLastLongitude(),
-					':visible' => $data->getVisible(), ':token' => $data->getToken());
+					':visible' => $data->getVisible(), ':token' => $data->getToken(), ':last_activity' => $data->getLastActivity());
 
 				$stmt = $this->getConnection()->prepare('
-					INSERT INTO user (login, password, last_latitude, last_longitude, visible, token)
-					VALUES (:login, :password, :last_latitude, :last_longitude, :visible, :token)
+					INSERT INTO user (login, password, last_latitude, last_longitude, visible, token, last_activity)
+					VALUES (:login, :password, :last_latitude, :last_longitude, :visible, :token, :last_activity)
 				');
 				$stmt->execute($parameters);
 
@@ -110,11 +110,11 @@ class UserDAO extends DAO {
 		if($data !== null && $data instanceof User) {
 			$parameters = array(':id' => $data->getId(), ':login' => $data->getLogin(), ':password' => $data->getPassword(),
 					':last_latitude' => $data->getLastLatitude(), ':last_longitude' => $data->getLastLongitude(),
-					':visible' => $data->getVisible(), ':token' => $data->getToken());
+					':visible' => $data->getVisible(), ':token' => $data->getToken(), ':last_activity' => $data->getLastActivity());
 
 			$stmt = $this->getConnection()->prepare('
 				UPDATE user SET login = :login, password = :password, last_latitude = :last_latitude, last_longitude = :last_longitude,
-				visible = :visible, token = :token WHERE id = :id
+				visible = :visible, token = :token, last_activity = :last_activity WHERE id = :id
 			');
 			$stmt->execute($parameters);
 
