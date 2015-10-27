@@ -21,11 +21,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import kei.magnet.activities.MagnetActivity;
+
 /**
  * Created by carlo_000 on 24/10/2015.
  */
 public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
-    public static final String TAG = LocationActivity.class.getSimpleName();
+    public static final String TAG = MagnetActivity.class.getSimpleName();
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private LocationRequest mLocationRequest;
     private GoogleMap googleMap;
@@ -103,8 +105,6 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
     private LatLng getLatLng(Location location){
         return new LatLng(location.getLatitude(), location.getLongitude());
     }
-
-    
 
     private void setUpMap() {
         googleMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));

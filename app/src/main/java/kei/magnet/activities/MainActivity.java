@@ -14,8 +14,8 @@ import org.json.JSONObject;
 
 import java.util.AbstractMap;
 
+import kei.magnet.GetJSONTask;
 import kei.magnet.R;
-import kei.magnet.classes.ApplicationUser;
 
 public class MainActivity extends AppCompatActivity {
     private static String serverURL = "http://91.121.161.11/magnet/user"; //TODO à changer

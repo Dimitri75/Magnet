@@ -180,11 +180,6 @@ public class BluetoothConnector {
     }
 
 
-
-    public void onResume(){
-
-    }
-
     public void onPause(){
         serverThread.cancel();
     }

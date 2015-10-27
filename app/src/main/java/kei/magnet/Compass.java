@@ -48,20 +48,12 @@ public class Compass implements SensorEventListener {
             }
             angle = Math.toDegrees(orientation[0]);
         }
-
-
-    }
-
-    public void getRotationValue() {
-
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
-
-
 
     public void onResume() {
         mSensorManager.registerListener(this, mRotVectSensor, SensorManager.SENSOR_STATUS_ACCURACY_LOW);
@@ -70,14 +62,4 @@ public class Compass implements SensorEventListener {
     public void onPause() {
         mSensorManager.unregisterListener(this);
     }
-
-    public void onStop() {
-
-    }
-
-    public void onDestroy() {
-
-    }
-
-
 }

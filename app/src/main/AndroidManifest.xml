@@ -34,10 +34,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LocationActivity"
-            android:label="LocationActivity" >
-        </activity>
-        <activity
             android:name=".activities.SignUpActivity"
             android:label="SignUpActivity"
             android:theme="@style/AppTheme.NoActionBar">
