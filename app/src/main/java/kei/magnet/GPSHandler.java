@@ -1,10 +1,7 @@
 package kei.magnet;
 
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.IntentSender;
-import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -18,6 +15,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -61,6 +59,15 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
     }
 
 
+    public void rotateMap(float bearing){
+
+        CameraPosition pos = CameraPosition.builder(googleMap.getCameraPosition()).bearing(bearing)
+                .build();
+
+        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(pos));
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(16), 2000, null);
+    }
+
     public void onPause() {
 
         if (mGoogleApiClient.isConnected()) {
@@ -101,7 +108,11 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
                 .title("I am here!");
 
         googleMap.addMarker(options);
+
+
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(16), 2000, null);
+
     }
 
     private void setUpMap() {
