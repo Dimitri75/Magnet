@@ -85,8 +85,9 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
         Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
 
-        if (location != null)
+        if (location != null){
             handleNewLocation(getLatLng(location));
+        }
     }
 
     private void handleNewLocation(LatLng latLng) {
