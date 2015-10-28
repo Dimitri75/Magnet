@@ -49,7 +49,7 @@ public class ApplicationUser extends User{
     }
 
     /**
-     * Instanciate a game using Parcelable
+     * Instanciate an ApplicationUser using Parcelable
      * @param in
      */
     public ApplicationUser(Parcel in) {
@@ -58,4 +58,15 @@ public class ApplicationUser extends User{
         Bundle b = in.readBundle(Group.class.getClassLoader());
         groups = b.getParcelableArrayList("groups");
     }
+
+    public static final Parcelable.Creator<ApplicationUser> CREATOR = new Parcelable.Creator<ApplicationUser>() {
+
+        public ApplicationUser createFromParcel(Parcel in) {
+            return new ApplicationUser(in);
+        }
+
+        public ApplicationUser[] newArray(int size) {
+            return new ApplicationUser[size];
+        }
+    };
 }

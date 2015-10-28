@@ -71,7 +71,7 @@ public class Location implements Parcelable{
     }
 
     /**
-     * Instanciate a game using Parcelable
+     * Instanciate a Location using Parcelable
      * @param in
      */
     public Location(Parcel in) {
