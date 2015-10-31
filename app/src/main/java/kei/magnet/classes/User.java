@@ -81,7 +81,7 @@ public class User implements Parcelable {
     }
 
     /**
-     * Instanciate a game using Parcelable
+     * Instanciate a User using Parcelable
      * @param in
      */
     public User(Parcel in) {

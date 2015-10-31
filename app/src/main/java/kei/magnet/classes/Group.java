@@ -84,7 +84,7 @@ public class Group implements Parcelable {
     }
 
     /**
-     * Instanciate a game using Parcelable
+     * Instanciate a Group using Parcelable
      * @param in
      */
     public Group(Parcel in) {

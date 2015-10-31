@@ -49,7 +49,7 @@ public class ApplicationUser extends User{
     }
 
     /**
-     * Instanciate a game using Parcelable
+     * Instanciate an ApplicationUser using Parcelable
      * @param in
      */
     public ApplicationUser(Parcel in) {

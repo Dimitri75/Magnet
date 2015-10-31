@@ -62,4 +62,12 @@ public class Compass implements SensorEventListener {
     public void onPause() {
         mSensorManager.unregisterListener(this);
     }
+
+    public void onStop() {
+
+    }
+
+    public void onDestroy() {
+
+    }
 }
