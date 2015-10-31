@@ -16,6 +16,8 @@ import java.util.AbstractMap;
 
 import kei.magnet.GetJSONTask;
 import kei.magnet.R;
+import kei.magnet.classes.ApplicationUser;
+import kei.magnet.classes.User;
 
 public class MainActivity extends AppCompatActivity {
     private static String tokenURL = "http://91.121.161.11/magnet/user"; //TODO à changer
@@ -77,10 +79,8 @@ public class MainActivity extends AppCompatActivity {
 
                 ApplicationUser applicationUser = new ApplicationUser(userJSON);
 
-
-
                 Intent intent = new Intent(this, MagnetActivity.class);
-                intent.putExtra(applicationUser);
+                intent.putExtra("applicationUser",  applicationUser);
                 startActivity(intent);
             }
             else
