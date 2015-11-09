@@ -8,12 +8,32 @@ use Symfony\Component\HttpFoundation\Request;
 use Magnet\Model\UserDAO;
 use Magnet\Model\GroupDAO;
 use Magnet\Model\User;
+use Magnet\Model\Location;
 
 class UserControllerProvider implements ControllerProviderInterface {
 	public function connect(Application $app)
     {
     	// creates a new controller based on the default route
         $controllers = $app['controllers_factory'];
+
+
+		$controllers->get('/connected', function(Request $request) use($app) {
+			$result = array();
+			$status = 200;
+
+			$userDAO = new UserDAO();
+			$users = $userDAO->findAll();
+			$now = strtotime(date("Y-m-d H:i:s"));
+
+			foreach($users as $user) {
+				$lastActivity = strtotime($user->getLastActivity());
+				if($user->getToken() !== null && (($now - $lastActivity) < 300)) {
+					$result[] = $user;
+				}
+			}
+
+			return $app->json($result, $status);
+		});
 
         $controllers->get('/{token}', function(Request $request, $token) use($app) {
 			$result = array();
@@ -52,24 +72,6 @@ class UserControllerProvider implements ControllerProviderInterface {
 			else {
 				$result['message'] = 'Login or password doesn\'t match.';
 				$status = 400;
-			}
-
-			return $app->json($result, $status);
-		});
-
-		$controllers->get('/connected', function(Request $request) use($app) {
-			$result = array();
-			$status = 200;
-
-			$userDAO = new UserDAO();
-			$users = $userDAO->findAll();
-			$now = strtotime(date("Y-m-d H:i:s"));
-
-			foreach($users as $user) {
-				$lastActivity = strtotime($user->getLastActivity());
-				if($user->getToken() !== null && (($now - $lastActivity) < 300)) {
-					$result[] = $user;
-				}
 			}
 
 			return $app->json($result, $status);
@@ -123,18 +125,16 @@ class UserControllerProvider implements ControllerProviderInterface {
                 	$user->setPassword($request->get('password'));
                 }
 
-                if($request->get('last_latitude') !== null) {
-                	$user->setLastLatitude($request->get('last_latitude'));
-                }
-
-                if($request->get('last_longitude') !== null) {
-                	$user->setLastLongitude($request->get('last_longitude'));
+                if($request->get('location') !== null) {
+                	$location = new Location($request->get('location'));
+                	$user->seLocation($location);
                 }
 
                 if($request->get('visible') !== null) {
                 	$user->setVisible($request->get('visible'));
                 }
 
+                $user->setLastActivity(date("Y-m-d H:i:s"));
                 $id = $userDAO->save($user);
 
 				if($id !== null) {

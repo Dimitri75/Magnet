@@ -89,7 +89,7 @@ class Pin implements JsonSerializable {
 		return $this->latitude;
 	}
 
-	public function setLatitude($longitude) {
+	public function setLatitude($latitude) {
 		if(is_numeric($latitude)) {
 			$this->latitude = $latitude;
 		}
@@ -136,7 +136,7 @@ class Pin implements JsonSerializable {
 	}
 
 	public function setGroup($group) {
-		if(is_array($group)) {
+		if($group instanceof Group) {
 			$this->group = $group;
 		}
 	}
@@ -147,9 +147,10 @@ class Pin implements JsonSerializable {
 			'description' => $this->getDescription(),
 			'latitude' => $this->getlatitude(),
 			'longitude' => $this->getlongitude(),
-			'creation_time' => $this->getCreationTime,
-			'deletion_time' => $this->getDeletionTime,
-			'creator' => $this->getCreator()
+			'creation_time' => $this->getCreationTime(),
+			'deletion_time' => $this->getDeletionTime(),
+			'creator' => $this->getCreator(),
+			'group' => $this->getGroup()
 		];
 	}
 }

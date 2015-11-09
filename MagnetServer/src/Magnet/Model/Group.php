@@ -58,7 +58,7 @@ class Group implements JsonSerializable {
 	}
 
 	public function setCreator($creator) {
-		if($creator instanceof User) {
+		if($creator instanceof GroupUser) {
 			$this->creator = $creator;
 		}
 	}

@@ -7,38 +7,6 @@ class GroupDAO extends DAO {
 		parent::__constrct($connection);
 	}
 
-	private function findCreator($creatorId) {
-		$creator = null;
-
-		if(is_numeric($creatorId) && $creatorId > 0) {
-			$userDAO = new UserDAO($this->getConnection());
-			$creator = $userDAO->find($creatorId);
-		}
-
-		return $creator;
-	}
-
-	private function findUsers($groupId) {
-		$users = array();
-
-		if(isset($groupId)) {
-			$parameters = array(':id_group' => $groupId);
-			$stmt = $this->getConnection()->prepare('
-				SELECT id_user FROM group_has_users WHERE id_group = :id_group
-			');
-			$stmt->execute($parameters);
-
-			if($stmt->rowCount() > 0) {
-				$userDAO = new UserDAO($this->getConnection());
-				foreach($stmt->fetchAll() as $row) {
-					$users[] = $userDAO->find($row['id_user']);
-				}
-			}
-		}
-
-		return $users;
-	}
-
 	private function saveUsers($group) {
 		$users = $group->getUsers();
 		$userDAO = new UserDAO($this->getConnection());
@@ -77,8 +45,10 @@ class GroupDAO extends DAO {
 			if($stmt->rowCount() > 0) {
 				$row = $stmt->fetch();
 				$result = new Group($row);
-				$result->setCreator($this->findCreator($row['id_user']));
-				$result->setUsers($this->findUsers($row['id']));
+				
+				$groupUserDAO = new GroupUserDAO($this->getConnection());
+				$result->setCreator($groupUserDAO->find($row['id_user']));
+				$result->setUsers($groupUserDAO->findbyGroupId($row['id']));
 			}
 		}
 
@@ -96,8 +66,9 @@ class GroupDAO extends DAO {
 
 		foreach($stmt->fetchAll() as $row) {
 			$group = new Group($row);
-			$group->setCreator($this->findCreator($row['id_user']));
-			$group->setUsers($this->findUsers($row['id']));
+			$groupUserDAO = new GroupUserDAO($this->getConnection());
+			$group->setCreator($groupUserDAO->find($row['id_user']));
+			$group->setUsers($groupUserDAO->findbyGroupId($row['id']));
 			$result[] = $group;
 		}
 
@@ -114,8 +85,9 @@ class GroupDAO extends DAO {
 
 		foreach($stmt->fetchAll() as $row) {
 			$group = new Group($row);
-			$group->setCreator($this->findCreator($row['id_user']));
-			$group->setUsers($this->findUsers($row['id']));
+			$groupUserDAO = new GroupUserDAO($this->getConnection());
+			$group->setCreator($groupUserDAO->find($row['id_user']));
+			$group->setUsers($groupUserDAO->findbyGroupId($row['id']));
 			$result[] = $group;
 		}
 

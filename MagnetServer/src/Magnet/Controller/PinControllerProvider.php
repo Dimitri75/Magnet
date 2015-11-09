@@ -4,6 +4,7 @@ namespace Magnet\Controller;
 
 use Silex\Application;
 use Silex\ControllerProviderInterface;
+use Magnet\Model\UserDAO;
 use Magnet\Model\PinDAO;
 
 class PinControllerProvider implements ControllerProviderInterface {
@@ -12,18 +13,23 @@ class PinControllerProvider implements ControllerProviderInterface {
     	// creates a new controller based on the default route
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('/', function (Application $app) {
-        	$pinDAO = new PinDAO();
-        	$pins = $PinDAO->findAll();
+        //Gets all pins of a user.
+        $controllers->get('/{token}', function (Application $app, $token)  {
+            $result = array();
+            $status = 200;
+            $userDAO = new UserDAO();
+            $pinDAO = new PinDAO($userDAO->getConnection());
+            $user = $userDAO->findByToken($token);
 
-            return $app->json($pins);
-        });
+            if($user !== null) {
+                $result = $pinDAO->findByUserId($user->getId());
+            }
+            else {
+                $result['message'] = 'Token not valid.';
+                $status = 401;
+            }
 
-        $controllers->get('/{id}', function (Application $app, $id)  {
-        	$pinDAO = new PinDAO();
-        	$pin = $PinDAO->find($id);
-
-            return $app->json($pin);
+            return $app->json($result, $status);
         });
 
         return $controllers;
