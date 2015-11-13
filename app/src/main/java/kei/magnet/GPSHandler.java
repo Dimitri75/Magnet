@@ -160,6 +160,8 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 
     @Override
     public void onLocationChanged(Location location) {
+        if (applicationUser == null || applicationUser.getLocation() == null)
+            return;
         applicationUser.setLocation(new kei.magnet.classes.Location(location.getLatitude(), location.getLongitude()));
         handleNewLocation(getLatLng(location));
     }
