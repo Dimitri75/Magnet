@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentActivity;
 
 public class LocationActivity extends FragmentActivity {
     public GPSHandler gpsHandler;
-    private BluetoothConnector bluetoothConnector;
+    private WifiConnector wifiConnector;
     private Compass compass;
     private SensorManager mSensorManager;
     @Override

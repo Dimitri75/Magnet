@@ -11,7 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
-import kei.magnet.BluetoothConnector;
+import kei.magnet.WifiConnector;
 import kei.magnet.Compass;
 import kei.magnet.GPSHandler;
 import kei.magnet.R;
@@ -22,7 +22,7 @@ public class MagnetActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
 
     public GPSHandler gpsHandler;
-    private BluetoothConnector bluetoothConnector;
+    private WifiConnector wifiConnector;
     private Compass compass;
     private SensorManager mSensorManager;
 

@@ -98,7 +98,7 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
         marker.setPosition(latLng);
 
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        //googleMap.animateCamera(CameraUpdateFactory.zoomTo(16), 2000, null);
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(20), 2000, null);
     }
 
     private LatLng getLatLng(Location location){
