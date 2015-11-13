@@ -9,12 +9,12 @@ import android.net.wifi.p2p.WifiP2pManager;
 /**
  * Created by carlo_000 on 13/11/2015.
  */
-public class WifiReceiver implements BroadcastReceiver {
+public class WifiReceiver extends BroadcastReceiver {
 
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        String action = intent.getAction();
+       /* String action = intent.getAction();
         if (WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION.equals(action)) {
             // Determine if Wifi P2P mode is enabled or not, alert
             // the Activity.
@@ -41,5 +41,5 @@ public class WifiReceiver implements BroadcastReceiver {
                     WifiP2pManager.EXTRA_WIFI_P2P_DEVICE));
 
         }
-    }
+    */}
 }

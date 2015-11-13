@@ -1,10 +1,7 @@
 package kei.magnet.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -17,11 +14,13 @@ import org.json.JSONObject;
 
 import java.util.AbstractMap;
 
+import kei.magnet.GetJSONTask;
 import kei.magnet.R;
+import kei.magnet.classes.ApplicationUser;
+
 
 public class MainActivity extends AppCompatActivity {
-
-    private static String serverURL = "http://91.121.161.11/magnet/user/"; //TODO à changer
+    private static String tokenURL = "http://91.121.161.11/magnet/user"; //TODO à changer
 
     private EditText txtLogin;
     private EditText txtPassword;
@@ -59,27 +58,41 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void checkLogin(View V){
+    public void checkLogin(View V) {
         try {
-            JSONObject jsonObject = new GetJSONTask().execute(
-                    new AbstractMap.SimpleEntry<>("url", serverURL),
+            JSONObject tokenJSON = new GetJSONTask().execute(
+                    new AbstractMap.SimpleEntry<>("url", tokenURL),
+                    new AbstractMap.SimpleEntry<>("method", "GET"),
+                    new AbstractMap.SimpleEntry<>("request", "slash"),
                     new AbstractMap.SimpleEntry<>("login", txtLogin.getText().toString()),
-                    new AbstractMap.SimpleEntry<>("password", txtPassword.getText().toString())       //TODO à changer
+                    new AbstractMap.SimpleEntry<>("password", txtPassword.getText().toString())
             ).get();
 
-            if(jsonObject != null){
+            if (tokenJSON != null) {
+
+                JSONObject userJSON = new GetJSONTask().execute(
+                        new AbstractMap.SimpleEntry<>("url", tokenURL),
+                        new AbstractMap.SimpleEntry<>("method", "GET"),
+                        new AbstractMap.SimpleEntry<>("request", "slash"),
+                        new AbstractMap.SimpleEntry<>("token", tokenJSON.getString("token"))
+                ).get();
+
+                ApplicationUser applicationUser = new ApplicationUser(userJSON);
+
                 Intent intent = new Intent(this, MagnetActivity.class);
+
+                intent.putExtra("applicationUser", applicationUser);
+
                 startActivity(intent);
-            }
-            else
+            } else
                 Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
 
-        }catch(Exception e){
-            Toast.makeText(getApplicationContext(), "Connection to " + serverURL + " failed", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), "Connection to " + tokenURL + " failed", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void signUp(View V){
+    public void signUp(View V) {
         Intent intent = new Intent(this, SignUpActivity.class);
         startActivity(intent);
     }

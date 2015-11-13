@@ -15,20 +15,19 @@ import kei.magnet.WifiConnector;
 import kei.magnet.Compass;
 import kei.magnet.GPSHandler;
 import kei.magnet.R;
+import kei.magnet.classes.ApplicationUser;
 
 public class MagnetActivity extends AppCompatActivity {
-
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
-
     public GPSHandler gpsHandler;
     private WifiConnector wifiConnector;
     private Compass compass;
     private SensorManager mSensorManager;
+    private ApplicationUser applicationUser;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_magnet);
 
@@ -59,8 +58,46 @@ public class MagnetActivity extends AppCompatActivity {
 
         gpsHandler = new GPSHandler(this);
         //bluetoothConnector = new BluetoothConnector(this);
-        mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
-        compass = new Compass(mSensorManager,this);
+        
+        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        compass = new Compass(mSensorManager, this);
+
+        try {
+            if ((applicationUser = (ApplicationUser) getIntent().getExtras().get("applicationUser")) == null)
+                finish();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        gpsHandler.onPause();
+        compass.onPause();
+        //bluetoothConnector.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        gpsHandler.onResume();
+        compass.onResume();
+        //bluetoothConnector.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        compass.onDestroy();
+        //bluetoothConnector.onDestroy();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //bluetoothConnector.onActivityResult(requestCode,resultCode,data);
+
     }
 
     @Override
@@ -86,36 +123,6 @@ public class MagnetActivity extends AppCompatActivity {
         // Handle your other action bar items...
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        gpsHandler.onPause();
-        compass.onPause();
-        //bluetoothConnector.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        gpsHandler.onResume();
-        compass.onResume();
-        //bluetoothConnector.onResume();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        compass.onDestroy();
-        //bluetoothConnector.onDestroy();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        //bluetoothConnector.onActivityResult(requestCode,resultCode,data);
-
     }
 
 }

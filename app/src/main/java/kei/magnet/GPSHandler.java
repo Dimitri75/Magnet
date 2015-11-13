@@ -1,9 +1,7 @@
 package kei.magnet;
 
-import android.content.Context;
 import android.content.IntentSender;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -21,22 +19,27 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import kei.magnet.activities.MagnetActivity;
+import kei.magnet.classes.ApplicationUser;
+import kei.magnet.classes.Group;
+import kei.magnet.classes.User;
+
 /**
  * Created by carlo_000 on 24/10/2015.
  */
 public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
-    public static final String TAG = LocationActivity.class.getSimpleName();
+    public static final String TAG = MagnetActivity.class.getSimpleName();
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private LocationRequest mLocationRequest;
     private GoogleMap googleMap;
     private Marker marker;
     private GoogleApiClient mGoogleApiClient;
     private FragmentActivity parentActivity;
+    private ApplicationUser applicationUser;
 
     public GPSHandler(FragmentActivity parentActivity) {
 
         this.parentActivity = parentActivity;
-
         /*compass = new Compass(m,view);
         view.compass=compass;*/
 
@@ -64,7 +67,6 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
     }
 
     public void onPause() {
-
         if (mGoogleApiClient.isConnected()) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
             mGoogleApiClient.disconnect();
@@ -79,14 +81,28 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
         //m.registerListener(compass, m.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD), SensorManager.SENSOR_DELAY_FASTEST);
     }
 
+
+
     @Override
     public void onConnected(Bundle bundle) {
         Log.i(TAG, "Location services connected.");
         Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
 
-        if (location != null)
+        if (location != null){
             handleNewLocation(getLatLng(location));
+        }
+    }
+
+    public void updateMarkers(Group group){
+        googleMap.clear();
+        for (User user : group.getUsers()){
+            MarkerOptions markerOptions = new MarkerOptions()
+                    .position(new LatLng(user.getLocation().getLatitude(), user.getLocation().getLongitude()))
+                    .title(user.getLogin());
+            googleMap.addMarker(markerOptions);
+        }
+        handleNewLocation(applicationUser.getLatLng());
     }
 
     private void handleNewLocation(LatLng latLng) {
@@ -144,6 +160,9 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 
     @Override
     public void onLocationChanged(Location location) {
+        if (applicationUser == null || applicationUser.getLocation() == null)
+            return;
+        applicationUser.setLocation(new kei.magnet.classes.Location(location.getLatitude(), location.getLongitude()));
         handleNewLocation(getLatLng(location));
     }
 }
