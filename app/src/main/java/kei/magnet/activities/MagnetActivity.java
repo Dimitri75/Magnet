@@ -16,7 +16,6 @@ import kei.magnet.Compass;
 import kei.magnet.GPSHandler;
 import kei.magnet.R;
 import kei.magnet.classes.ApplicationUser;
-import kei.magnet.classes.User;
 
 public class MagnetActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
@@ -59,7 +58,7 @@ public class MagnetActivity extends AppCompatActivity {
 
         gpsHandler = new GPSHandler(this);
         //bluetoothConnector = new BluetoothConnector(this);
-
+        
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         compass = new Compass(mSensorManager, this);
 
