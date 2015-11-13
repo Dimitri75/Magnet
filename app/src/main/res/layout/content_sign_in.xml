@@ -63,7 +63,15 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
-
+    <Button
+        android:onClick="buttonOnClick"
+        android:layout_marginTop="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:id="@+id/sign_in_button"
+        android:layout_below="@+id/sign_in_editText_PASSWORD"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>
