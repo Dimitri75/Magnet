@@ -1,4 +1,4 @@
-﻿package kei.magnet.activities;
+package kei.magnet.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,7 +17,6 @@ import java.util.AbstractMap;
 import kei.magnet.GetJSONTask;
 import kei.magnet.R;
 import kei.magnet.classes.ApplicationUser;
-import kei.magnet.classes.User;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -59,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void checkLogin(View V){
+    public void checkLogin(View V) {
         try {
             JSONObject tokenJSON = new GetJSONTask().execute(
                     new AbstractMap.SimpleEntry<>("url", tokenURL),
@@ -69,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                     new AbstractMap.SimpleEntry<>("password", txtPassword.getText().toString())
             ).get();
 
-            if(tokenJSON != null){
+            if (tokenJSON != null) {
 
                 JSONObject userJSON = new GetJSONTask().execute(
                         new AbstractMap.SimpleEntry<>("url", tokenURL),
@@ -85,16 +84,15 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("applicationUser", applicationUser);
 
                 startActivity(intent);
-            }
-            else
+            } else
                 Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
 
-        }catch(Exception e){
+        } catch (Exception e) {
             Toast.makeText(getApplicationContext(), "Connection to " + tokenURL + " failed", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void signUp(View V){
+    public void signUp(View V) {
         Intent intent = new Intent(this, SignUpActivity.class);
         startActivity(intent);
     }
