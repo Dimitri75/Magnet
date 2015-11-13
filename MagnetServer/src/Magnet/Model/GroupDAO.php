@@ -9,7 +9,7 @@ class GroupDAO extends DAO {
 
 	private function saveUsers($group) {
 		$users = $group->getUsers();
-		$userDAO = new UserDAO($this->getConnection());
+		$userDAO = new GroupUserDAO($this->getConnection());
 
 		$stmt1 = $this->getConnection()->prepare('
 			SELECT * FROM group_has_users WHERE id_group = :id_group AND id_user = :id_user
@@ -21,8 +21,11 @@ class GroupDAO extends DAO {
 		$parameters = array('id_group' => $group->getId(), 'id_user' => 0);
 
 		foreach($users as $user) {
-			$idUser = $userDAO->save($user);
-			$parameters['id_user'] = $idUser;
+			if($user->getId() === null) {
+				$user = $userDAO->findByLogin($user->getLogin());
+			}
+
+			$parameters['id_user'] = $user->getId();
 
 			$stmt1->execute($parameters);
 			if($stmt1->rowCount() === 0) {
@@ -102,9 +105,8 @@ class GroupDAO extends DAO {
 				$id = $this->update($data);
 			}
 			else {
-				$userDAO = new UserDAO($this->getConnection());
+				$userDAO = new GroupUserDAO($this->getConnection());
 				$idCreator = $userDAO->save($data->getCreator());
-				$this->saveUsers($data);
 				$parameters = array(':name' => $data->getName(), ':id_user' => $idCreator);
 
 				$stmt = $this->getConnection()->prepare('
@@ -113,6 +115,8 @@ class GroupDAO extends DAO {
 				$stmt->execute($parameters);
 
 				$id = $this->getConnection()->lastInsertId();
+				$data->setId($id);
+				$this->saveUsers($data);
 			}
 		}
 

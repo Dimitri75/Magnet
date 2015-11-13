@@ -7,17 +7,6 @@ class PinDAO extends DAO {
 		parent::__constrct($connection);
 	}
 
-	private function findCreator($creatorId) {
-		$creator = null;
-
-		if(is_numeric($creatorId) && $creatorId > 0) {
-			$userDAO = new UserDAO($this->getConnection());
-			$creator = $userDAO->find($creatorId);
-		}
-
-		return $creator;
-	}
-
 	private function findGroup($groupId) {
 		$creator = null;
 

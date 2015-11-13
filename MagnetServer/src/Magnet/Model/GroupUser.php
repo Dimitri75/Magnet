@@ -32,6 +32,9 @@ class GroupUser implements JsonSerializable {
 			if(isset($data['last_activity'])) {
 				$this->setLastActivity($data['last_activity']);
 			}
+			else {
+				$this->setLastActivity("0000-00-00 00:00:00");
+			}
 		}
 	}
 

@@ -19,6 +19,9 @@ class User extends GroupUser {
 			if(isset($data['visible'])) {
 				$this->setVisible($data['visible']);
 			}
+			else {
+				$this->setVisible(false);
+			}
 
 			if(isset($data['token'])) {
 				$this->setToken($data['token']);

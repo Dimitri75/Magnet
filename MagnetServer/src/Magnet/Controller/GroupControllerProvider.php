@@ -54,6 +54,7 @@ class GroupControllerProvider implements ControllerProviderInterface {
                 $groupId = $groupDAO->save($group);
 
                 if($groupId !== null) {
+                    $group->setId($groupId);
                     $result = $group;
                 }
                 else {
@@ -81,11 +82,20 @@ class GroupControllerProvider implements ControllerProviderInterface {
                 
                 if($group !== null) {
                     $groupUsers = $group->getUsers();
+                    $userInGroup = false;
+
+                    foreach($groupUsers as $groupUser) {
+                        if($groupUser === $user) {
+                            $userInGroup = true;
+                            break;
+                        }
+                    }
+
                     $newUser = $userDAO->find($request->get('id_user'));
                     $groupUsers[] = $newUser;
                     $group->setUsers($groupUsers);
                     $groupId = $groupDAO->save($group);
-                    //Add a test to check if a user is in the group before adding (cannot add a user to somebody else's group)
+                    //TO DO : Add a test to check if a user is in the group before adding (cannot add a user to somebody else's group)
                     if($groupId !== null) {
                         $result['message'] = 'User added to the group';
                     }

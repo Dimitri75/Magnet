@@ -61,15 +61,60 @@ class GroupUserDAO extends DAO {
 	}
 
 	public function save($data) {
-		
+		$id = null;
+
+		if($data !== null && $data instanceof User) {
+			if($data->getId() !== null) {
+				$id = $this->update($data);
+			}
+			else {
+				$parameters = array(':login' => $data->getLogin(), ':latitude' => $data->getLocation()->getLatitude(),
+					':longitude' => $data->getLocation()->getLongitude(), ':last_activity' => $data->getLastActivity());
+
+				$stmt = $this->getConnection()->prepare('
+					INSERT INTO user (login, latitude, longitude, last_activity)
+					VALUES (:login, :latitude, :longitude, :last_activity)
+				');
+				$stmt->execute($parameters);
+
+				$id = $this->getConnection()->lastInsertId();
+			}
+		}
+
+		return $id;
 	}
 
 	public function update($data) {
-		
+		$id = null;
+
+		if($data !== null && $data instanceof User) {
+			$parameters = array(':id' => $data->getId(), ':login' => $data->getLogin(), ':latitude' => $data->getLocation()->getLatitude(),
+				':longitude' => $data->getLocation()->getLongitude(), ':last_activity' => $data->getLastActivity());
+
+			$stmt = $this->getConnection()->prepare('
+				UPDATE user SET login = :login, latitude = :latitude, longitude = :longitude, last_activity = :last_activity WHERE id = :id
+			');
+			$stmt->execute($parameters);
+
+			$id = $data->getId();
+		}
+
+		return $id;
 	}
 
 	public function delete($data) {
-		
+		$result = false;
+
+		if($data !== null && $data instanceof User) {
+			$parameters = array(':id' => $dat->getId());
+
+			$stmt = $this->getConnection()->prepare('
+				DELETE FROM user WHERE id = :id
+			');
+			$result = $stmt->execute($parameters);
+		}
+
+		return $result;
 	}
 }
 

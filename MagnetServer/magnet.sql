@@ -20,7 +20,7 @@ CREATE TABLE `user` (
   `longitude` DECIMAL NULL DEFAULT NULL,
   `visible` BOOLEAN DEFAULT TRUE,
   `token` VARCHAR(64) NULL DEFAULT NULL,
-  `last_activity` DATETIME NULL DEFAULT NULL
+  `last_activity` DATETIME NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 );
 
@@ -74,7 +74,7 @@ CREATE TABLE `pin` (
 -- Foreign Keys 
 -- ---
 
-ALTER TABLE `group` ADD FOREIGN KEY (id_user) REFERENCES `user` (`id`);
+ALTER TABLE `groups` ADD FOREIGN KEY (id_user) REFERENCES `user` (`id`);
 ALTER TABLE `group_has_users` ADD FOREIGN KEY (id_group) REFERENCES `group` (`id`);
 ALTER TABLE `group_has_users` ADD FOREIGN KEY (id_user) REFERENCES `user` (`id`);
 ALTER TABLE `group_has_users` ADD UNIQUE `unique_index`(`id_group`, `id_user`);
