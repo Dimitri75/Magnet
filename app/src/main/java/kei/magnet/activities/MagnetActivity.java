@@ -24,7 +24,7 @@ public class MagnetActivity extends AppCompatActivity {
     private BluetoothConnector bluetoothConnector;
     private Compass compass;
     private SensorManager mSensorManager;
-    public ApplicationUser applicationUser;
+    private ApplicationUser applicationUser;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,6 +58,7 @@ public class MagnetActivity extends AppCompatActivity {
 
         gpsHandler = new GPSHandler(this);
         //bluetoothConnector = new BluetoothConnector(this);
+        
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         compass = new Compass(mSensorManager, this);
 
