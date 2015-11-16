@@ -16,7 +16,13 @@ class UserControllerProvider implements ControllerProviderInterface {
     	// creates a new controller based on the default route
         $controllers = $app['controllers_factory'];
 
-
+        /**
+		 * @api {get} /user/connected Request All Connected Users
+		 * @apiName GetConnectedUsers
+		 * @apiGroup User
+		 *
+		 * @apiSuccess {Array} connected List of connected Users.
+		 */
 		$controllers->get('/connected', function(Request $request) use($app) {
 			$result = array();
 			$status = 200;
@@ -32,9 +38,24 @@ class UserControllerProvider implements ControllerProviderInterface {
 				}
 			}
 
-			return $app->json($result, $status);
+			return $app->json(array('connected' => $result), $status);
 		});
 
+		/**
+		 * @api {get} /user/:token Request User information
+		 * @apiName GetUser
+		 * @apiGroup User
+		 *
+		 * @apiParam {String} token  Token of the User.
+		 *
+		 * @apiSuccess {String} login The login of the User
+		 * @apiSuccess {Location} location The location of the User
+		 * @apiSuccess {Boolean} visible If the User is seen as connected
+		 * @apiSuccess {Datetime} last_activity Last time of activity of the User
+		 * @apiSuccess {Array} groups The groups of the User
+		 *
+		 * @apiError TokenNotValid The <code>token</code> given cannot authenticate the User.
+		 */
         $controllers->get('/{token}', function(Request $request, $token) use($app) {
 			$result = array();
             $status = 200;
@@ -54,7 +75,18 @@ class UserControllerProvider implements ControllerProviderInterface {
             return $app->json($result, $status);
 		});
 
-        //Gets a authentication token for a user, allowing him to be recognized as logged in.
+        /**
+		 * @api {get} /user/:login/:password Requests a token for the User
+		 * @apiName GetUserToken
+		 * @apiGroup User
+		 *
+		 * @apiParam {String} login		Login of the User.
+		 * @apiParam {String} password  Password of the User.
+		 *
+		 * @apiSuccess {String} token The token to authenticate the User
+		 *
+		 * @apiError CredentialsNotValid The <code>login</code> or <code>password</code> given doesn't match for any User.
+		 */
         $controllers->get('/{login}/{password}', function(Request $request, $login, $password) use($app) {
 			$result = array();
 			$status = 200;
@@ -77,7 +109,19 @@ class UserControllerProvider implements ControllerProviderInterface {
 			return $app->json($result, $status);
 		});
 
-        //Creates a new user, using a login and a password. Used when a user signs up.
+        /**
+		 * @api {post} /user/ Creates a new User
+		 * @apiName PostUser
+		 * @apiGroup User
+		 *
+		 * @apiParam {String} login		Login of the User.
+		 * @apiParam {String} password  Password of the User.
+		 *
+		 * @apiError LoginUsed 			The <code>login</code> is already used by another User.
+		 * @apiError LoginUsed 			The <code>login</code> is already used by another User.
+		 * @apiError LoginUsed 			The <code>login</code> or <code>password</code> is empty User.
+		 * @apiError ErrorWhileSaving 	The User couldn't be saved.
+		 */
         $controllers->post('/', function(Request $request) use($app) {
 			$result = array();
 			$status = 200;
@@ -113,6 +157,18 @@ class UserControllerProvider implements ControllerProviderInterface {
 			return $app->json($result, $status);
 		});
 
+        /**
+		 * @api {put} /user/ Updates a User
+		 * @apiName PutUser
+		 * @apiGroup User
+		 *
+		 * @apiParam {String} [password]  Password of the User.
+		 * @apiParam {String} [location]  Location of the User.
+		 * @apiParam {String} [visible]  Visibility of the User.
+		 *
+		 * @apiError TokenNotValid The <code>token</code> given cannot authenticate the User.
+		 * @apiError ErrorWhileSaving 	The User couldn't be saved.
+		 */
 		$controllers->put('/{token}', function(Request $request, $token) use($app) {
 			$result = array();
             $status = 200;

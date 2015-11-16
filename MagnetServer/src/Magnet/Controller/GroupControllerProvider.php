@@ -15,14 +15,17 @@ class GroupControllerProvider implements ControllerProviderInterface {
     	// creates a new controller based on the default route
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('/', function (Application $app) {
-        	$groupDAO = new GroupDAO();
-        	$groups = $groupDAO->findAll();
-
-            return $app->json($groups);
-        });
-
-        //Gets all groups of a user.
+        /**
+         * @api {get} /group/:token Request the groups of the User
+         * @apiName GetGroups
+         * @apiGroup Group
+         *
+         * @apiParam {String} token  Token of the User.
+         *
+         * @apiSuccess {Array} groups The groups of the User
+         *
+         * @apiError TokenNotValid The <code>token</code> given cannot authenticate the User.
+         */
         $controllers->get('/{token}', function (Application $app, $token)  {
             $result = array();
             $status = 200;
@@ -31,7 +34,7 @@ class GroupControllerProvider implements ControllerProviderInterface {
             $user = $userDAO->findByToken($token);
 
             if($user !== null) {
-                $result = $groupDAO->findByUserId($user->getId());
+                $result['groups'] = $groupDAO->findByUserId($user->getId());
             }
             else {
                 $result['message'] = 'Token not valid.';
@@ -41,7 +44,17 @@ class GroupControllerProvider implements ControllerProviderInterface {
             return $app->json($result, $status);
         });
 
-        //Creates a new group.
+        /**
+         * @api {post} /group/:token Creates a new Group.
+         * @apiName PostGroup
+         * @apiGroup Group
+         *
+         * @apiParam {String} token  Token of the User.
+         * @apiParam {String} name   Name of the Group.
+         *
+         * @apiError TokenNotValid   The <code>token</code> given cannot authenticate the User.
+         * @apiError ErrorWhileSaving The group couldn't be saved.
+         */
         $controllers->post('/{token}', function(Request $request, $token) use($app) {
             $result = array();
             $status = 200;
@@ -69,7 +82,20 @@ class GroupControllerProvider implements ControllerProviderInterface {
             return $app->json($result, $status);
         });
 
-        //Add a user to a group.
+        /**
+         * @api {post} /group/:id/:token Updates a Group
+         * @apiName PostGroup
+         * @apiGroup Group
+         *
+         * @apiParam {Integer} id       Id of the Group to update.
+         * @apiParam {String} token     Token of the User.
+         * @apiParam {Integer} id_user  Id of a user to add.
+         *
+         * @apiError TokenNotValid    The <code>token</code> given cannot authenticate the User.
+         * @apiError ErrorWhileAdding The user couldn't be added.
+         * @apiError UserNotInGroup   Cannot add user to a group the user is not in.
+         * @apiError GroupNotValid    The group doesn't exist.
+         */
         $controllers->post('/{id}/{token}', function(Request $request, $id, $token) use($app) {
             $result = array();
             $status = 200;
@@ -85,22 +111,28 @@ class GroupControllerProvider implements ControllerProviderInterface {
                     $userInGroup = false;
 
                     foreach($groupUsers as $groupUser) {
-                        if($groupUser === $user) {
+                        if($groupUser->getLogin() === $user->getLogin()) {
                             $userInGroup = true;
                             break;
                         }
                     }
 
-                    $newUser = $userDAO->find($request->get('id_user'));
-                    $groupUsers[] = $newUser;
-                    $group->setUsers($groupUsers);
-                    $groupId = $groupDAO->save($group);
-                    //TO DO : Add a test to check if a user is in the group before adding (cannot add a user to somebody else's group)
-                    if($groupId !== null) {
-                        $result['message'] = 'User added to the group';
+                    if($userInGroup) {
+                        $newUser = $userDAO->find($request->get('id_user'));
+                        $groupUsers[] = $newUser;
+                        $group->setUsers($groupUsers);
+                        $groupId = $groupDAO->save($group);
+                        
+                        if($groupId !== null) {
+                            $result['message'] = 'User added to the group';
+                        }
+                        else {
+                            $result['message'] = 'Error while adding the user.';
+                            $status = 400;
+                        }
                     }
                     else {
-                        $result['message'] = 'Error while adding the user.';
+                        $result['message'] = 'Cannot add user in a group the user is not in.';
                         $status = 400;
                     }
                 }
