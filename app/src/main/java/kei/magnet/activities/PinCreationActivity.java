@@ -17,7 +17,5 @@ public class PinCreationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pin_creation);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
     }
-
 }
