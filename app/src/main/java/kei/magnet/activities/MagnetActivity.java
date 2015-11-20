@@ -187,7 +187,6 @@ public class MagnetActivity extends AppCompatActivity {
     }
 
     public void SelectItem(int position) {
-
         Fragment fragment = null;
         Bundle args = new Bundle();
         switch (position) {
