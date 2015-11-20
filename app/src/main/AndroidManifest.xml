@@ -1,34 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="kei.magnet">
-
-    <application
-        android:allowBackup="true"
-        android:icon="@drawable/magnet"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme">
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBKXn7rTc7QzcgJJOO1UzQ_E69_SoP0uG4" />
-
-        <activity
-            android:name=".activities.SignInActivity"
-            android:label="Magnet"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".activities.SignUpActivity"
-            android:label="SignUpActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity
-            android:name=".activities.MagnetActivity"
-            android:label="MagnetActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-    </application>
+    package="kei.magnet" >
 
     <!-- inside <application> tag -->
     <meta-data
@@ -61,4 +33,49 @@
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/magnet"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBKXn7rTc7QzcgJJOO1UzQ_E69_SoP0uG4" />
+
+        <activity
+            android:name=".activities.SignInActivity"
+            android:label="Magnet"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.SignUpActivity"
+            android:label="SignUpActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.MagnetActivity"
+            android:label="MagnetActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".activities.PinCreationActivity"
+            android:label="@string/title_activity_pin_creation"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".activities.GroupCreationActivity"
+            android:label="@string/title_activity_group_creation"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+    </application>
+
 </manifest>
