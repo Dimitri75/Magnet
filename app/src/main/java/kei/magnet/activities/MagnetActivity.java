@@ -124,5 +124,4 @@ public class MagnetActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
 }

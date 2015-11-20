@@ -9,11 +9,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import org.json.JSONObject;
-
 import java.util.AbstractMap;
-
 import kei.magnet.GetJSONTask;
 import kei.magnet.R;
 import kei.magnet.classes.ApplicationUser;
@@ -57,8 +54,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
 
-
-    public void buttonOnClick(View V) {
+    public void onClick_submit(View V) {
         try {
             JSONObject tokenJSON = new GetJSONTask().execute(
                     new AbstractMap.SimpleEntry<>("url", tokenURL),
@@ -78,11 +74,8 @@ public class SignInActivity extends AppCompatActivity {
                 ).get();
 
                 ApplicationUser applicationUser = new ApplicationUser(userJSON);
-
                 Intent intent = new Intent(this, MagnetActivity.class);
-
                 intent.putExtra("applicationUser", applicationUser);
-
                 startActivity(intent);
             } else
                 Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
@@ -92,8 +85,8 @@ public class SignInActivity extends AppCompatActivity {
         }
     }
 
-    public void signUp(View V) {
-        Intent intent = new Intent(this, SignUpActivity.class);
+    public void onClick_signUp(View v){
+        Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
         startActivity(intent);
     }
 }
