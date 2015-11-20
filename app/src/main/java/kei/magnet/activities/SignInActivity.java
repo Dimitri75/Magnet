@@ -60,7 +60,7 @@ public class SignInActivity extends AppCompatActivity {
 
     public void buttonOnClick(View V) {
         try {
-            JSONObject tokenJSON = new GetJSONTask().execute(
+            JSONObject tokenJSON = GetJSONTask.getInstance().execute(
                     new AbstractMap.SimpleEntry<>("url", tokenURL),
                     new AbstractMap.SimpleEntry<>("method", "GET"),
                     new AbstractMap.SimpleEntry<>("request", "slash"),
@@ -70,7 +70,7 @@ public class SignInActivity extends AppCompatActivity {
 
             if (tokenJSON != null) {
 
-                JSONObject userJSON = new GetJSONTask().execute(
+                JSONObject userJSON = GetJSONTask.getInstance().execute(
                         new AbstractMap.SimpleEntry<>("url", tokenURL),
                         new AbstractMap.SimpleEntry<>("method", "GET"),
                         new AbstractMap.SimpleEntry<>("request", "slash"),
