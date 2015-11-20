@@ -1,5 +1,72 @@
 [
   {
+    "type": "post",
+    "url": "/group/:id/user/:token",
+    "title": "Add a User to a Group",
+    "name": "AddUserTpGroup",
+    "group": "Group",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "<p>Integer</p> ",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Id of the Group to update.</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "<p>String</p> ",
+            "optional": false,
+            "field": "token",
+            "description": "<p>Token of the User.</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "<p>User</p> ",
+            "optional": false,
+            "field": "users",
+            "description": "<p>User to add.</p> "
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TokenNotValid",
+            "description": "<p>The <code>token</code> given cannot authenticate the User.</p> "
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ErrorWhileAdding",
+            "description": "<p>The user couldn't be added.</p> "
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "UserNotInGroup",
+            "description": "<p>Cannot add user to a group the user is not in.</p> "
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "GroupNotValid",
+            "description": "<p>The group doesn't exist.</p> "
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "src/Magnet/Controller/GroupControllerProvider.php",
+    "groupTitle": "Group"
+  },
+  {
     "type": "get",
     "url": "/group/:token",
     "title": "Request the groups of the User",
@@ -96,73 +163,6 @@
     "groupTitle": "Group"
   },
   {
-    "type": "post",
-    "url": "/group/:id/:token",
-    "title": "Updates a Group",
-    "name": "PostGroup",
-    "group": "Group",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "<p>Integer</p> ",
-            "optional": false,
-            "field": "id",
-            "description": "<p>Id of the Group to update.</p> "
-          },
-          {
-            "group": "Parameter",
-            "type": "<p>String</p> ",
-            "optional": false,
-            "field": "token",
-            "description": "<p>Token of the User.</p> "
-          },
-          {
-            "group": "Parameter",
-            "type": "<p>Integer</p> ",
-            "optional": false,
-            "field": "id_user",
-            "description": "<p>Id of a user to add.</p> "
-          }
-        ]
-      }
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "optional": false,
-            "field": "TokenNotValid",
-            "description": "<p>The <code>token</code> given cannot authenticate the User.</p> "
-          },
-          {
-            "group": "Error 4xx",
-            "optional": false,
-            "field": "ErrorWhileAdding",
-            "description": "<p>The user couldn't be added.</p> "
-          },
-          {
-            "group": "Error 4xx",
-            "optional": false,
-            "field": "UserNotInGroup",
-            "description": "<p>Cannot add user to a group the user is not in.</p> "
-          },
-          {
-            "group": "Error 4xx",
-            "optional": false,
-            "field": "GroupNotValid",
-            "description": "<p>The group doesn't exist.</p> "
-          }
-        ]
-      }
-    },
-    "version": "0.0.0",
-    "filename": "src/Magnet/Controller/GroupControllerProvider.php",
-    "groupTitle": "Group"
-  },
-  {
     "type": "get",
     "url": "/pin/:token",
     "title": "Request Pins of the User.",
@@ -202,6 +202,89 @@
             "optional": false,
             "field": "TokenNotValid",
             "description": "<p>The <code>token</code> given cannot authenticate the User.</p> "
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "src/Magnet/Controller/PinControllerProvider.php",
+    "groupTitle": "Pin"
+  },
+  {
+    "type": "post",
+    "url": "/pin/:token",
+    "title": "Creates a new Pin.",
+    "name": "PostPin",
+    "group": "Pin",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "<p>String</p> ",
+            "optional": false,
+            "field": "token",
+            "description": "<p>Token of the User.</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "<p>String</p> ",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name of the Pin.</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "<p>String</p> ",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Description of the Pin.</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "<p>Location</p> ",
+            "optional": false,
+            "field": "location",
+            "description": "<p>Location of the Pin.</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "<p>Datetime</p> ",
+            "optional": false,
+            "field": "creation_time",
+            "description": "<p>Creation Time of the Pin.</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "<p>Datetime</p> ",
+            "optional": false,
+            "field": "deletion_time",
+            "description": "<p>Deletion Time of the Pin.</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "<p>Integer</p> ",
+            "optional": false,
+            "field": "group_id",
+            "description": "<p>Id of the group associated with the Pin.</p> "
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TokenNotValid",
+            "description": "<p>The <code>token</code> given cannot authenticate the User.</p> "
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ErrorWhileSaving",
+            "description": "<p>The pin couldn't be saved.</p> "
           }
         ]
       }

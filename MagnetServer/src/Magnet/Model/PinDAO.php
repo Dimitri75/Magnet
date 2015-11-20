@@ -81,18 +81,14 @@ class PinDAO extends DAO {
 	public function save($data) {
 		$id = null;
 
-		if($data !== null && $data instanceof Group) {
+		if($data !== null && $data instanceof Pin) {
 			if($data->getId() !== null) {
 				$id = $this->update($data);
 			}
 			else {
-				$userDAO = new UserDAO($this->getConnection());
-				$idCreator = $userDAO->save($data->getCreator());
-				$groupDAO = new GroupDAO($this->getConnection());
-				$idGroup = $groupDAO->find($data->getGroup());
 				$parameters = array(':name' => $data->getName(), ':description' => $data->getDescription(), ':latitude' => $data->getLocation()->getLatitude(),
 					':longitude' => $data->getLocation()->getLongitude(), ':creation_time' => $data->getCreationTime(), ':deletion_time' => $data->getDeletionTime(),
-					':id_user' => $idCreator, ':id_group' => $idGroup);
+					':id_user' => $data->getCreator()->getId(), ':id_group' => $data->getGroup()->getId());
 
 				$stmt = $this->getConnection()->prepare('
 					INSERT INTO pin (name, description, latitude, longitude, creation_time, deletion_time, id_user, id_group)
@@ -110,12 +106,12 @@ class PinDAO extends DAO {
 	public function update($data) {
 		$id = null;
 
-		if($data !== null && $data instanceof Group) {
+		if($data !== null && $data instanceof Pin) {
 			$this->saveUsers($data);
 
 			$parameters = array(':name' => $data->getName(), ':description' => $data->getDescription(), ':latitude' => $data->getLocation()->getLatitude(),
 					':longitude' => $data->getLocation()->getLongitude(), ':creation_time' => $data->getCreationTime(), ':deletion_time' => $data->getDeletionTime(),
-					':id_user' => $idCreator, ':id_group' => $idGroup, ':id' => $data->getId());
+					':id_user' => $idCreator, ':id_group' => $data->getGroup()->getId(), ':id' => $data->getId());
 			$stmt = $this->getConnection()->prepare('
 				UPDATE pin SET name = :name, description = :description, latitude = :latitude, :longitude = :longitude, creation_time = :creation_time,
 				deletion_time = :deletion_time, id_user = :id_user, id_group = :id_group WHERE id = :id

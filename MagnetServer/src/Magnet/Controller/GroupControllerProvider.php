@@ -83,20 +83,20 @@ class GroupControllerProvider implements ControllerProviderInterface {
         });
 
         /**
-         * @api {post} /group/:id/:token Updates a Group
-         * @apiName PostGroup
+         * @api {post} /group/:id/user/:token Add a User to a Group
+         * @apiName AddUserTpGroup
          * @apiGroup Group
          *
          * @apiParam {Integer} id       Id of the Group to update.
          * @apiParam {String} token     Token of the User.
-         * @apiParam {Integer} id_user  Id of a user to add.
+         * @apiParam {User} users       User to add.
          *
          * @apiError TokenNotValid    The <code>token</code> given cannot authenticate the User.
          * @apiError ErrorWhileAdding The user couldn't be added.
          * @apiError UserNotInGroup   Cannot add user to a group the user is not in.
          * @apiError GroupNotValid    The group doesn't exist.
          */
-        $controllers->post('/{id}/{token}', function(Request $request, $id, $token) use($app) {
+        $controllers->post('/{id}/user/{token}', function(Request $request, $id, $token) use($app) {
             $result = array();
             $status = 200;
             $userDAO = new UserDAO();

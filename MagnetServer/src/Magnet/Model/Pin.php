@@ -29,13 +29,19 @@ class Pin implements JsonSerializable {
 				$this->setDescription($data['description']);
 			}
 
-			if(isset($data['latitude'])) {
-				$this->setLatitude($data['latitude']);
+			if(isset($data['location']) && $data['location'] instanceof Location) {
+				$location = $data['location'];
 			}
-
-			if(isset($data['longitude'])) {
-				$this->setLongitude($data['longitude']);
+			else {
+				$location = new Location();
+				if(isset($data['latitude'])) {
+					$location->setLatitude($data['latitude']);
+				}
+				if(isset($data['longitude'])) {
+					$location->setLongitude($data['longitude']);
+				}
 			}
+			$this->setLocation($location);
 
 			if(isset($data['creation_time'])) {
 				$this->setCreationTime($data['creation_time']);
@@ -46,7 +52,7 @@ class Pin implements JsonSerializable {
 			}
 
 			if(isset($data['creator'])) {
-				$this->setName($data['creator']);
+				$this->setCreator($data['creator']);
 			}
 
 			if(isset($data['group'])) {
@@ -85,24 +91,12 @@ class Pin implements JsonSerializable {
 		}
 	}
 
-	public function getLatitude() {
-		return $this->latitude;
+	public function getLocation() {
+		return $this->location;
 	}
 
-	public function setLatitude($latitude) {
-		if(is_numeric($latitude)) {
-			$this->latitude = $latitude;
-		}
-	}
-
-	public function getLongitude() {
-		return $this->longitude;
-	}
-
-	public function setLongitude($longitude) {
-		if(is_numeric($longitude)) {
-			$this->longitude = $longitude;
-		}
+	public function setLocation($location) {
+		$this->location = $location;
 	}
 
 	public function getCreationTime() {
@@ -145,8 +139,8 @@ class Pin implements JsonSerializable {
 		return [
 			'name' => $this->getName(),
 			'description' => $this->getDescription(),
-			'latitude' => $this->getlatitude(),
-			'longitude' => $this->getlongitude(),
+			'latitude' => $this->getLocation()->getLatitude(),
+			'longitude' => $this->getLocation()->getLongitude(),
 			'creation_time' => $this->getCreationTime(),
 			'deletion_time' => $this->getDeletionTime(),
 			'creator' => $this->getCreator(),

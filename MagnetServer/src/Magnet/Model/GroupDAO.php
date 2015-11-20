@@ -105,9 +105,7 @@ class GroupDAO extends DAO {
 				$id = $this->update($data);
 			}
 			else {
-				$userDAO = new GroupUserDAO($this->getConnection());
-				$idCreator = $userDAO->save($data->getCreator());
-				$parameters = array(':name' => $data->getName(), ':id_user' => $idCreator);
+				$parameters = array(':name' => $data->getName(), ':id_user' => $data->getCreator()->getId());
 
 				$stmt = $this->getConnection()->prepare('
 					INSERT INTO groups (name, id_user) VALUES (:name, :id_user)

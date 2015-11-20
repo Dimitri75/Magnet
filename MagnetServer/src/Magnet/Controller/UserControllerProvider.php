@@ -182,8 +182,8 @@ class UserControllerProvider implements ControllerProviderInterface {
                 }
 
                 if($request->get('location') !== null) {
-                	$location = new Location($request->get('location'));
-                	$user->seLocation($location);
+                	$location = new Location(json_decode($request->get('location'), true));
+                	$user->setLocation($location);
                 }
 
                 if($request->get('visible') !== null) {

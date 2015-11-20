@@ -20,12 +20,17 @@ class GroupUser implements JsonSerializable {
 				$this->setLogin($data['login']);
 			}
 
-			$location = new Location();
-			if(isset($data['latitude'])) {
-				$location->setLatitude($data['latitude']);
+			if(isset($data['location']) && $data['location'] instanceof Location) {
+				$location = $data['location'];
 			}
-			if(isset($data['longitude'])) {
-				$location->setLongitude($data['longitude']);
+			else {
+				$location = new Location();
+				if(isset($data['latitude'])) {
+					$location->setLatitude($data['latitude']);
+				}
+				if(isset($data['longitude'])) {
+					$location->setLongitude($data['longitude']);
+				}
 			}
 			$this->setLocation($location);
 
