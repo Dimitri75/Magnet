@@ -1,6 +1,9 @@
 package kei.magnet;
 
 import android.content.IntentSender;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -14,6 +17,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -37,6 +41,9 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
     private FragmentActivity parentActivity;
     private ApplicationUser applicationUser;
 
+
+    protected int mDpi = 0;
+
     public GPSHandler(FragmentActivity parentActivity) {
 
         this.parentActivity = parentActivity;
@@ -53,8 +60,10 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 
         mLocationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(2 * 1000)        // 10 seconds, in milliseconds
-                .setFastestInterval(500); // 1 second, in milliseconds
+                .setInterval(10)        // 10 seconds, in milliseconds
+                .setFastestInterval(1); // 1 second, in milliseconds
+
+        mDpi = parentActivity.getResources().getDisplayMetrics().densityDpi;
     }
 
     public void rotateMap(float bearing){
@@ -97,21 +106,41 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
     public void updateMarkers(Group group){
         googleMap.clear();
         for (User user : group.getUsers()){
+            Bitmap icon = BitmapFactory.decodeResource(parentActivity.getResources(), R.drawable.map_marker);
+            icon = Bitmap.createScaledBitmap(icon, icon.getWidth()/ 10, icon.getHeight() / 10, true);
             MarkerOptions markerOptions = new MarkerOptions()
                     .position(new LatLng(user.getLocation().getLatitude(), user.getLocation().getLongitude()))
-                    .title(user.getLogin());
+                    .title(user.getLogin())
+                    .icon(BitmapDescriptorFactory.fromBitmap(icon));
             googleMap.addMarker(markerOptions);
         }
         handleNewLocation(applicationUser.getLatLng());
     }
-
+    protected Bitmap adjustImage(Bitmap image) {
+        int dpi = image.getDensity();
+        if (dpi == mDpi)
+            return image;
+        else {
+            int width = (image.getWidth() * mDpi + dpi / 2) / dpi;
+            int height = (image.getHeight() * mDpi + dpi / 2) / dpi;
+            Bitmap adjustedImage = Bitmap.createScaledBitmap(image, width/100, height/100, true);
+            adjustedImage.setDensity(mDpi);
+            return adjustedImage;
+        }
+    }
     private void handleNewLocation(LatLng latLng) {
         if (marker != null)
             marker.remove();
 
-        MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("I am here !");
+        Bitmap icon = BitmapFactory.decodeResource(parentActivity.getResources(), R.drawable.map_marker);
+        icon = Bitmap.createScaledBitmap(icon, icon.getWidth()/ 10, icon.getHeight() / 10, true);
+
+        MarkerOptions markerOptions = new MarkerOptions().position(latLng)
+                .title("I am here !")
+                .icon(BitmapDescriptorFactory.fromBitmap(icon));
         marker = googleMap.addMarker(markerOptions);
         marker.setPosition(latLng);
+
 
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(20), 2000, null);
@@ -121,9 +150,6 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
         return new LatLng(location.getLatitude(), location.getLongitude());
     }
 
-    private void setUpMap() {
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
-    }
 
     private void setUpMapIfNeeded() {
         // Do a null check to confirm that we have not already instantiated the map.
@@ -133,9 +159,7 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 
             googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
             // Check if we were successful in obtaining the map.
-            if (googleMap != null) {
-                setUpMap();
-            }
+
         }
     }
 

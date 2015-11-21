@@ -11,7 +11,9 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="kei.magnet.activities.SignInActivity"
     tools:showIn="@layout/activity_sign_in"
-    android:background="#ffeb79">
+    android:background="#fff264">
+    <!--android:background="#ffc204"-->
+
 
     <ImageView
         android:layout_width="200dp"
@@ -22,6 +24,7 @@
         android:layout_centerHorizontal="true" />
 
     <TextView
+        android:textColor="#ffffff"
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,8 +37,9 @@
         android:layout_marginTop="20dp"/>
 
     <EditText
+        android:textColorHint="#ffffff"
         android:layout_marginTop="20dp"
-        android:textColor="#212121"
+        android:textColor="#ffffff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
@@ -49,7 +53,8 @@
         android:layout_alignParentEnd="true" />
 
     <EditText
-        android:textColor="#212121"
+        android:textColorHint="#ffffff"
+        android:textColor="#ffffff"
         android:layout_marginTop="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
