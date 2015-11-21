@@ -43,6 +43,10 @@ public class ApplicationUser extends User{
         }
     }
 
+    public List<Group> getGroups() {
+        return groups;
+    }
+
     public LatLng getLatLng(){
         return new LatLng(getLocation().getLatitude(), getLocation().getLatitude());
     }

@@ -2,8 +2,6 @@ package kei.magnet;
 
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.v4.media.MediaBrowserServiceCompat;
-import android.util.Pair;
 
 import org.json.JSONObject;
 
@@ -21,28 +19,40 @@ import java.util.AbstractMap;
 /**
  * Created by Suiken on 26/10/2015.
  */
-public class GetJSONTask extends AsyncTask<AbstractMap.SimpleEntry<String, String>, Void, JSONObject>{
+public class GetJSONTask extends AsyncTask<AbstractMap.SimpleEntry<String, String>, Void, JSONObject> {
+
+    private static GetJSONTask instance;
+
+    private GetJSONTask(){
+    }
+
+    public static GetJSONTask getInstance(){
+        if (instance == null){
+            return new GetJSONTask();
+        }else{
+            return instance;
+        }
+    }
 
     /**
-     *
      * @param entries : entries of String. The first entry represents the url where the task has to connect, the second entry represents the method of the request (POST or GET), the third entry tells if you are using the slashes or the body of the request
      * @return response of the request
      */
     protected JSONObject doInBackground(AbstractMap.SimpleEntry<String, String>... entries) {
         JSONObject jsonObject = null;
         try {
-            if(entries[2].getValue().equals("slash")){
+            if (entries[2].getValue().equals("slash")) {
                 jsonObject = getSlashJSONObject(entries);
-            }else if(entries[2].getValue().equals("body")){
+            } else if (entries[2].getValue().equals("body")) {
                 jsonObject = getJSONObject(entries);
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Connection to " + entries[0].getValue() + " failed");
         }
         return jsonObject;
     }
 
-    private String convertStreamToString(InputStream is) {
+    private static String convertStreamToString(InputStream is) {
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
@@ -64,7 +74,7 @@ public class GetJSONTask extends AsyncTask<AbstractMap.SimpleEntry<String, Strin
         return sb.toString();
     }
 
-    private JSONObject getJSONObject(AbstractMap.SimpleEntry<String, String>... entries){
+    private static JSONObject getJSONObject(AbstractMap.SimpleEntry<String, String>... entries) {
         JSONObject jsonObject = null;
         try {
             HttpURLConnection connection = (HttpURLConnection) new URL("/" + entries[0].getValue()).openConnection();
@@ -89,19 +99,19 @@ public class GetJSONTask extends AsyncTask<AbstractMap.SimpleEntry<String, Strin
             InputStream stream = connection.getInputStream();
 
             jsonObject = new JSONObject(convertStreamToString(stream));
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Connection failed");
         }
         return jsonObject;
     }
 
-    private JSONObject getSlashJSONObject(AbstractMap.SimpleEntry<String, String>... entries){
+    private static JSONObject getSlashJSONObject(AbstractMap.SimpleEntry<String, String>... entries) {
         JSONObject jsonObject = null;
         try {
 
             StringBuilder sb = new StringBuilder();
             sb.append(entries[0].getValue());
-            for(int i = 3; i < entries.length; i++){
+            for (int i = 3; i < entries.length; i++) {
                 sb.append("/");
                 sb.append(entries[i].getValue());
             }
@@ -115,7 +125,7 @@ public class GetJSONTask extends AsyncTask<AbstractMap.SimpleEntry<String, Strin
             InputStream stream = connection.getInputStream();
 
             jsonObject = new JSONObject(convertStreamToString(stream));
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Connection failed");
         }
         return jsonObject;
