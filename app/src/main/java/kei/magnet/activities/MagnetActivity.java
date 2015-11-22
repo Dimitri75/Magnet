@@ -65,8 +65,6 @@ public class MagnetActivity extends AppCompatActivity {
         try {
             if ((applicationUser = (ApplicationUser) getIntent().getExtras().get("applicationUser")) == null)
                 finish();
-
-            gpsHandler.updateMarkers(applicationUser.getGroups().get(0));
         } catch (Exception e) {
             e.printStackTrace();
         }
