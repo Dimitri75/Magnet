@@ -10,13 +10,14 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="kei.magnet.activities.SignInActivity"
-    tools:showIn="@layout/activity_sign_in">
+    tools:showIn="@layout/activity_sign_in"
+    android:background="#fff264">
     <!--android:background="#ffc204"-->
 
 
     <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:id="@+id/imageView"
         android:background="@drawable/magnet"
         android:layout_alignParentTop="true"
@@ -68,7 +69,7 @@
         android:layout_alignParentEnd="true" />
 
     <Button
-        android:onClick="onClick_submit"
+        android:onClick="buttonOnClick"
         android:layout_marginTop="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -76,17 +77,6 @@
         android:id="@+id/sign_in_button"
         android:layout_below="@+id/sign_in_editText_PASSWORD"
         android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Create an account"
-        android:textColor="#3caeff"
-        android:id="@+id/sign_in_textView_CREATE_ACCOUNT"
-        android:layout_below="@+id/sign_in_button"
-        android:layout_centerHorizontal="true"
-        android:onClick="onClick_signUp"/>
 
 
 </RelativeLayout>

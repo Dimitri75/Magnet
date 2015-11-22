@@ -9,12 +9,12 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_sign_up"
     tools:context="kei.magnet.activities.SignUpActivity"
-    android:background="#fac055">
+    android:background="#97ff97">
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:background="@drawable/magnet" />
@@ -67,7 +67,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Password confirmation"
+        android:hint="Password"
         android:inputType="textPersonName"
         android:textColor="#212121"
         android:layout_below="@+id/sign_up_editText_PASSWORD"
@@ -77,7 +77,7 @@
         android:layout_alignParentEnd="true" />
 
     <Button
-        android:onClick="onClick_submit"
+        android:onClick="buttonOnClick"
         android:layout_marginTop="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
