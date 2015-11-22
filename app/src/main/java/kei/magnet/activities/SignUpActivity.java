@@ -1,15 +1,27 @@
 package kei.magnet.activities;
 
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
+
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import org.json.JSONObject;
+
+import java.util.AbstractMap;
+
+import kei.magnet.GetJSONTask;
 import kei.magnet.R;
+import kei.magnet.classes.ApplicationUser;
 
 public class SignUpActivity extends AppCompatActivity {
+    private static String url = "http://bardin.sylvain.perso.sfr.fr/user/"; //TODO à changer
+    private EditText txtLogin;
+    private EditText txtPassword;
+    private EditText txtPasswordConfirmation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,14 +30,44 @@ public class SignUpActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
+        txtLogin = (EditText) findViewById(R.id.sign_up_editText_LOGIN);
+        txtPassword = (EditText) findViewById(R.id.sign_up_editText_PASSWORD);
+        txtPasswordConfirmation = (EditText) findViewById(R.id.sign_up_editText_PASSWORD2);
     }
 
+
+    public void onClick_submit(View V) {
+        if (txtPassword.getText().toString().equals(txtPasswordConfirmation.getText().toString())) {
+            try {
+                JSONObject userJSON = GetJSONTask.getInstance().execute(
+                        new AbstractMap.SimpleEntry<>("url", url),
+                        new AbstractMap.SimpleEntry<>("method", "POST"),
+                        new AbstractMap.SimpleEntry<>("request", "body"),
+                        new AbstractMap.SimpleEntry<>("login", txtLogin.getText().toString()),
+                        new AbstractMap.SimpleEntry<>("password", txtPassword.getText().toString())
+                ).get();
+
+                if (userJSON != null) {
+                        JSONObject tokenJSON = GetJSONTask.getInstance().execute(
+                                new AbstractMap.SimpleEntry<>("url", url),
+                                new AbstractMap.SimpleEntry<>("method", "GET"),
+                                new AbstractMap.SimpleEntry<>("request", "slash"),
+                                new AbstractMap.SimpleEntry<>("login", txtLogin.getText().toString()),
+                                new AbstractMap.SimpleEntry<>("password", txtPassword.getText().toString())
+                        ).get();
+
+                    ApplicationUser applicationUser = new ApplicationUser(userJSON);
+                    Intent intent = new Intent(this, MagnetActivity.class);
+                    intent.putExtra("applicationUser", applicationUser);
+                    startActivity(intent);
+                } else
+                    Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
+
+            } catch (Exception e) {
+                Toast.makeText(getApplicationContext(), "Connection to " + url + " failed", Toast.LENGTH_SHORT).show();
+            }
+        } else
+            Toast.makeText(getApplicationContext(), "The passwords don't match.", Toast.LENGTH_SHORT).show();
+    }
 }

@@ -4,11 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:fitsSystemWindows="true"
-<<<<<<< HEAD
-    tools:context="com.example.suiken.magnetclient.activity.MagnetActivity">
-=======
-    tools:context="kei.magnet.activities.MagnetActivity">
->>>>>>> b087b25d6f11fc661e078c721f0180c8d4c81264
+    tools:context="kei.magnet.activities.SignInActivity">
 
     <android.support.design.widget.AppBarLayout android:layout_height="wrap_content"
         android:layout_width="match_parent" android:theme="@style/AppTheme.AppBarOverlay">
@@ -19,14 +15,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_magnet" />
+    <include layout="@layout/content_sign_in" />
 
-<<<<<<< HEAD
-    <android.support.design.widget.FloatingActionButton android:id="@+id/fab"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end" android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email" />
 
-=======
->>>>>>> b087b25d6f11fc661e078c721f0180c8d4c81264
 </android.support.design.widget.CoordinatorLayout>

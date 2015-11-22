@@ -21,4 +21,10 @@
     </string>
     <string name="drawer_open">drawer_open</string>
     <string name="drawer_close">drawer_close</string>
+<<<<<<< HEAD
+=======
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_pin_creation">PinCreationActivity</string>
+    <string name="title_activity_group_creation">GroupCreationActivity</string>
+>>>>>>> b087b25d6f11fc661e078c721f0180c8d4c81264
 </resources>
