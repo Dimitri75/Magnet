@@ -16,7 +16,7 @@ import kei.magnet.R;
 import kei.magnet.classes.ApplicationUser;
 
 public class SignInActivity extends AppCompatActivity {
-    private static String tokenURL = "http://91.121.161.11/magnet/user"; //TODO à changer
+    private static String URL = "http://bardin.sylvain.perso.sfr.fr/user/";
     private EditText txtLogin;
     private EditText txtPassword;
 
@@ -57,7 +57,7 @@ public class SignInActivity extends AppCompatActivity {
     public void onClick_submit(View V) {
         try {
             JSONObject tokenJSON = GetJSONTask.getInstance().execute(
-                    new AbstractMap.SimpleEntry<>("url", tokenURL),
+                    new AbstractMap.SimpleEntry<>("url", URL),
                     new AbstractMap.SimpleEntry<>("method", "GET"),
                     new AbstractMap.SimpleEntry<>("request", "slash"),
                     new AbstractMap.SimpleEntry<>("login", txtLogin.getText().toString()),
@@ -67,7 +67,7 @@ public class SignInActivity extends AppCompatActivity {
             if (tokenJSON != null) {
 
                 JSONObject userJSON = GetJSONTask.getInstance().execute(
-                        new AbstractMap.SimpleEntry<>("url", tokenURL),
+                        new AbstractMap.SimpleEntry<>("url", URL),
                         new AbstractMap.SimpleEntry<>("method", "GET"),
                         new AbstractMap.SimpleEntry<>("request", "slash"),
                         new AbstractMap.SimpleEntry<>("token", tokenJSON.getString("token"))
@@ -81,7 +81,7 @@ public class SignInActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
 
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "Connection to " + tokenURL + " failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Connection to " + URL + " failed", Toast.LENGTH_SHORT).show();
         }
     }
 

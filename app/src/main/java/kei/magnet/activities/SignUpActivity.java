@@ -17,7 +17,7 @@ import kei.magnet.R;
 import kei.magnet.classes.ApplicationUser;
 
 public class SignUpActivity extends AppCompatActivity {
-    private static String url = "http://bardin.sylvain.perso.sfr.fr/user/"; //TODO à changer
+    private static String URL = "http://bardin.sylvain.perso.sfr.fr/user/";
     private EditText txtLogin;
     private EditText txtPassword;
     private EditText txtPasswordConfirmation;
@@ -37,32 +37,31 @@ public class SignUpActivity extends AppCompatActivity {
     public void onClick_submit(View V) {
         if (txtPassword.getText().toString().equals(txtPasswordConfirmation.getText().toString())) {
             try {
-                JSONObject userJSON = GetJSONTask.getInstance().execute(
-                        new AbstractMap.SimpleEntry<>("url", url),
+                JSONObject jsonUser = GetJSONTask.getInstance().execute(
+                        new AbstractMap.SimpleEntry<>("url", URL),
                         new AbstractMap.SimpleEntry<>("method", "POST"),
                         new AbstractMap.SimpleEntry<>("request", "body"),
                         new AbstractMap.SimpleEntry<>("login", txtLogin.getText().toString()),
                         new AbstractMap.SimpleEntry<>("password", txtPassword.getText().toString())
                 ).get();
 
-                if (userJSON != null) {
-                        JSONObject tokenJSON = GetJSONTask.getInstance().execute(
-                                new AbstractMap.SimpleEntry<>("url", url),
+                if (jsonUser != null) {
+                        JSONObject jsonToken = GetJSONTask.getInstance().execute(
+                                new AbstractMap.SimpleEntry<>("url", URL),
                                 new AbstractMap.SimpleEntry<>("method", "GET"),
                                 new AbstractMap.SimpleEntry<>("request", "slash"),
                                 new AbstractMap.SimpleEntry<>("login", txtLogin.getText().toString()),
                                 new AbstractMap.SimpleEntry<>("password", txtPassword.getText().toString())
                         ).get();
 
-                    ApplicationUser applicationUser = new ApplicationUser(userJSON);
+                    ApplicationUser applicationUser = new ApplicationUser(jsonUser);
                     Intent intent = new Intent(this, MagnetActivity.class);
                     intent.putExtra("applicationUser", applicationUser);
                     startActivity(intent);
                 } else
                     Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
-
             } catch (Exception e) {
-                Toast.makeText(getApplicationContext(), "Connection to " + url + " failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Connection to " + URL + " failed", Toast.LENGTH_SHORT).show();
             }
         } else
             Toast.makeText(getApplicationContext(), "The passwords don't match.", Toast.LENGTH_SHORT).show();
