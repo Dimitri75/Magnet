@@ -5,6 +5,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -18,6 +19,8 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.List;
 
 import kei.magnet.activities.MagnetActivity;
 import kei.magnet.classes.ApplicationUser;
@@ -37,9 +40,10 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
     private FragmentActivity parentActivity;
     private ApplicationUser applicationUser;
 
-    public GPSHandler(FragmentActivity parentActivity) {
+    public GPSHandler(FragmentActivity parentActivity, ApplicationUser user) {
 
         this.parentActivity = parentActivity;
+        this.applicationUser = user;
         /*compass = new Compass(m,view);
         view.compass=compass;*/
 
@@ -53,8 +57,8 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 
         mLocationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(2 * 1000)        // 10 seconds, in milliseconds
-                .setFastestInterval(500); // 1 second, in milliseconds
+                .setInterval(10)        // 10 seconds, in milliseconds
+                .setFastestInterval(1); // 1 second, in milliseconds
     }
 
     public void rotateMap(float bearing){
@@ -94,15 +98,28 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
         }
     }
 
-    public void updateMarkers(Group group){
+    public void updateMarkers(){
+
+        List<Group> groups = applicationUser.getGroups();
         googleMap.clear();
-        for (User user : group.getUsers()){
-            MarkerOptions markerOptions = new MarkerOptions()
-                    .position(new LatLng(user.getLocation().getLatitude(), user.getLocation().getLongitude()))
-                    .title(user.getLogin());
-            googleMap.addMarker(markerOptions);
-        }
+
         handleNewLocation(applicationUser.getLatLng());
+        for (Group group:groups) {
+            if(group!=null && group.getUsers()!=null){
+                for (User user : group.getUsers()){
+                    MarkerOptions markerOptions = new MarkerOptions()
+                            .position(new LatLng(user.getLocation().getLatitude(), user.getLocation().getLongitude()))
+                            .title(user.getLogin());
+                    googleMap.addMarker(markerOptions);
+                }
+
+            }else{
+                //Toast.makeText(parentActivity.getApplicationContext(),";(",Toast.LENGTH_LONG).show();
+
+            }
+
+        }
+
     }
 
     private void handleNewLocation(LatLng latLng) {
@@ -112,17 +129,10 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
         MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("I am here !");
         marker = googleMap.addMarker(markerOptions);
         marker.setPosition(latLng);
-
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(20), 2000, null);
     }
 
     private LatLng getLatLng(Location location){
         return new LatLng(location.getLatitude(), location.getLongitude());
-    }
-
-    private void setUpMap() {
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
     }
 
     private void setUpMapIfNeeded() {
@@ -133,9 +143,7 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 
             googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
             // Check if we were successful in obtaining the map.
-            if (googleMap != null) {
-                setUpMap();
-            }
+
         }
     }
 
@@ -160,9 +168,10 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 
     @Override
     public void onLocationChanged(Location location) {
-        if (applicationUser == null || applicationUser.getLocation() == null)
+        if (applicationUser == null || applicationUser.getLocation() == null|| location == null)
             return;
         applicationUser.setLocation(new kei.magnet.classes.Location(location.getLatitude(), location.getLongitude()));
-        handleNewLocation(getLatLng(location));
+        updateMarkers();
+
     }
 }

@@ -79,7 +79,7 @@ public class MagnetActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        gpsHandler = new GPSHandler(this);
+
         //bluetoothConnector = new BluetoothConnector(this);
 
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
@@ -88,6 +88,8 @@ public class MagnetActivity extends AppCompatActivity {
         try {
             if ((applicationUser = (ApplicationUser) getIntent().getExtras().get("applicationUser")) == null)
                 finish();
+
+            gpsHandler = new GPSHandler(this,applicationUser);
         } catch (Exception e) {
             e.printStackTrace();
         }

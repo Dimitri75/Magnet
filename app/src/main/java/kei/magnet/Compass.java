@@ -28,7 +28,7 @@ public class Compass implements SensorEventListener {
         mMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
         mRotVectSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
 
-        mSensorManager.registerListener(this, mRotVectSensor, SensorManager.SENSOR_STATUS_ACCURACY_LOW);
+        mSensorManager.registerListener(this, mRotVectSensor, SensorManager.SENSOR_DELAY_FASTEST);
     }
 
     @Override

@@ -40,7 +40,7 @@ public class ApplicationUser extends User{
     }
 
     public LatLng getLatLng(){
-        return new LatLng(getLocation().getLatitude(), getLocation().getLatitude());
+        return new LatLng(getLocation().getLatitude(),  getLocation().getLongitude());
     }
 
     @Override
