@@ -94,7 +94,7 @@ public class MagnetActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-//        JSONObject groupJSON = GetJSONTask.getInstance().execute(  //TODO à changer en fonction de si on utilise ApplicationUser ou User ou même autre chose
+//        JSONObject groupJSON = JSONTask.getInstance().execute(  //TODO à changer en fonction de si on utilise ApplicationUser ou User ou même autre chose
 //            new AbstractMap.SimpleEntry<>("url", groupURL),
 //            new AbstractMap.SimpleEntry<>("method", "GET"),
 //            new AbstractMap.SimpleEntry<>("request", "slash"),

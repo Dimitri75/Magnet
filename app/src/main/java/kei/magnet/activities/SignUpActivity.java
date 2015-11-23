@@ -12,7 +12,7 @@ import org.json.JSONObject;
 
 import java.util.AbstractMap;
 
-import kei.magnet.GetJSONTask;
+import kei.magnet.JSONTask;
 import kei.magnet.R;
 import kei.magnet.classes.ApplicationUser;
 
@@ -37,7 +37,7 @@ public class SignUpActivity extends AppCompatActivity {
     public void onClick_submit(View V) {
         if (txtPassword.getText().toString().equals(txtPasswordConfirmation.getText().toString())) {
             try {
-                JSONObject jsonUser = GetJSONTask.getInstance().execute(
+                JSONObject jsonUser = JSONTask.getInstance().execute(
                         new AbstractMap.SimpleEntry<>("url", URL),
                         new AbstractMap.SimpleEntry<>("method", "POST"),
                         new AbstractMap.SimpleEntry<>("request", "body"),
@@ -46,7 +46,7 @@ public class SignUpActivity extends AppCompatActivity {
                 ).get();
 
                 if (jsonUser != null) {
-                        JSONObject jsonToken = GetJSONTask.getInstance().execute(
+                        JSONObject jsonToken = JSONTask.getInstance().execute(
                                 new AbstractMap.SimpleEntry<>("url", URL),
                                 new AbstractMap.SimpleEntry<>("method", "GET"),
                                 new AbstractMap.SimpleEntry<>("request", "slash"),

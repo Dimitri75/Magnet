@@ -19,19 +19,17 @@ import java.util.AbstractMap;
 /**
  * Created by Suiken on 26/10/2015.
  */
-public class GetJSONTask extends AsyncTask<AbstractMap.SimpleEntry<String, String>, Void, JSONObject> {
+public class JSONTask extends AsyncTask<AbstractMap.SimpleEntry<String, String>, Void, JSONObject> {
 
-    private static GetJSONTask instance;
+    private static JSONTask instance;
 
-    private GetJSONTask(){
+    private JSONTask(){
     }
 
-    public static GetJSONTask getInstance(){
-        if (instance == null){
-            return new GetJSONTask();
-        }else{
-            return instance;
-        }
+    public static JSONTask getInstance(){
+        if (instance == null)
+            instance = new JSONTask();
+        return instance;
     }
 
     /**

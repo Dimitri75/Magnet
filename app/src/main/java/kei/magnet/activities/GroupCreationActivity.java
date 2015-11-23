@@ -1,8 +1,6 @@
 package kei.magnet.activities;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -12,7 +10,7 @@ import org.json.JSONObject;
 
 import java.util.AbstractMap;
 
-import kei.magnet.GetJSONTask;
+import kei.magnet.JSONTask;
 import kei.magnet.R;
 
 public class GroupCreationActivity extends AppCompatActivity {
@@ -28,7 +26,7 @@ public class GroupCreationActivity extends AppCompatActivity {
 
     public void onClick_submit(View V) {
         try {
-            JSONObject jsonObject = GetJSONTask.getInstance().execute(
+            JSONObject jsonObject = JSONTask.getInstance().execute(
                     new AbstractMap.SimpleEntry<>("url", URL),
                     new AbstractMap.SimpleEntry<>("method", "POST"),
                     new AbstractMap.SimpleEntry<>("request", "slash")

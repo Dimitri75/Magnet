@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import org.json.JSONObject;
 import java.util.AbstractMap;
-import kei.magnet.GetJSONTask;
+import kei.magnet.JSONTask;
 import kei.magnet.R;
 import kei.magnet.classes.ApplicationUser;
 
@@ -56,7 +56,7 @@ public class SignInActivity extends AppCompatActivity {
 
     public void onClick_submit(View V) {
         try {
-            JSONObject tokenJSON = GetJSONTask.getInstance().execute(
+            JSONObject tokenJSON = JSONTask.getInstance().execute(
                     new AbstractMap.SimpleEntry<>("url", URL),
                     new AbstractMap.SimpleEntry<>("method", "GET"),
                     new AbstractMap.SimpleEntry<>("request", "slash"),
@@ -66,7 +66,7 @@ public class SignInActivity extends AppCompatActivity {
 
             if (tokenJSON != null) {
 
-                JSONObject userJSON = GetJSONTask.getInstance().execute(
+                JSONObject userJSON = JSONTask.getInstance().execute(
                         new AbstractMap.SimpleEntry<>("url", URL),
                         new AbstractMap.SimpleEntry<>("method", "GET"),
                         new AbstractMap.SimpleEntry<>("request", "slash"),
