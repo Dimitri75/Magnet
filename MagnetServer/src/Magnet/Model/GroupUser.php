@@ -9,6 +9,7 @@ class GroupUser implements JsonSerializable {
 	private $login;
 	private $location;
 	private $lastActivity;
+	private $visible;
 
 	public function __construct($data = array()) {
 		if(is_array($data)) {
@@ -39,6 +40,13 @@ class GroupUser implements JsonSerializable {
 			}
 			else {
 				$this->setLastActivity("0000-00-00 00:00:00");
+			}
+
+			if(isset($data['visible'])) {
+				$this->setVisible(intval($data['visible']) === 1);
+			}
+			else {
+				$this->setVisible(false);
 			}
 		}
 	}
@@ -77,6 +85,16 @@ class GroupUser implements JsonSerializable {
 
 	public function setLastActivity($lastActivity) {
 		$this->lastActivity = $lastActivity;
+	}
+
+	public function getVisible() {
+		return $this->visible;
+	}
+
+	public function setVisible($visible) {
+		if(is_bool($visible)) {
+			$this->visible = $visible;
+		}
 	}
 
 	public function jsonSerialize() {

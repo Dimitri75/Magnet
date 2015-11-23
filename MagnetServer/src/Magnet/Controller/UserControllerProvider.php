@@ -7,6 +7,7 @@ use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Magnet\Model\UserDAO;
 use Magnet\Model\GroupDAO;
+use Magnet\Model\GroupUserDAO;
 use Magnet\Model\User;
 use Magnet\Model\Location;
 
@@ -17,13 +18,13 @@ class UserControllerProvider implements ControllerProviderInterface {
         $controllers = $app['controllers_factory'];
 
         /**
-		 * @api {get} /user/connected Request All Connected Users
+		 * @api {get} /user/ Request All Connected Users
 		 * @apiName GetConnectedUsers
 		 * @apiGroup User
 		 *
 		 * @apiSuccess {Array} connected List of connected Users.
 		 */
-		$controllers->get('/connected', function(Request $request) use($app) {
+		$controllers->get('/', function(Request $request) use($app) {
 			$result = array();
 			$status = 200;
 
@@ -42,17 +43,83 @@ class UserControllerProvider implements ControllerProviderInterface {
 		});
 
 		/**
+		 * @api {get} /user/:id Request data about the User using an id.
+		 * @apiName GetUserInfo
+		 * @apiGroup User
+		 *
+		 * @apiParam {String} login		Login of the User.
+		 *
+		 * @apiSuccess {Integer}  id 			The id of the User
+		 * @apiSuccess {String}   login 		The login of the User
+		 * @apiSuccess {Location} location  	The location of the User
+		 * @apiSuccess {Datetime} last_activity Last time of activity of the User
+		 *
+		 * @apiError IdNotFound The <code>id</code> doesn't match for any User.
+		 */
+        $controllers->get('/{id}', function(Request $request, $id) use($app) {
+			$result = array();
+			$status = 200;
+
+			$userDAO = new GroupUserDAO();
+			$user = $userDAO->find($id);
+
+			if($user !== null && $user->getVisible()) {
+				$result = $user;
+			}
+			else {
+				$result['message'] = 'User with given id cannot be found.';
+				$status = 400;
+			}
+
+			return $app->json($result, $status);
+		})
+		->assert('id', '\d+');
+
+        /**
+		 * @api {get} /user/:login Request data about the User using a login.
+		 * @apiName GetUserInfo
+		 * @apiGroup User
+		 *
+		 * @apiParam {String} login		Login of the User.
+		 *
+		 * @apiSuccess {Integer}  id 			The id of the User
+		 * @apiSuccess {String}   login 		The login of the User
+		 * @apiSuccess {Location} location  	The location of the User
+		 * @apiSuccess {Datetime} last_activity Last time of activity of the User
+		 *
+		 * @apiError LoginNotFound The <code>login</code> doesn't match for any User.
+		 */
+        $controllers->get('/{login}', function(Request $request, $login) use($app) {
+			$result = array();
+			$status = 200;
+
+			$userDAO = new GroupUserDAO();
+			$user = $userDAO->findByLogin($login);
+
+			if($user !== null && $user->getVisible()) {
+				$result = $user;
+			}
+			else {
+				$result['message'] = 'User with given login cannot be found.';
+				$status = 400;
+			}
+
+			return $app->json($result, $status);
+		});
+
+		/**
 		 * @api {get} /user/:token Request User information
 		 * @apiName GetUser
 		 * @apiGroup User
 		 *
 		 * @apiParam {String} token  Token of the User.
 		 *
-		 * @apiSuccess {String} login The login of the User
-		 * @apiSuccess {Location} location The location of the User
-		 * @apiSuccess {Boolean} visible If the User is seen as connected
+		 * @apiSuccess {Integer}  id 			The id of the User
+		 * @apiSuccess {String}   login 		The login of the User
+		 * @apiSuccess {Location} location 		The location of the User
+		 * @apiSuccess {Boolean}  visible 		If the User is seen as connected
 		 * @apiSuccess {Datetime} last_activity Last time of activity of the User
-		 * @apiSuccess {Array} groups The groups of the User
+		 * @apiSuccess {Array} 	  groups 		The groups of the User
 		 *
 		 * @apiError TokenNotValid The <code>token</code> given cannot authenticate the User.
 		 */

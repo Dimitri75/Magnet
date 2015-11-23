@@ -4,7 +4,6 @@ namespace Magnet\Model;
 
 class User extends GroupUser {
 	private $password;
-	private $visible;
 	private $token;
 	private $groups;
 
@@ -14,13 +13,6 @@ class User extends GroupUser {
 		if(is_array($data)) {
 			if(isset($data['password'])) {
 				$this->setPassword($data['password']);
-			}
-
-			if(isset($data['visible'])) {
-				$this->setVisible($data['visible']);
-			}
-			else {
-				$this->setVisible(false);
 			}
 
 			if(isset($data['token'])) {
@@ -38,16 +30,6 @@ class User extends GroupUser {
 	public function setPassword($password) {
 		if(is_string($password)) {
 			$this->password = $password;
-		}
-	}
-
-	public function getVisible() {
-		return $this->visible;
-	}
-
-	public function setVisible($visible) {
-		if(is_bool($visible)) {
-			$this->visible = $visible;
 		}
 	}
 
