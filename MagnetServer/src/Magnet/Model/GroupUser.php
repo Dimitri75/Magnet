@@ -81,6 +81,7 @@ class GroupUser implements JsonSerializable {
 
 	public function jsonSerialize() {
 		return [
+			'id' => $this->getId(),
 			'login' => $this->getLogin(),
 			'location' => $this->getLocation(),
 			'last_activity' => $this->getLastActivity(),

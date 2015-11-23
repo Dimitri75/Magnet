@@ -137,6 +137,7 @@ class Pin implements JsonSerializable {
 
 	public function jsonSerialize() {
 		return [
+			'id' => $this->getId(),
 			'name' => $this->getName(),
 			'description' => $this->getDescription(),
 			'latitude' => $this->getLocation()->getLatitude(),

@@ -69,6 +69,7 @@ class User extends GroupUser {
 
 	public function jsonSerialize() {
 		return [
+			'id' => $this->getId(),
 			'login' => $this->getLogin(),
 			'location' => $this->getLocation(),
 			'visible' => $this->getVisible(),

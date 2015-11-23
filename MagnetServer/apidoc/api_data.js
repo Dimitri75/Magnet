@@ -24,10 +24,10 @@ define({ "api": [
           },
           {
             "group": "Parameter",
-            "type": "<p>User</p> ",
+            "type": "<p>Integer</p> ",
             "optional": false,
-            "field": "users",
-            "description": "<p>User to add.</p> "
+            "field": "id_user",
+            "description": "<p>Id of the User to add.</p> "
           }
         ]
       }

@@ -75,6 +75,7 @@ class Group implements JsonSerializable {
 
 	public function jsonSerialize() {
 		return [
+			'id' => $this->getId(),
 			'name' => $this->getName(),
 			'creator' => $this->getCreator(),
 			'users' => $this->getUsers()
