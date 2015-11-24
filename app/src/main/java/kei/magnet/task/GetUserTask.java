@@ -41,6 +41,7 @@ public class GetUserTask extends JSONTask {
             applicationUser.setToken(token);
             Intent intent = new Intent(getActivity(), MagnetActivity.class);
             getActivity().startActivity(intent);
+            getActivity().finish();
         } else
             Toast.makeText(getActivity().getApplicationContext(), "Fail Get User", Toast.LENGTH_SHORT).show();
     }
