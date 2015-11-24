@@ -6,21 +6,14 @@ package kei.magnet.fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import kei.magnet.R;
@@ -87,7 +80,7 @@ public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem> {
 
             drawerHolder.titleLayout.setVisibility(LinearLayout.INVISIBLE);
 
-            drawerHolder.userTitle.setText(dItem.getTitle());
+            drawerHolder.userTitle.setText(dItem.getItemName());
             drawerHolder.userTitle.setVisibility(View.VISIBLE);
         } else if(dItem.getType() == NavigationDrawerType.GROUP){
             System.out.println("group");
@@ -98,7 +91,7 @@ public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem> {
 
             drawerHolder.userLayout.setVisibility(LinearLayout.INVISIBLE);
 
-            drawerHolder.groupTitle.setText(dItem.getTitle());
+            drawerHolder.groupTitle.setText(dItem.getItemName());
             drawerHolder.groupTitle.setVisibility(View.VISIBLE);
         }
 

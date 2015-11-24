@@ -1,51 +1,32 @@
 package kei.magnet.fragments;
 
-
 import kei.magnet.enumerations.NavigationDrawerType;
 
 public class DrawerItem {
-
-    String ItemName;
+    Object item;
+    String itemName;
     int imgResID;
-    String title;
-    boolean isSpinner;
     NavigationDrawerType type;
 
-    public DrawerItem(String itemName, int imgResID) {
+    public DrawerItem(String itemName, Object item, int imgResID) {
         super();
-        ItemName = itemName;
+        this.item = item;
+        this.itemName = itemName;
         this.imgResID = imgResID;
     }
 
-    public DrawerItem(boolean isSpinner) {
-        this(null, 0);
-        this.isSpinner = isSpinner;
-    }
-
     public DrawerItem(Object object, NavigationDrawerType type) {
-        this(null, 0);
-        this.title = object.toString();
+        this.item = object;
+        this.itemName = object.toString();
         this.type = type;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public boolean isSpinner() {
-        return isSpinner;
+    public Object getItem() {
+        return item;
     }
 
     public String getItemName() {
-        return ItemName;
-    }
-
-    public void setItemName(String itemName) {
-        ItemName = itemName;
+        return itemName;
     }
 
     public int getImgResID() {

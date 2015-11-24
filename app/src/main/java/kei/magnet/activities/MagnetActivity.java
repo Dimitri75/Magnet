@@ -38,9 +38,6 @@ import kei.magnet.R;
 import kei.magnet.classes.ApplicationUser;
 import kei.magnet.fragments.CustomDrawerAdapter;
 import kei.magnet.fragments.DrawerItem;
-import kei.magnet.fragments.FragmentOne;
-import kei.magnet.fragments.FragmentThree;
-import kei.magnet.fragments.FragmentTwo;
 
 public class MagnetActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
@@ -198,7 +195,7 @@ public class MagnetActivity extends AppCompatActivity {
                                 long id) {
             AddUserFragment dialog = new AddUserFragment();
             Bundle bundle = new Bundle();
-            bundle.putParcelable("group", (Group) parent.getItemAtPosition(position));
+            bundle.putParcelable("group", (Group) dataList.get(position).getItem());
             dialog.setArguments(bundle);
 
             dialog.show(getFragmentManager(), "Add user");
