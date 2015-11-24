@@ -23,10 +23,10 @@ import kei.magnet.R;
 import kei.magnet.classes.ApplicationUser;
 import kei.magnet.classes.Group;
 import kei.magnet.classes.Location;
+import kei.magnet.task.CreatePinTask;
 import kei.magnet.task.UpdateUserTask;
 
 public class PinCreationActivity extends AppCompatActivity {
-    private static String URL = "http://bardin.sylvain.perso.sfr.fr/pin/";
     private ApplicationUser applicationUser;
     private EditText txtName;
     private EditText txtDescription;
@@ -34,6 +34,14 @@ public class PinCreationActivity extends AppCompatActivity {
     private DatePicker activationDate;
     private DatePicker expirationDate;
     private Location location;
+
+    //2015-11-24 07:18:07
+    private String datePickerToString(DatePicker picker) {
+        StringBuilder sb = new StringBuilder(picker.getYear());
+        sb.append("-").append(picker.getMonth()).append("-").append(activationDate.getDayOfMonth());
+
+        return sb.toString();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,22 +73,15 @@ public class PinCreationActivity extends AppCompatActivity {
             locationJSON.put("latitude", location.getLatitude());
             locationJSON.put("longitude", location.getLongitude());
 
-            JSONObject jsonObject = JSONTask.getTask().execute(
-                    new AbstractMap.SimpleEntry<>("url", URL + applicationUser.getToken()),
-                    new AbstractMap.SimpleEntry<>("method", "POST"),
-                    new AbstractMap.SimpleEntry<>("request", "body"),
+            CreatePinTask task = new CreatePinTask(this, applicationUser.getToken());
+            task.execute(
                     new AbstractMap.SimpleEntry<>("name", txtName.getText().toString()),
                     new AbstractMap.SimpleEntry<>("description", txtDescription.getText().toString()),
                     new AbstractMap.SimpleEntry<>("location", locationJSON.toString()),
-                    new AbstractMap.SimpleEntry<>("creation_time", activationDate.toString()),
-                    new AbstractMap.SimpleEntry<>("deletion_time", expirationDate.toString()),
+                    new AbstractMap.SimpleEntry<>("creation_time", datePickerToString(activationDate)),
+                    new AbstractMap.SimpleEntry<>("deletion_time", datePickerToString(expirationDate)),
                     new AbstractMap.SimpleEntry<>("group_id", String.valueOf(((Group) spinnerGroups.getSelectedItem()).getId()))
-            ).get();
-
-            if (jsonObject != null)
-                finish();
-            else
-                Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
+            );
         } catch (Exception e) {
             e.printStackTrace();
         }
