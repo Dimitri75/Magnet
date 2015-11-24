@@ -101,6 +101,8 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
         Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         applicationUser.setLocation(new kei.magnet.classes.Location(location.getLatitude(), location.getLongitude()));
+        CameraPosition pos = CameraPosition.builder().target(applicationUser.getLatLng()).zoom(10).build();
+        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(pos));
         updateMarkers(true);
     }
 
