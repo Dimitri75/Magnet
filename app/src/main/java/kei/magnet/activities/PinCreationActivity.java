@@ -28,24 +28,11 @@ public class PinCreationActivity extends AppCompatActivity {
     private DatePicker expirationDate;
     private Location location;
 
-    public ApplicationUser getApplicationUser() {
-        return applicationUser;
-    }
-
-    //2015-11-24 07:18:07
-    private String datePickerToString(DatePicker picker) {
-        StringBuilder sb = new StringBuilder(picker.getYear());
-        sb.append("-").append(picker.getMonth()).append("-").append(activationDate.getDayOfMonth());
-
-        return sb.toString();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pin_creation);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         if ((location = (Location) getIntent().getExtras().get("location")) == null)
             finish();
@@ -65,7 +52,7 @@ public class PinCreationActivity extends AppCompatActivity {
         spinnerGroups.setAdapter(myAdapter);
     }
 
-    public void onClick_submit(View V){
+    public void onClick_submit(View V) {
         try {
             JSONObject locationJSON = new JSONObject();
             locationJSON.put("latitude", location.getLatitude());
@@ -84,4 +71,17 @@ public class PinCreationActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+    public ApplicationUser getApplicationUser() {
+        return applicationUser;
+    }
+
+    //2015-11-24 07:18:07
+    private String datePickerToString(DatePicker picker) {
+        StringBuilder sb = new StringBuilder(picker.getYear());
+        sb.append("-").append(picker.getMonth()).append("-").append(activationDate.getDayOfMonth());
+
+        return sb.toString();
+    }
+
 }
