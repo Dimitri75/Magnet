@@ -33,12 +33,12 @@ public class FragmentThree extends Fragment {
         View view = inflater.inflate(R.layout.fragment_layout_three, container,
                 false);
 
-        ivIcon = (ImageView) view.findViewById(R.id.frag3_icon);
+       // ivIcon = (ImageView) view.findViewById(R.id.frag3_icon);
         tvItemName = (TextView) view.findViewById(R.id.frag3_text);
 
-        tvItemName.setText(getArguments().getString(ITEM_NAME));
-        ivIcon.setImageDrawable(view.getResources().getDrawable(
-                getArguments().getInt(IMAGE_RESOURCE_ID)));
+        tvItemName.setText(getArguments().getString(ITEM_NAME) + " frag 3");
+        //tvItemName.setBackgroundColor(0xFF00FF00);
+       // ivIcon.setImageDrawable(view.getResources().getDrawable(getArguments().getInt(IMAGE_RESOURCE_ID)));
         return view;
     }
 
