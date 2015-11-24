@@ -26,11 +26,20 @@ public class AddUserFragment extends DialogFragment {
     private ApplicationUser applicationUser;
     private EditText txtName;
     private Group group;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
+
+        Bundle bundle = getArguments();
+        if ((group = (Group) bundle.get("group")) == null) {
+            dismiss();
+        }
+
+        applicationUser = ApplicationUser.getInstance();
+        txtName = (EditText) getActivity().findViewById(R.id.group_creation_editText_GROUPNAME);
 
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout

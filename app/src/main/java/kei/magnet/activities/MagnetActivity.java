@@ -20,6 +20,8 @@ import android.widget.Toast;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,44 +49,9 @@ public class MagnetActivity extends AppCompatActivity {
     private Compass compass;
     private SensorManager mSensorManager;
     private ApplicationUser applicationUser;
-
-    // peut-être à changer
     private ListView mDrawerList;
-    private CharSequence mDrawerTitle;
-    private CharSequence mTitle;
     private CustomDrawerAdapter adapter;
     private List<DrawerItem> dataList;
-
-    private String groupURL = "http://91.121.161.11/group";
-
-
-    //TODO à supprimer une fois que la récupération de groupe est fonctionnelle
-//    public List<Group> getGroups(){
-//        List<Group> groups = new ArrayList<>();
-//
-//        User creator = new User("Kae", new Location(15, 15));
-//
-//        List<User> usersOne = new ArrayList<>();
-//        usersOne.add(new User("A", new Location(15, 15)));
-//        usersOne.add(new User("B", new Location(15, 15)));
-//        usersOne.add(new User("C", new Location(15, 15)));
-//
-//        List<User> usersTwo = new ArrayList<>();
-//        usersTwo.add(new User("D", new Location(15, 15)));
-//        usersTwo.add(new User("E", new Location(15, 15)));
-//        usersTwo.add(new User("F", new Location(15, 15)));
-//
-//        List<User> usersThree = new ArrayList<>();
-//        usersThree.add(new User("G", new Location(15, 15)));
-//        usersThree.add(new User("H", new Location(15, 15)));
-//        usersThree.add(new User("I", new Location(15, 15)));
-//
-//        groups.add(new Group(creator, usersOne));
-//        groups.add(new Group(creator, usersTwo));
-//        groups.add(new Group(creator, usersThree));
-//
-//        return groups;
-//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -140,38 +107,14 @@ public class MagnetActivity extends AppCompatActivity {
 
         // Initializing
         dataList = new ArrayList<DrawerItem>();
-        mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
         mDrawerLayout.setDrawerShadow(R.drawable.magnet, GravityCompat.START);
 
         // Add Drawer Item to dataList
-        // dataList.add(new DrawerItem(true)); // adding a spinner to the list
         List<Group> groups = ApplicationUser.getInstance().getGroups();
-
         dataList = formatGroupsInDataList(groups);
-
-//        dataList.add(new DrawerItem("My Favorites")); // adding a header to the list
-//        dataList.add(new DrawerItem("Message"));
-//        dataList.add(new DrawerItem("Likes"));
-//        dataList.add(new DrawerItem("Games"));
-//        dataList.add(new DrawerItem("Lables"));
-//
-//        dataList.add(new DrawerItem("Main Options"));// adding a header to the list
-//        dataList.add(new DrawerItem("Search"));
-//        dataList.add(new DrawerItem("Cloud"));
-//        dataList.add(new DrawerItem("Camara"));
-//        dataList.add(new DrawerItem("Video"));
-//        dataList.add(new DrawerItem("Groups"));
-//        dataList.add(new DrawerItem("Import & Export"));
-//
-//        dataList.add(new DrawerItem("Other Option")); // adding a header to the list
-//        dataList.add(new DrawerItem("About"));
-//        dataList.add(new DrawerItem("Settings"));
-//        dataList.add(new DrawerItem("Help"));
-
-
 
         adapter = new CustomDrawerAdapter(this, R.layout.custom_drawer_item,
                 dataList);
@@ -179,17 +122,6 @@ public class MagnetActivity extends AppCompatActivity {
         mDrawerList.setAdapter(adapter);
 
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
-//        if (savedInstanceState == null) {
-//
-//            if (dataList.get(0).isSpinner() && dataList.get(1).getTitle() != null) {
-//                selectItem(2);
-//            } else if (dataList.get(0).getTitle() != null) {
-//                selectItem(1);
-//            } else {
-//                selectItem(0);
-//            }
-//        }
     }
 
     public List<DrawerItem> formatGroupsInDataList(List<Group> groups){
@@ -216,7 +148,6 @@ public class MagnetActivity extends AppCompatActivity {
         super.onResume();
         gpsHandler.onResume();
         compass.onResume();
-
         //bluetoothConnector.onResume();
     }
 
@@ -259,146 +190,17 @@ public class MagnetActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void selectItem(int possition) {
-
-        Fragment fragment = null;
-        Bundle args = new Bundle();
-        switch (possition) {
-
-            case 1:
-                fragment = new FragmentOne();
-                args.putString(FragmentOne.ITEM_NAME, dataList.get(possition)
-                        .getItemName());
-                args.putInt(FragmentOne.IMAGE_RESOURCE_ID, dataList
-                        .get(possition).getImgResID());
-                break;
-
-            case 2:
-                fragment = new FragmentTwo();
-                args.putString(FragmentTwo.ITEM_NAME, dataList.get(possition)
-                        .getItemName());
-                args.putInt(FragmentTwo.IMAGE_RESOURCE_ID, dataList
-                        .get(possition).getImgResID());
-                break;
-            case 3:
-                fragment = new FragmentThree();
-                args.putString(FragmentThree.ITEM_NAME, dataList.get(possition)
-                        .getItemName());
-                args.putInt(FragmentThree.IMAGE_RESOURCE_ID, dataList.get(possition)
-                        .getImgResID());
-                break;
-            case 4:
-                fragment = new FragmentThree();
-                args.putString(FragmentThree.ITEM_NAME, dataList.get(possition)
-                        .getItemName());
-                args.putInt(FragmentThree.IMAGE_RESOURCE_ID, dataList.get(possition)
-                        .getImgResID());
-                break;
-            case 5:
-                fragment = new FragmentThree();
-                args.putString(FragmentThree.ITEM_NAME, dataList.get(possition)
-                        .getItemName());
-                args.putInt(FragmentThree.IMAGE_RESOURCE_ID, dataList
-                        .get(possition).getImgResID());
-                break;
-            case 7:
-                fragment = new FragmentThree();
-                args.putString(FragmentThree.ITEM_NAME, dataList.get(possition)
-                        .getItemName());
-                args.putInt(FragmentThree.IMAGE_RESOURCE_ID, dataList.get(possition)
-                        .getImgResID());
-                break;
-            case 8:
-                fragment = new FragmentThree();
-                args.putString(FragmentThree.ITEM_NAME, dataList.get(possition)
-                        .getItemName());
-                args.putInt(FragmentThree.IMAGE_RESOURCE_ID, dataList
-                        .get(possition).getImgResID());
-                break;
-            case 9:
-                fragment = new FragmentTwo();
-                args.putString(FragmentTwo.ITEM_NAME, dataList.get(possition)
-                        .getItemName());
-                args.putInt(FragmentTwo.IMAGE_RESOURCE_ID, dataList.get(possition)
-                        .getImgResID());
-                break;
-            case 10:
-                fragment = new FragmentThree();
-                args.putString(FragmentThree.ITEM_NAME, dataList.get(possition)
-                        .getItemName());
-                args.putInt(FragmentThree.IMAGE_RESOURCE_ID, dataList.get(possition)
-                        .getImgResID());
-                break;
-            case 11:
-                fragment = new FragmentThree();
-                args.putString(FragmentThree.ITEM_NAME, dataList.get(possition)
-                        .getItemName());
-                args.putInt(FragmentThree.IMAGE_RESOURCE_ID, dataList
-                        .get(possition).getImgResID());
-                break;
-            case 12:
-                fragment = new FragmentThree();
-                args.putString(FragmentThree.ITEM_NAME, dataList.get(possition)
-                        .getItemName());
-                args.putInt(FragmentThree.IMAGE_RESOURCE_ID, dataList.get(possition)
-                        .getImgResID());
-                break;
-            case 14:
-                fragment = new FragmentThree();
-                args.putString(FragmentThree.ITEM_NAME, dataList.get(possition)
-                        .getItemName());
-                args.putInt(FragmentThree.IMAGE_RESOURCE_ID, dataList.get(possition)
-                        .getImgResID());
-                break;
-            case 15:
-                fragment = new FragmentThree();
-                args.putString(FragmentThree.ITEM_NAME, dataList.get(possition)
-                        .getItemName());
-                args.putInt(FragmentThree.IMAGE_RESOURCE_ID, dataList.get(possition)
-                        .getImgResID());
-                break;
-            case 16:
-                fragment = new FragmentThree();
-                args.putString(FragmentThree.ITEM_NAME, dataList.get(possition)
-                        .getItemName());
-                args.putInt(FragmentThree.IMAGE_RESOURCE_ID, dataList.get(possition)
-                        .getImgResID());
-                break;
-            default:
-                break;
-        }
-
-        fragment.setArguments(args);
-        FragmentManager frgManager = getFragmentManager();
-        frgManager.beginTransaction().replace(R.id.map, fragment)
-                .commit();
-
-        mDrawerList.setItemChecked(possition, true);
-//        setTitle(dataList.get(possition).getItemName());
-        mDrawerLayout.closeDrawer(mDrawerList);
-
-    }
-
-    @Override
-    public void setTitle(CharSequence title) {
-        mTitle = title;
-        //getActionBar().setTitle(mTitle);
-    }
-
     private class DrawerItemClickListener implements
             ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
-            selectItem(position);
-
             AddUserFragment dialog = new AddUserFragment();
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("group", (Group) parent.getItemAtPosition(position));
+            dialog.setArguments(bundle);
 
             dialog.show(getFragmentManager(), "Add user");
-            if (dataList.get(position).getTitle() == null) {
-                selectItem(position);
-            }
-
         }
     }
 }
