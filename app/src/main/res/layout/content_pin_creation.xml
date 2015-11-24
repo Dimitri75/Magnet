@@ -50,7 +50,7 @@
             android:textColor="#212121" />
 
         <EditText
-            android:id="@+id/pin_creation_editText_DESCRITPION"
+            android:id="@+id/pin_creation_editText_DESCRIPTION"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -71,7 +71,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignStart="@+id/pin_creation_button"
-            android:layout_below="@+id/pin_creation_editText_DESCRITPION"
+            android:layout_below="@+id/pin_creation_spinner_GROUP"
             android:layout_marginTop="30dp" />
 
         <DatePicker
@@ -84,16 +84,6 @@
             android:layout_alignStart="@+id/pin_creation_button"
             android:layout_below="@+id/pin_creation_datePicker_ACTIVATION"
             android:layout_marginTop="30dp" />
-
-        <Button
-            android:id="@+id/pin_creation_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/pin_creation_datePicker_EXPIRATION"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:onClick="onClick_submit"
-            android:text="Submit" />
 
         <TextView
             android:id="@+id/pin_creation_textView_ACTIVATION"
@@ -114,5 +104,22 @@
             android:layout_alignTop="@+id/pin_creation_datePicker_EXPIRATION"
             android:text="Expiration date"
             android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Spinner
+            android:layout_marginTop="30dp"
+            android:id="@+id/pin_creation_spinner_GROUP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pin_creation_editText_DESCRIPTION"/>
+
+        <Button
+            android:id="@+id/pin_creation_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pin_creation_datePicker_EXPIRATION"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:onClick="onClick_submit"
+            android:text="Submit" />
     </RelativeLayout>
 </ScrollView>

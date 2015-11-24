@@ -5,9 +5,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.json.JSONObject;
@@ -18,6 +21,7 @@ import java.util.AbstractMap;
 import kei.magnet.JSONTask;
 import kei.magnet.R;
 import kei.magnet.classes.ApplicationUser;
+import kei.magnet.classes.Group;
 import kei.magnet.classes.Location;
 
 public class PinCreationActivity extends AppCompatActivity {
@@ -25,6 +29,7 @@ public class PinCreationActivity extends AppCompatActivity {
     private ApplicationUser applicationUser;
     private EditText txtName;
     private EditText txtDescription;
+    private Spinner spinnerGroups;
     private DatePicker activationDate;
     private DatePicker expirationDate;
     private Location location;
@@ -40,6 +45,13 @@ public class PinCreationActivity extends AppCompatActivity {
         txtDescription = (EditText) findViewById(R.id.pin_creation_editText_DESCRITPION);
         activationDate = (DatePicker) findViewById(R.id.pin_creation_datePicker_ACTIVATION);
         expirationDate = (DatePicker) findViewById(R.id.pin_creation_datePicker_EXPIRATION);
+        spinnerGroups = (Spinner) findViewById(R.id.pin_creation_spinner_GROUP);
+
+        final ArrayAdapter<Group> myAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1,
+                android.R.id.text1,
+                applicationUser.getGroups());
+        spinnerGroups.setAdapter(myAdapter);
     }
 
     public void onClick_submit(View V){
