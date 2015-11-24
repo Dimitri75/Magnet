@@ -33,7 +33,8 @@ public class GroupCreationActivity extends AppCompatActivity {
             JSONObject jsonObject = JSONTask.getTask().execute(
                     new AbstractMap.SimpleEntry<>("url", URL),
                     new AbstractMap.SimpleEntry<>("method", "POST"),
-                    new AbstractMap.SimpleEntry<>("request", "slash")
+                    new AbstractMap.SimpleEntry<>("request", "slash"),
+                    new AbstractMap.SimpleEntry<>("name", txtName.getText().toString())
             ).get();
 
             if (jsonObject != null)
