@@ -58,6 +58,9 @@ public class MagnetActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        if ((applicationUser = (ApplicationUser) getIntent().getExtras().get("applicationUser")) == null)
+            finish();
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 toolbar, R.string.drawer_open, R.string.drawer_close) {
@@ -87,9 +90,7 @@ public class MagnetActivity extends AppCompatActivity {
         compass = new Compass(mSensorManager, this);
 
         try {
-            if ((applicationUser = (ApplicationUser) getIntent().getExtras().get("applicationUser")) == null)
-                finish();
-            Toast.makeText(this, applicationUser.getGroups().get(0).getCreator().getLogin(),Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, applicationUser.getGroups().get(0).getCreator().getLogin(),Toast.LENGTH_LONG).show();
             gpsHandler = new GPSHandler(this,applicationUser);
         } catch (Exception e) {
             e.printStackTrace();

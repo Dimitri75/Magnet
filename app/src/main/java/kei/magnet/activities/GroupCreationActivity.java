@@ -28,6 +28,9 @@ public class GroupCreationActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        if ((applicationUser = (ApplicationUser) getIntent().getExtras().get("applicationUser")) == null)
+            finish();
+        
         txtName = (EditText) findViewById(R.id.group_creation_editText_GROUPNAME);
     }
 
