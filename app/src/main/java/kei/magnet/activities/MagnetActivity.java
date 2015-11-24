@@ -193,12 +193,17 @@ public class MagnetActivity extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
-            AddUserFragment dialog = new AddUserFragment();
-            Bundle bundle = new Bundle();
-            bundle.putParcelable("group", (Group) dataList.get(position).getItem());
-            dialog.setArguments(bundle);
 
-            dialog.show(getFragmentManager(), "Add user");
+            if (dataList.get(position).getItem() instanceof Group) {
+                AddUserFragment dialog = new AddUserFragment();
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("group", (Group) dataList.get(position).getItem());
+                dialog.setArguments(bundle);
+
+                dialog.show(getFragmentManager(), "Add user");
+            }
+            else
+                Toast.makeText(getApplicationContext(), "Not a valid Group", Toast.LENGTH_LONG).show();
         }
     }
 }
