@@ -36,7 +36,8 @@ public class Group implements Parcelable {
     }
 
 
-    public Group(User creator, List<User> users) {
+    public Group(String name, User creator, List<User> users) {
+        this.name = name;
         this.creator = creator;
         this.users = users;
     }

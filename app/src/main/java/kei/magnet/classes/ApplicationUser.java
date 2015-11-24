@@ -51,8 +51,6 @@ public class ApplicationUser extends User{
         return groups;
     }
 
-
-
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
