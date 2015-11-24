@@ -6,6 +6,8 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import java.util.AbstractMap;
+
 import kei.magnet.JSONTask;
 import kei.magnet.activities.MagnetActivity;
 import kei.magnet.classes.ApplicationUser;
@@ -15,6 +17,7 @@ import kei.magnet.classes.ApplicationUser;
  */
 public class GetUserTask extends JSONTask {
     private static String URL = "http://bardin.sylvain.perso.sfr.fr/user";
+    private String token;
 
     public GetUserTask(Activity activity) {
         super(activity);
@@ -23,12 +26,19 @@ public class GetUserTask extends JSONTask {
         setUrl(URL);
     }
 
+    protected JSONObject doInBackground(AbstractMap.SimpleEntry<String, String>... entries) {
+        token = entries[0].getValue();
+
+        return super.doInBackground(entries);
+    }
+
     protected void onPostExecute (JSONObject userJSON) {
         if(getException() != null) {
             Toast.makeText(getActivity(), getException().getMessage(), Toast.LENGTH_LONG).show();
         }
         else if (userJSON != null) {
             ApplicationUser applicationUser = new ApplicationUser(userJSON);
+            applicationUser.setToken(token);
             Intent intent = new Intent(getActivity(), MagnetActivity.class);
             intent.putExtra("applicationUser", applicationUser);
             getActivity().startActivity(intent);
