@@ -37,7 +37,7 @@ public class SignUpActivity extends AppCompatActivity {
     public void onClick_submit(View V) {
         if (txtPassword.getText().toString().equals(txtPasswordConfirmation.getText().toString())) {
             try {
-                JSONObject jsonUser = JSONTask.getInstance().execute(
+                JSONObject jsonUser = JSONTask.getTask().execute(
                         new AbstractMap.SimpleEntry<>("url", URL),
                         new AbstractMap.SimpleEntry<>("method", "POST"),
                         new AbstractMap.SimpleEntry<>("request", "body"),
@@ -46,7 +46,7 @@ public class SignUpActivity extends AppCompatActivity {
                 ).get();
 
                 if (jsonUser != null) {
-                        JSONObject jsonToken = JSONTask.getInstance().execute(
+                        JSONObject jsonToken = JSONTask.getTask().execute(
                                 new AbstractMap.SimpleEntry<>("url", URL),
                                 new AbstractMap.SimpleEntry<>("method", "GET"),
                                 new AbstractMap.SimpleEntry<>("request", "slash"),

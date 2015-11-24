@@ -16,7 +16,7 @@ import kei.magnet.R;
 import kei.magnet.classes.ApplicationUser;
 
 public class SignInActivity extends AppCompatActivity {
-    private static String URL = "http://bardin.sylvain.perso.sfr.fr/user/";
+    private static String URL = "http://bardin.sylvain.perso.sfr.fr/user";
     private EditText txtLogin;
     private EditText txtPassword;
 
@@ -56,7 +56,7 @@ public class SignInActivity extends AppCompatActivity {
 
     public void onClick_submit(View V) {
         try {
-            JSONObject tokenJSON = JSONTask.getInstance().execute(
+            JSONObject tokenJSON = JSONTask.getTask().execute(
                     new AbstractMap.SimpleEntry<>("url", URL),
                     new AbstractMap.SimpleEntry<>("method", "GET"),
                     new AbstractMap.SimpleEntry<>("request", "slash"),
@@ -66,7 +66,7 @@ public class SignInActivity extends AppCompatActivity {
 
             if (tokenJSON != null) {
 
-                JSONObject userJSON = JSONTask.getInstance().execute(
+                JSONObject userJSON = JSONTask.getTask().execute(
                         new AbstractMap.SimpleEntry<>("url", URL),
                         new AbstractMap.SimpleEntry<>("method", "GET"),
                         new AbstractMap.SimpleEntry<>("request", "slash"),

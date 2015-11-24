@@ -39,7 +39,7 @@ public class PinCreationActivity extends AppCompatActivity {
 
     public void onClick_submit(View V) {
         try {
-            JSONObject jsonObject = JSONTask.getInstance().execute(
+            JSONObject jsonObject = JSONTask.getTask().execute(
                     new AbstractMap.SimpleEntry<>("url", URL),
                     new AbstractMap.SimpleEntry<>("method", "POST"),
                     new AbstractMap.SimpleEntry<>("request", "body")

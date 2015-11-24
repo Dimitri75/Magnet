@@ -21,15 +21,11 @@ import java.util.AbstractMap;
  */
 public class JSONTask extends AsyncTask<AbstractMap.SimpleEntry<String, String>, Void, JSONObject> {
 
-    private static JSONTask instance;
-
     private JSONTask(){
     }
 
-    public static JSONTask getInstance(){
-        if (instance == null)
-            instance = new JSONTask();
-        return instance;
+    public static JSONTask getTask(){
+        return new JSONTask();
     }
 
     /**
