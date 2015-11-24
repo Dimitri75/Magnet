@@ -23,12 +23,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONObject;
+
+import java.util.AbstractMap;
 import java.util.List;
 
 import kei.magnet.activities.MagnetActivity;
 import kei.magnet.classes.ApplicationUser;
 import kei.magnet.classes.Group;
 import kei.magnet.classes.User;
+import kei.magnet.task.UpdateUserTask;
 
 /**
  * Created by carlo_000 on 24/10/2015.
@@ -169,6 +173,17 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
         if (applicationUser == null || applicationUser.getLocation() == null || location == null)
             return;
         applicationUser.setLocation(new kei.magnet.classes.Location(location.getLatitude(), location.getLongitude()));
+
+        try {
+            JSONObject locationJSON = new JSONObject();
+            locationJSON.put("latitude", applicationUser.getLocation().getLatitude());
+            locationJSON.put("longitude", applicationUser.getLocation().getLongitude());
+
+            UpdateUserTask task = new UpdateUserTask(parentActivity, applicationUser.getToken());
+            task.execute(new AbstractMap.SimpleEntry<>("location", locationJSON.toString()));
+        }
+        catch(Exception e) {}
+
         updateMarkers(true);
 
     }
