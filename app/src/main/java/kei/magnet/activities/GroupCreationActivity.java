@@ -15,6 +15,7 @@ import java.util.AbstractMap;
 import kei.magnet.JSONTask;
 import kei.magnet.R;
 import kei.magnet.classes.ApplicationUser;
+import kei.magnet.task.CreatePinTask;
 
 public class GroupCreationActivity extends AppCompatActivity {
     private static String URL = "http://bardin.sylvain.perso.sfr.fr/group/";
@@ -35,20 +36,7 @@ public class GroupCreationActivity extends AppCompatActivity {
     }
 
     public void onClick_submit(View V) {
-        try {
-            JSONObject jsonObject = JSONTask.getTask().execute(
-                    new AbstractMap.SimpleEntry<>("url", URL + applicationUser.getToken()),
-                    new AbstractMap.SimpleEntry<>("method", "POST"),
-                    new AbstractMap.SimpleEntry<>("request", "body"),
-                    new AbstractMap.SimpleEntry<>("name", txtName.getText().toString())
-            ).get();
-
-            if (jsonObject != null)
-                finish();
-            else
-                Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        CreatePinTask task = new CreatePinTask(this, applicationUser.getToken());
+        task.execute(new AbstractMap.SimpleEntry<>("name", txtName.getText().toString()));
     }
 }
