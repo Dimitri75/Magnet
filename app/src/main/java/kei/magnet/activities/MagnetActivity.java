@@ -23,9 +23,9 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 import java.util.List;
 
-import kei.magnet.WifiConnector;
-import kei.magnet.Compass;
-import kei.magnet.GPSHandler;
+import kei.magnet.utils.WifiConnector;
+import kei.magnet.utils.Compass;
+import kei.magnet.utils.GPSHandler;
 import kei.magnet.R;
 import kei.magnet.classes.ApplicationUser;
 import kei.magnet.classes.Location;

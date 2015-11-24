@@ -8,7 +8,6 @@ import org.json.JSONObject;
 
 import java.util.AbstractMap;
 
-import kei.magnet.JSONTask;
 import kei.magnet.activities.MagnetActivity;
 import kei.magnet.classes.ApplicationUser;
 

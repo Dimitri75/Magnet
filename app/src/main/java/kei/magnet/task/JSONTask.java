@@ -1,4 +1,4 @@
-package kei.magnet;
+package kei.magnet.task;
 
 import android.app.Activity;
 import android.net.Uri;

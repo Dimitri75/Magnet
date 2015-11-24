@@ -5,8 +5,6 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
-import kei.magnet.JSONTask;
-
 /**
  * Created by .Sylvain on 24/11/2015.
  */

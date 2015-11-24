@@ -1,15 +1,11 @@
 package kei.magnet.task;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.widget.Toast;
 
 import org.json.JSONObject;
 
 import java.util.AbstractMap;
-
-import kei.magnet.JSONTask;
-import kei.magnet.activities.SignInActivity;
 
 /**
  * Created by .Sylvain on 23/11/2015.

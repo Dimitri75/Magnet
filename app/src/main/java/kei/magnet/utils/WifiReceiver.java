@@ -1,4 +1,4 @@
-package kei.magnet;
+package kei.magnet.utils;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

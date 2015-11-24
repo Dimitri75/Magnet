@@ -7,8 +7,6 @@ import org.json.JSONObject;
 
 import java.util.AbstractMap;
 
-import kei.magnet.JSONTask;
-
 /**
  * Created by .Sylvain on 23/11/2015.
  */

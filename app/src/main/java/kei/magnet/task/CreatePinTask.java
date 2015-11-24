@@ -5,9 +5,6 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
-import java.util.List;
-
-import kei.magnet.JSONTask;
 import kei.magnet.classes.ApplicationUser;
 import kei.magnet.classes.Group;
 import kei.magnet.classes.Pin;

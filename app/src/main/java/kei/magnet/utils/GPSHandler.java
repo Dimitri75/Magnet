@@ -1,4 +1,4 @@
-package kei.magnet;
+package kei.magnet.utils;
 
 import android.content.IntentSender;
 import android.graphics.Bitmap;
@@ -28,6 +28,7 @@ import org.json.JSONObject;
 import java.util.AbstractMap;
 import java.util.List;
 
+import kei.magnet.R;
 import kei.magnet.activities.MagnetActivity;
 import kei.magnet.classes.ApplicationUser;
 import kei.magnet.classes.Group;
