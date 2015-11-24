@@ -9,7 +9,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_group_update"
     tools:context="kei.magnet.activities.GroupUpdateActivity"
-    android:background="#f86bff">
+    android:background="#ff9f6b">
 
     <ImageView
         android:layout_width="150dp"

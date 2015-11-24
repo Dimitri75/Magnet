@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Authentification"
+        android:text="Inscription"
         android:id="@+id/sign_up_textView"
         android:layout_below="@+id/imageView"
         android:layout_alignParentLeft="true"
