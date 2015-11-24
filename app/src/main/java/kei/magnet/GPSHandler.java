@@ -117,7 +117,6 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
     }
 
     private void drawMarker(User user) {
-
         MarkerOptions markerOptions = new MarkerOptions().position(user.getLatLng())
                 .title(user.getLogin());
         Bitmap userIcon = BitmapFactory.decodeResource(parentActivity.getResources(), R.drawable.pin56);
