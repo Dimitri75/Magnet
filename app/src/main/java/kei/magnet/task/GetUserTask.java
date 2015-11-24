@@ -37,10 +37,10 @@ public class GetUserTask extends JSONTask {
             Toast.makeText(getActivity(), getException().getMessage(), Toast.LENGTH_LONG).show();
         }
         else if (userJSON != null) {
-            ApplicationUser applicationUser = new ApplicationUser(userJSON);
+            ApplicationUser applicationUser = ApplicationUser.GetInstance();
+            applicationUser.init(userJSON);
             applicationUser.setToken(token);
             Intent intent = new Intent(getActivity(), MagnetActivity.class);
-            intent.putExtra("applicationUser", applicationUser);
             getActivity().startActivity(intent);
         } else
             Toast.makeText(getActivity().getApplicationContext(), "Fail Get User", Toast.LENGTH_SHORT).show();

@@ -21,6 +21,10 @@ public class User implements Parcelable {
     }
 
     public User(JSONObject jsonObject){
+        init(jsonObject);
+    }
+
+    protected void init(JSONObject jsonObject) {
         try {
             this.id = jsonObject.getInt("id");
             this.login = jsonObject.getString("login");

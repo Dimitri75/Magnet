@@ -54,9 +54,7 @@ public class PinCreationActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if ((applicationUser = (ApplicationUser) getIntent().getExtras().get("applicationUser")) == null||
-                (location = (Location) getIntent().getExtras().get("location")) == null)
-            finish();
+        applicationUser = ApplicationUser.GetInstance();
 
         txtName = (EditText) findViewById(R.id.pin_creation_editText_PIN_NAME);
         txtDescription = (EditText) findViewById(R.id.pin_creation_editText_DESCRIPTION);

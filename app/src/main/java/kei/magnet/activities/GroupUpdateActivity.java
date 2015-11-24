@@ -32,9 +32,7 @@ public class GroupUpdateActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if ((applicationUser = (ApplicationUser) getIntent().getExtras().get("applicationUser")) == null ||
-                (group = (Group) getIntent().getExtras().get("group")) == null)
-            finish();
+        applicationUser = ApplicationUser.GetInstance();
 
         txtName = (EditText) findViewById(R.id.group_creation_editText_GROUPNAME);
     }

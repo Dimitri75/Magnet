@@ -52,9 +52,6 @@ public class MagnetActivity extends AppCompatActivity {
     private CustomDrawerAdapter adapter;
     private List<DrawerItem> dataList;
 
-    private String groupURL = "http://91.121.161.11/group";
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,8 +60,7 @@ public class MagnetActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if ((applicationUser = (ApplicationUser) getIntent().getExtras().get("applicationUser")) == null)
-            finish();
+        applicationUser = ApplicationUser.GetInstance();
         Toast.makeText(this, ((Boolean) (applicationUser.getGroups().isEmpty())).toString(), Toast.LENGTH_LONG).show();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
@@ -100,8 +96,7 @@ public class MagnetActivity extends AppCompatActivity {
                 @Override
                 public void onMapLongClick(LatLng latLng) {
                     Intent intent = new Intent(getApplicationContext(), PinCreationActivity.class);
-                    intent.putExtra("applicationUser", applicationUser)
-                            .putExtra("location", new Location(latLng));
+                    intent.putExtra("location", new Location(latLng));
                     startActivity(intent);
                 }
             });

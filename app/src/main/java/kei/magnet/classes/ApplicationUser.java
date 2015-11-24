@@ -20,6 +20,7 @@ public class ApplicationUser extends User{
     private String token;
     private List<Group> groups;
     private Group currentGroup;
+    private static ApplicationUser instance = null;
 
     public Group getCurrentGroup() {
         return currentGroup;
@@ -29,8 +30,20 @@ public class ApplicationUser extends User{
         this.currentGroup = currentGroup;
     }
 
-    public ApplicationUser(JSONObject jsonObject){
-        super(jsonObject);
+    public static ApplicationUser GetInstance() {
+        if(instance == null) {
+            instance = new ApplicationUser();
+        }
+
+        return instance;
+    }
+
+    private ApplicationUser() {
+        token = null;
+    }
+
+    public void init(JSONObject jsonObject){
+        super.init(jsonObject);
 
         groups = new ArrayList<>();
 
