@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import org.json.JSONObject;
@@ -15,6 +16,7 @@ import kei.magnet.R;
 
 public class GroupCreationActivity extends AppCompatActivity {
     private static String URL = "http://bardin.sylvain.perso.sfr.fr/";
+    private EditText txtName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +24,8 @@ public class GroupCreationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_group_creation);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        txtName = (EditText) findViewById(R.id.group_creation_editText_GROUPNAME);
     }
 
     public void onClick_submit(View V) {

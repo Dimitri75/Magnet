@@ -17,6 +17,4 @@
 
     <include layout="@layout/content_pin_creation" />
 
-
-
 </android.support.design.widget.CoordinatorLayout>
