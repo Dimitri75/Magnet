@@ -17,6 +17,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +28,8 @@ import kei.magnet.Compass;
 import kei.magnet.GPSHandler;
 import kei.magnet.R;
 import kei.magnet.classes.ApplicationUser;
+import kei.magnet.classes.Location;
+import kei.magnet.fragments.AddUserFragment;
 import kei.magnet.fragments.CustomDrawerAdapter;
 import kei.magnet.fragments.DrawerItem;
 import kei.magnet.fragments.FragmentOne;
@@ -60,7 +65,7 @@ public class MagnetActivity extends AppCompatActivity {
 
         if ((applicationUser = (ApplicationUser) getIntent().getExtras().get("applicationUser")) == null)
             finish();
-        Toast.makeText(this,((Boolean)(applicationUser.getGroups().isEmpty())).toString(),Toast.LENGTH_LONG).show();
+        Toast.makeText(this, ((Boolean) (applicationUser.getGroups().isEmpty())).toString(), Toast.LENGTH_LONG).show();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 toolbar, R.string.drawer_open, R.string.drawer_close) {
@@ -90,7 +95,16 @@ public class MagnetActivity extends AppCompatActivity {
 
         try {
             //Toast.makeText(this, applicationUser.getGroups().get(0).getCreator().getLogin(),Toast.LENGTH_LONG).show();
-            gpsHandler = new GPSHandler(this,applicationUser);
+            gpsHandler = new GPSHandler(this, applicationUser);
+            gpsHandler.getGoogleMap().setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                @Override
+                public void onMapLongClick(LatLng latLng) {
+                    Intent intent = new Intent(getApplicationContext(), PinCreationActivity.class);
+                    intent.putExtra("applicationUser", applicationUser)
+                            .putExtra("location", new Location(latLng));
+                    startActivity(intent);
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -304,6 +318,8 @@ public class MagnetActivity extends AppCompatActivity {
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
             SelectItem(position);
+            AddUserFragment dialog = new AddUserFragment();
+            dialog.show(getFragmentManager(), "Add user");
         }
     }
 }

@@ -23,6 +23,7 @@ import kei.magnet.R;
 import kei.magnet.classes.ApplicationUser;
 import kei.magnet.classes.Group;
 import kei.magnet.classes.Location;
+import kei.magnet.task.UpdateUserTask;
 
 public class PinCreationActivity extends AppCompatActivity {
     private static String URL = "http://bardin.sylvain.perso.sfr.fr/pin/";
@@ -41,7 +42,8 @@ public class PinCreationActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if ((applicationUser = (ApplicationUser) getIntent().getExtras().get("applicationUser")) == null)
+        if ((applicationUser = (ApplicationUser) getIntent().getExtras().get("applicationUser")) == null||
+                (location = (Location) getIntent().getExtras().get("location")) == null)
             finish();
 
         txtName = (EditText) findViewById(R.id.pin_creation_editText_PIN_NAME);
@@ -59,16 +61,20 @@ public class PinCreationActivity extends AppCompatActivity {
 
     public void onClick_submit(View V){
         try {
+            JSONObject locationJSON = new JSONObject();
+            locationJSON.put("latitude", location.getLatitude());
+            locationJSON.put("longitude", location.getLongitude());
+
             JSONObject jsonObject = JSONTask.getTask().execute(
                     new AbstractMap.SimpleEntry<>("url", URL + applicationUser.getToken()),
                     new AbstractMap.SimpleEntry<>("method", "POST"),
                     new AbstractMap.SimpleEntry<>("request", "body"),
                     new AbstractMap.SimpleEntry<>("name", txtName.getText().toString()),
                     new AbstractMap.SimpleEntry<>("description", txtDescription.getText().toString()),
-                    new AbstractMap.SimpleEntry<>("location", "location"),
+                    new AbstractMap.SimpleEntry<>("location", locationJSON.toString()),
                     new AbstractMap.SimpleEntry<>("creation_time", activationDate.toString()),
                     new AbstractMap.SimpleEntry<>("deletion_time", expirationDate.toString()),
-                    new AbstractMap.SimpleEntry<>("group_id", "0")
+                    new AbstractMap.SimpleEntry<>("group_id", String.valueOf(((Group) spinnerGroups.getSelectedItem()).getId()))
             ).get();
 
             if (jsonObject != null)

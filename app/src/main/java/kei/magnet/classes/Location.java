@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,6 +23,10 @@ public class Location implements Parcelable{
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+    public Location(LatLng latLng){
+        this.latitude = latLng.latitude;
+        this.longitude = latLng.longitude;
     }
 
     public Location(double latitude, double longitude){

@@ -47,6 +47,10 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
     private FragmentActivity parentActivity;
     private ApplicationUser applicationUser;
 
+    public GoogleMap getGoogleMap() {
+        return googleMap;
+    }
+
     public GPSHandler(FragmentActivity parentActivity, ApplicationUser user) {
 
         this.parentActivity = parentActivity;
