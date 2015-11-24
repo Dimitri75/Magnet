@@ -28,8 +28,9 @@
         android:id="@+id/groupLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/holo_green_dark"
-        android:orientation="vertical">
+        android:background="#75baff"
+        android:orientation="vertical"
+        android:padding="8dp">
 
         <TextView
             android:id="@+id/groupTitle"
@@ -44,15 +45,17 @@
         android:id="@+id/userLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/holo_blue_bright"
-        android:orientation="vertical">
+        android:background="#d5eaff"
+        android:orientation="vertical"
+        android:padding="8dp">
 
         <TextView
             android:id="@+id/userTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:layout_marginLeft="10dp"/>
 
     </LinearLayout>
 
