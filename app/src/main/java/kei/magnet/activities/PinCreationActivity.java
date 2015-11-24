@@ -45,7 +45,7 @@ public class PinCreationActivity extends AppCompatActivity {
             finish();
 
         txtName = (EditText) findViewById(R.id.pin_creation_editText_PIN_NAME);
-        txtDescription = (EditText) findViewById(R.id.pin_creation_editText_DESCRITPION);
+        txtDescription = (EditText) findViewById(R.id.pin_creation_editText_DESCRIPTION);
         activationDate = (DatePicker) findViewById(R.id.pin_creation_datePicker_ACTIVATION);
         expirationDate = (DatePicker) findViewById(R.id.pin_creation_datePicker_EXPIRATION);
         spinnerGroups = (Spinner) findViewById(R.id.pin_creation_spinner_GROUP);

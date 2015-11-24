@@ -83,7 +83,6 @@ public class MagnetActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-
         //bluetoothConnector = new BluetoothConnector(this);
 
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
@@ -95,13 +94,6 @@ public class MagnetActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-//        JSONObject groupJSON = JSONTask.getInstance().execute(  //TODO à changer en fonction de si on utilise ApplicationUser ou User ou même autre chose
-//            new AbstractMap.SimpleEntry<>("url", groupURL),
-//            new AbstractMap.SimpleEntry<>("method", "GET"),
-//            new AbstractMap.SimpleEntry<>("request", "slash"),
-//            new AbstractMap.SimpleEntry<>("token", )
-//        );
 
         // Initializing
         dataList = new ArrayList<DrawerItem>();
