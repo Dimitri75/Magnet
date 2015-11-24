@@ -11,7 +11,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="kei.magnet.activities.SignInActivity"
     tools:showIn="@layout/activity_sign_in"
-    android:background="#fac055">
+    android:background="#ff6e66">
 
     <ImageView
         android:layout_width="150dp"
