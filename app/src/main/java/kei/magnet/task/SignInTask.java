@@ -13,7 +13,7 @@ import kei.magnet.JSONTask;
  * Created by .Sylvain on 23/11/2015.
  */
 public class SignInTask extends JSONTask {
-    private static String URL = "http://bardin.sylvain.perso.sfr.fr/user";
+    private static String URL = "http://bardin.sylvain.perso.sfr.fr/user/";
 
     public SignInTask(Activity activity) {
         super(activity);

@@ -16,7 +16,7 @@ import kei.magnet.classes.ApplicationUser;
  * Created by .Sylvain on 23/11/2015.
  */
 public class GetUserTask extends JSONTask {
-    private static String URL = "http://bardin.sylvain.perso.sfr.fr/user";
+    private static String URL = "http://bardin.sylvain.perso.sfr.fr/user/";
     private String token;
 
     public GetUserTask(Activity activity) {
