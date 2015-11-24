@@ -26,7 +26,6 @@ public class ApplicationUser extends User{
         groups = new ArrayList<>();
 
         try {
-            this.token = jsonObject.getString("token");
 
             JSONArray array = jsonObject.getJSONArray("groups");
             for (int i = 0; i < array.length(); i++){

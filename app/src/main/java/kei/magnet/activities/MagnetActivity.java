@@ -60,7 +60,7 @@ public class MagnetActivity extends AppCompatActivity {
 
         if ((applicationUser = (ApplicationUser) getIntent().getExtras().get("applicationUser")) == null)
             finish();
-
+        Toast.makeText(this,((Boolean)(applicationUser.getGroups().isEmpty())).toString(),Toast.LENGTH_LONG).show();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 toolbar, R.string.drawer_open, R.string.drawer_close) {

@@ -89,18 +89,20 @@ public class Group implements Parcelable {
 
         Bundle b = new Bundle();
         b.putParcelable("creator", creator);
-        b.putParcelableArrayList("users", (ArrayList)users);
+        b.putParcelableArrayList("users", (ArrayList) users);
         dest.writeBundle(b);
     }
 
     /**
      * Instanciate a Group using Parcelable
+     *
      * @param in
      */
     public Group(Parcel in) {
         name = in.readString();
 
         Bundle b = in.readBundle(User.class.getClassLoader());
+
         creator = b.getParcelable("creator");
         users = b.getParcelableArrayList("users");
     }
