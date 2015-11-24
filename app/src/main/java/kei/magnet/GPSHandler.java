@@ -1,6 +1,8 @@
 package kei.magnet;
 
 import android.content.IntentSender;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -15,6 +17,8 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -61,7 +65,7 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
                 .setFastestInterval(1); // 1 second, in milliseconds
     }
 
-    public void rotateMap(float bearing){
+    public void rotateMap(float bearing) {
 
         CameraPosition pos = CameraPosition.builder(googleMap.getCameraPosition()).bearing(bearing)
                 .build();
@@ -75,16 +79,12 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
             mGoogleApiClient.disconnect();
         }
-        //m.unregisterListener(compass);
     }
 
-    public void onResume( ) {
+    public void onResume() {
         setUpMapIfNeeded();
         mGoogleApiClient.connect();
-        //m.registerListener(compass, m.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_FASTEST);
-        //m.registerListener(compass, m.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD), SensorManager.SENSOR_DELAY_FASTEST);
     }
-
 
 
     @Override
@@ -92,43 +92,46 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
         Log.i(TAG, "Location services connected.");
         Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-
-        if (location != null){
-            handleNewLocation(getLatLng(location));
-        }
+        applicationUser.setLocation(new kei.magnet.classes.Location(location.getLatitude(), location.getLongitude()));
+        updateMarkers(true);
     }
 
-    public void updateMarkers(){
-
-        List<Group> groups = applicationUser.getGroups();
+    public void updateMarkers(boolean isAppUsrRequest) {
         googleMap.clear();
 
-        handleNewLocation(applicationUser.getLatLng());
-        for (Group group:groups) {
-            if(group!=null && group.getUsers()!=null){
-                for (User user : group.getUsers()){
-                    MarkerOptions markerOptions = new MarkerOptions()
-                            .position(new LatLng(user.getLocation().getLatitude(), user.getLocation().getLongitude()))
-                            .title(user.getLogin());
-                    googleMap.addMarker(markerOptions);
+        List<Group> groups = applicationUser.getGroups();
+        drawMarker(applicationUser);
+
+        //if (!isAppUsrRequest) {
+            for (Group group : groups) {
+                if (group != null && group.getUsers() != null) {
+                    for (User user : group.getUsers()) {
+                        drawMarker(user);
+                    }
+                } else {
+                    Toast.makeText(parentActivity.getApplicationContext(),";(",Toast.LENGTH_LONG).show();
                 }
-
-            }else{
-                //Toast.makeText(parentActivity.getApplicationContext(),";(",Toast.LENGTH_LONG).show();
             }
-        }
+        //}
+
     }
 
-    private void handleNewLocation(LatLng latLng) {
-        if (marker != null)
-            marker.remove();
+    private void drawMarker(User user) {
 
-        MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("I am here !");
-        marker = googleMap.addMarker(markerOptions);
-        marker.setPosition(latLng);
+        MarkerOptions markerOptions = new MarkerOptions().position(user.getLatLng())
+                .title(user.getLogin());
+        Bitmap userIcon = BitmapFactory.decodeResource(parentActivity.getResources(), R.drawable.pin56);
+        if (user instanceof ApplicationUser)
+            userIcon = BitmapFactory.decodeResource(parentActivity.getResources(), R.drawable.map_marker_appusr);
+
+        userIcon = Bitmap.createScaledBitmap(userIcon, userIcon.getWidth() / 10, userIcon.getHeight() / 10, false);
+
+        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(userIcon));
+
+        googleMap.addMarker(markerOptions);
     }
 
-    private LatLng getLatLng(Location location){
+    private LatLng getLatLng(Location location) {
         return new LatLng(location.getLatitude(), location.getLongitude());
     }
 
@@ -165,10 +168,14 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 
     @Override
     public void onLocationChanged(Location location) {
-        if (applicationUser == null || applicationUser.getLocation() == null|| location == null)
+        if (applicationUser == null || applicationUser.getLocation() == null || location == null)
             return;
         applicationUser.setLocation(new kei.magnet.classes.Location(location.getLatitude(), location.getLongitude()));
-        updateMarkers();
+        updateMarkers(true);
 
     }
 }
+//bou:aad97bf7214c1bb0f81af4de6f22ae4e9246cd2af3d5563221fc4e8e25c203a2
+//bob:e86158e1d323b5618af99e9879a5b39dd74c77b6844411648113ccab24a21759
+//alice:3462361cc6a1b19cc19dc0fa1445a48921f441c0fcc43922c9c6db87dc1e0efe
+//oscar:4e81c23e3c33027fe188099a1c7433f43ee3542e07a27148e6c5feeec47b4150

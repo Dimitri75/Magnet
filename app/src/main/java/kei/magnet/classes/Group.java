@@ -23,7 +23,7 @@ public class Group implements Parcelable {
         try {
             name = jsonObject.getString("name");
             users = new ArrayList<>();
-            creator = new User(jsonObject.getJSONObject("user"));
+            creator = new User(jsonObject.getJSONObject("creator"));
 
             JSONArray array = jsonObject.getJSONArray("users");
             for (int i = 0; i < array.length(); i++) {
@@ -101,7 +101,7 @@ public class Group implements Parcelable {
 
         Bundle b = in.readBundle(User.class.getClassLoader());
         creator = b.getParcelable("creator");
-        users = b.getParcelableArrayList("rounds");
+        users = b.getParcelableArrayList("users");
     }
 
     public static final Parcelable.Creator<Group> CREATOR = new Parcelable.Creator<Group>() {

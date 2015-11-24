@@ -51,9 +51,7 @@ public class ApplicationUser extends User{
         return groups;
     }
 
-    public LatLng getLatLng(){
-        return new LatLng(getLocation().getLatitude(),  getLocation().getLongitude());
-    }
+
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
