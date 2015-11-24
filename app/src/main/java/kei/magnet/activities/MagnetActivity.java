@@ -125,9 +125,9 @@ public class MagnetActivity extends AppCompatActivity {
     public List<DrawerItem> formatGroupsInDataList(List<Group> groups){
         dataList = new ArrayList<DrawerItem>();
         for(Group group : groups){
-            dataList.add(new DrawerItem(group.toString(), NavigationDrawerType.GROUP));
+            dataList.add(new DrawerItem(group, NavigationDrawerType.GROUP));
             for(User user : group.getUsers()){
-                dataList.add(new DrawerItem(user.getLogin(), NavigationDrawerType.USER));
+                dataList.add(new DrawerItem(user, NavigationDrawerType.USER));
             }
         }
         return dataList;
