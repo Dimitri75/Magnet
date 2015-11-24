@@ -19,6 +19,15 @@ import java.util.List;
 public class ApplicationUser extends User{
     private String token;
     private List<Group> groups;
+    private Group currentGroup;
+
+    public Group getCurrentGroup() {
+        return currentGroup;
+    }
+
+    public void setCurrentGroup(Group currentGroup) {
+        this.currentGroup = currentGroup;
+    }
 
     public ApplicationUser(JSONObject jsonObject){
         super(jsonObject);
@@ -49,6 +58,8 @@ public class ApplicationUser extends User{
     public List<Group> getGroups() {
         return groups;
     }
+
+
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {

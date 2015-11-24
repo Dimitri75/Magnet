@@ -6,6 +6,7 @@ import android.widget.Toast;
 import org.json.JSONObject;
 
 import kei.magnet.JSONTask;
+import kei.magnet.activities.PinCreationActivity;
 
 /**
  * Created by .Sylvain on 24/11/2015.
@@ -25,6 +26,8 @@ public class CreatePinTask extends JSONTask {
             Toast.makeText(getActivity(), getException().getMessage(), Toast.LENGTH_LONG).show();
         }
         else if (jsonUser != null) {
+            //((PinCreationActivity)getActivity()).getApplicationUser().getCurrentGroup();
+
             getActivity().finish();
         } else
             Toast.makeText(getActivity().getApplicationContext(), "Fail Sign Up", Toast.LENGTH_SHORT).show();

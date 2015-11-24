@@ -35,6 +35,10 @@ public class PinCreationActivity extends AppCompatActivity {
     private DatePicker expirationDate;
     private Location location;
 
+    public ApplicationUser getApplicationUser() {
+        return applicationUser;
+    }
+
     //2015-11-24 07:18:07
     private String datePickerToString(DatePicker picker) {
         StringBuilder sb = new StringBuilder(picker.getYear());

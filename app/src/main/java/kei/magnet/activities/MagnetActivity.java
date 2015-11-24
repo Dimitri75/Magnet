@@ -154,6 +154,7 @@ public class MagnetActivity extends AppCompatActivity {
         super.onResume();
         gpsHandler.onResume();
         compass.onResume();
+
         //bluetoothConnector.onResume();
     }
 
@@ -318,8 +319,10 @@ public class MagnetActivity extends AppCompatActivity {
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
             SelectItem(position);
+
             AddUserFragment dialog = new AddUserFragment();
             dialog.show(getFragmentManager(), "Add user");
+
         }
     }
 }

@@ -19,21 +19,34 @@ public class Group implements Parcelable {
     private User creator;
     private String name;
     private List<User> users;
+    private List<Pin> pins;
+
+    public List<Pin> getPins() {
+        return pins;
+    }
 
     public Group(JSONObject jsonObject) {
         try {
             id = jsonObject.getInt("id");
             name = jsonObject.getString("name");
             users = new ArrayList<>();
+            pins = new ArrayList<>();
             creator = new User(jsonObject.getJSONObject("creator"));
 
-            JSONArray array = jsonObject.getJSONArray("users");
-            for (int i = 0; i < array.length(); i++) {
-                User user = new User(array.getJSONObject(i));
+            JSONArray arrayUsers = jsonObject.getJSONArray("users");
+            for (int i = 0; i < arrayUsers.length(); i++) {
+                User user = new User(arrayUsers.getJSONObject(i));
                 users.add(user);
+            }
+
+            JSONArray arrayPins = jsonObject.getJSONArray("pins");
+            for (int i = 0; i < arrayPins.length(); i++) {
+                Pin pin = new Pin(arrayPins.getJSONObject(i));
+                pins.add(pin);
             }
         } catch (JSONException e) {
             e.printStackTrace();
+
         }
     }
 
@@ -90,6 +103,7 @@ public class Group implements Parcelable {
         Bundle b = new Bundle();
         b.putParcelable("creator", creator);
         b.putParcelableArrayList("users", (ArrayList) users);
+        b.putParcelableArrayList("pins", (ArrayList) pins);
         dest.writeBundle(b);
     }
 
@@ -105,6 +119,7 @@ public class Group implements Parcelable {
         Bundle b = in.readBundle(User.class.getClassLoader());
         creator = b.getParcelable("creator");
         users = b.getParcelableArrayList("users");
+        pins = b.getParcelableArrayList("pins");
     }
 
     public static final Parcelable.Creator<Group> CREATOR = new Parcelable.Creator<Group>() {
