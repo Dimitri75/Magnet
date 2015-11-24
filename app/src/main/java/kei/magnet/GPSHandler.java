@@ -115,11 +115,8 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 
             }else{
                 //Toast.makeText(parentActivity.getApplicationContext(),";(",Toast.LENGTH_LONG).show();
-
             }
-
         }
-
     }
 
     private void handleNewLocation(LatLng latLng) {

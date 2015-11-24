@@ -17,13 +17,17 @@ import java.util.List;
  * Created by Dimitri on 27/10/2015.
  */
 public class ApplicationUser extends User{
+    private String token;
     private List<Group> groups;
 
     public ApplicationUser(JSONObject jsonObject){
         super(jsonObject);
+
         groups = new ArrayList<>();
 
         try {
+            this.token = jsonObject.getString("token");
+
             JSONArray array = jsonObject.getJSONArray("groups");
             for (int i = 0; i < array.length(); i++){
                 Group group = new Group(array.getJSONObject(i));
@@ -33,6 +37,14 @@ public class ApplicationUser extends User{
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public List<Group> getGroups() {
@@ -47,6 +59,7 @@ public class ApplicationUser extends User{
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
 
+        dest.writeString(token);
         Bundle b = new Bundle();
         b.putParcelableArrayList("groups", (ArrayList) groups);
         dest.writeBundle(b);
@@ -59,6 +72,7 @@ public class ApplicationUser extends User{
     public ApplicationUser(Parcel in) {
         super(in);
 
+        token = in.readString();
         Bundle b = in.readBundle(Group.class.getClassLoader());
         groups = b.getParcelableArrayList("groups");
     }

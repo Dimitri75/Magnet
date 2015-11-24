@@ -9,13 +9,16 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.AbstractMap;
 
 import kei.magnet.JSONTask;
 import kei.magnet.R;
+import kei.magnet.classes.ApplicationUser;
 
 public class GroupCreationActivity extends AppCompatActivity {
-    private static String URL = "http://bardin.sylvain.perso.sfr.fr/";
+    private static String URL = "http://bardin.sylvain.perso.sfr.fr/group/";
+    private ApplicationUser applicationUser;
     private EditText txtName;
 
     @Override
@@ -31,9 +34,9 @@ public class GroupCreationActivity extends AppCompatActivity {
     public void onClick_submit(View V) {
         try {
             JSONObject jsonObject = JSONTask.getTask().execute(
-                    new AbstractMap.SimpleEntry<>("url", URL),
+                    new AbstractMap.SimpleEntry<>("url", URL + applicationUser.getToken()),
                     new AbstractMap.SimpleEntry<>("method", "POST"),
-                    new AbstractMap.SimpleEntry<>("request", "slash"),
+                    new AbstractMap.SimpleEntry<>("request", "body"),
                     new AbstractMap.SimpleEntry<>("name", txtName.getText().toString())
             ).get();
 
