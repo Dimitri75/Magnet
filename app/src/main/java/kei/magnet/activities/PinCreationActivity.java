@@ -1,6 +1,5 @@
 package kei.magnet.activities;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -8,23 +7,17 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.AbstractMap;
 
-import kei.magnet.JSONTask;
 import kei.magnet.R;
 import kei.magnet.classes.ApplicationUser;
 import kei.magnet.classes.Group;
 import kei.magnet.classes.Location;
 import kei.magnet.task.CreatePinTask;
-import kei.magnet.task.UpdateUserTask;
 
 public class PinCreationActivity extends AppCompatActivity {
     private ApplicationUser applicationUser;
@@ -54,7 +47,7 @@ public class PinCreationActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        applicationUser = ApplicationUser.GetInstance();
+        applicationUser = ApplicationUser.getInstance();
 
         txtName = (EditText) findViewById(R.id.pin_creation_editText_PIN_NAME);
         txtDescription = (EditText) findViewById(R.id.pin_creation_editText_DESCRIPTION);

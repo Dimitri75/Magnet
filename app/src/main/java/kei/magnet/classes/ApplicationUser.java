@@ -19,22 +19,12 @@ import java.util.List;
 public class ApplicationUser extends User{
     private String token;
     private List<Group> groups;
-    private Group currentGroup;
     private static ApplicationUser instance = null;
 
-    public Group getCurrentGroup() {
-        return currentGroup;
-    }
-
-    public void setCurrentGroup(Group currentGroup) {
-        this.currentGroup = currentGroup;
-    }
-
-    public static ApplicationUser GetInstance() {
+    public static ApplicationUser getInstance() {
         if(instance == null) {
             instance = new ApplicationUser();
         }
-
         return instance;
     }
 

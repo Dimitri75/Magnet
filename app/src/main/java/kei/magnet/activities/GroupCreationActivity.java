@@ -5,14 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import org.json.JSONObject;
-
-import java.io.File;
 import java.util.AbstractMap;
 
-import kei.magnet.JSONTask;
 import kei.magnet.R;
 import kei.magnet.classes.ApplicationUser;
 import kei.magnet.task.CreatePinTask;
@@ -29,7 +24,7 @@ public class GroupCreationActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        applicationUser = ApplicationUser.GetInstance();
+        applicationUser = ApplicationUser.getInstance();
         
         txtName = (EditText) findViewById(R.id.group_creation_editText_GROUPNAME);
     }
