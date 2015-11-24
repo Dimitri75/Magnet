@@ -22,9 +22,9 @@ public class DrawerItem {
         this.isSpinner = isSpinner;
     }
 
-    public DrawerItem(String title, NavigationDrawerType type) {
+    public DrawerItem(Object object, NavigationDrawerType type) {
         this(null, 0);
-        this.title = title;
+        this.title = object.toString();
         this.type = type;
     }
 

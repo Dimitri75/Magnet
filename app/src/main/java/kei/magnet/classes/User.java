@@ -56,6 +56,11 @@ public class User implements Parcelable {
         return new LatLng(getLocation().getLatitude(),  getLocation().getLongitude());
     }
 
+    @Override
+    public String toString() {
+        return login;
+    }
+
     public void setLocation(Location location) {
         this.location = location;
     }

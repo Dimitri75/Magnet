@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -128,8 +129,8 @@ public class MagnetActivity extends AppCompatActivity {
         dataList = new ArrayList<DrawerItem>();
         for(Group group : groups){
             dataList.add(new DrawerItem(group.toString(), NavigationDrawerType.GROUP));
-            for(User u : group.getUsers()){
-                dataList.add(new DrawerItem(u.getLogin(), NavigationDrawerType.USER));
+            for(User user : group.getUsers()){
+                dataList.add(new DrawerItem(user.getLogin(), NavigationDrawerType.USER));
             }
         }
         return dataList;
