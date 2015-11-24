@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import java.util.AbstractMap;
 
+import kei.magnet.task.AddUserToGroupTask;
 import kei.magnet.task.JSONTask;
 import kei.magnet.R;
 import kei.magnet.classes.ApplicationUser;
@@ -35,31 +36,8 @@ public class GroupUpdateActivity extends AppCompatActivity {
     }
 
     public void onClick_submit(View V) {
-        try {
-            JSONObject jsonUser = JSONTask.getTask().execute(
-                    new AbstractMap.SimpleEntry<>("url", URL + "user/" +  txtName.getText().toString()),
-                    new AbstractMap.SimpleEntry<>("method", "GET"),
-                    new AbstractMap.SimpleEntry<>("request", "slash")
-            ).get();
-
-            if (jsonUser != null) {
-                JSONObject jsonObject = JSONTask.getTask().execute(
-                        new AbstractMap.SimpleEntry<>("url", URL + "user/" + group.getId() + "/user/" + applicationUser.getToken()),
-                        new AbstractMap.SimpleEntry<>("method", "POST"),
-                        new AbstractMap.SimpleEntry<>("request", "body"),
-                        new AbstractMap.SimpleEntry<>("id_user", String.valueOf(group.getId()))
-                ).get();
-
-                if (jsonObject != null)
-                    finish();
-                else
-                    Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
-            }
-            else
-                Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        AddUserToGroupTask task = new AddUserToGroupTask(this, applicationUser.getToken(), group.getId());
+        task.execute(new AbstractMap.SimpleEntry<>("login", txtName.getText().toString()));
     }
 
 }
