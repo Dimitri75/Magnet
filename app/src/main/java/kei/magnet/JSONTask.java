@@ -1,5 +1,6 @@
 package kei.magnet;
 
+import android.app.Activity;
 import android.net.Uri;
 import android.os.AsyncTask;
 
@@ -20,12 +21,61 @@ import java.util.AbstractMap;
  * Created by Suiken on 26/10/2015.
  */
 public class JSONTask extends AsyncTask<AbstractMap.SimpleEntry<String, String>, Void, JSONObject> {
+    private String url;
+    private String method;
+    private String request;
+    private Exception exception;
+    private Activity activity;
 
     private JSONTask(){
     }
 
+    public JSONTask(Activity activity) {
+        this.activity = activity;
+    }
+
     public static JSONTask getTask(){
         return new JSONTask();
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
+    public String getRequest() {
+        return request;
+    }
+
+    public void setRequest(String request) {
+        this.request = request;
+    }
+
+    public Exception getException() {
+        return exception;
+    }
+
+    public void setException(Exception exception) {
+        this.exception = exception;
+    }
+
+    public Activity getActivity() {
+        return activity;
+    }
+
+    public void setActivity(Activity activity) {
+        this.activity = activity;
     }
 
     /**
@@ -35,18 +85,18 @@ public class JSONTask extends AsyncTask<AbstractMap.SimpleEntry<String, String>,
     protected JSONObject doInBackground(AbstractMap.SimpleEntry<String, String>... entries) {
         JSONObject jsonObject = null;
         try {
-            if (entries[2].getValue().equals("slash")) {
+            if (getRequest().equals("slash")) {
                 jsonObject = getSlashJSONObject(entries);
-            } else if (entries[2].getValue().equals("body")) {
+            } else if (getRequest().equals("body")) {
                 jsonObject = getJSONObject(entries);
             }
         } catch (Exception e) {
-            System.out.println("Connection to " + entries[0].getValue() + " failed");
+            System.out.println("Connection to " + getUrl() + " failed");
         }
         return jsonObject;
     }
 
-    private static String convertStreamToString(InputStream is) {
+    private String convertStreamToString(InputStream is) {
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
@@ -68,15 +118,15 @@ public class JSONTask extends AsyncTask<AbstractMap.SimpleEntry<String, String>,
         return sb.toString();
     }
 
-    private static JSONObject getJSONObject(AbstractMap.SimpleEntry<String, String>... entries) {
+    private JSONObject getJSONObject(AbstractMap.SimpleEntry<String, String>... entries) {
         JSONObject jsonObject = null;
         try {
-            HttpURLConnection connection = (HttpURLConnection) new URL("/" + entries[0].getValue()).openConnection();
-            connection.setRequestMethod(entries[1].getValue().toString());
+            HttpURLConnection connection = (HttpURLConnection) new URL(getUrl()).openConnection();
+            connection.setRequestMethod(getMethod());
             connection.setDoInput(true);
 
             Uri.Builder builder = new Uri.Builder();
-            for (int i = 2; i < entries.length; i++) {
+            for (int i = 0; i < entries.length; i++) {
                 builder.appendQueryParameter(entries[i].getKey(), entries[i].getValue());
             }
             String query = builder.build().getEncodedQuery();
@@ -99,19 +149,18 @@ public class JSONTask extends AsyncTask<AbstractMap.SimpleEntry<String, String>,
         return jsonObject;
     }
 
-    private static JSONObject getSlashJSONObject(AbstractMap.SimpleEntry<String, String>... entries) {
+    private JSONObject getSlashJSONObject(AbstractMap.SimpleEntry<String, String>... entries) {
         JSONObject jsonObject = null;
         try {
 
-            StringBuilder sb = new StringBuilder();
-            sb.append(entries[0].getValue());
-            for (int i = 3; i < entries.length; i++) {
+            StringBuilder sb = new StringBuilder(getUrl());
+            for (int i = 0; i < entries.length; i++) {
                 sb.append("/");
                 sb.append(entries[i].getValue());
             }
 
             HttpURLConnection connection = (HttpURLConnection) new URL(sb.toString()).openConnection();
-            connection.setRequestMethod(entries[1].getValue().toString());
+            connection.setRequestMethod(getMethod());
             connection.setDoInput(true);
 
             connection.connect();

@@ -14,9 +14,9 @@ import java.util.AbstractMap;
 import kei.magnet.JSONTask;
 import kei.magnet.R;
 import kei.magnet.classes.ApplicationUser;
+import kei.magnet.task.SignInTask;
 
 public class SignInActivity extends AppCompatActivity {
-    private static String URL = "http://bardin.sylvain.perso.sfr.fr/user";
     private EditText txtLogin;
     private EditText txtPassword;
 
@@ -55,34 +55,9 @@ public class SignInActivity extends AppCompatActivity {
 
 
     public void onClick_submit(View V) {
-        try {
-            JSONObject tokenJSON = JSONTask.getTask().execute(
-                    new AbstractMap.SimpleEntry<>("url", URL),
-                    new AbstractMap.SimpleEntry<>("method", "GET"),
-                    new AbstractMap.SimpleEntry<>("request", "slash"),
-                    new AbstractMap.SimpleEntry<>("login", txtLogin.getText().toString()),
-                    new AbstractMap.SimpleEntry<>("password", txtPassword.getText().toString())
-            ).get();
-
-            if (tokenJSON != null) {
-
-                JSONObject userJSON = JSONTask.getTask().execute(
-                        new AbstractMap.SimpleEntry<>("url", URL),
-                        new AbstractMap.SimpleEntry<>("method", "GET"),
-                        new AbstractMap.SimpleEntry<>("request", "slash"),
-                        new AbstractMap.SimpleEntry<>("token", tokenJSON.getString("token"))
-                ).get();
-
-                ApplicationUser applicationUser = new ApplicationUser(userJSON);
-                Intent intent = new Intent(this, MagnetActivity.class);
-                intent.putExtra("applicationUser", applicationUser);
-                startActivity(intent);
-            } else
-                Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
-
-        } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "Connection to " + URL + " failed", Toast.LENGTH_SHORT).show();
-        }
+        SignInTask task = new SignInTask(this);
+        task.execute(new AbstractMap.SimpleEntry<>("login", txtLogin.getText().toString()),
+                     new AbstractMap.SimpleEntry<>("password", txtPassword.getText().toString()));
     }
 
     public void onClick_signUp(View v){
