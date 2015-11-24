@@ -89,7 +89,7 @@ class GroupControllerProvider implements ControllerProviderInterface {
          *
          * @apiParam {Integer} id       Id of the Group to update.
          * @apiParam {String}  token    Token of the User.
-         * @apiParam {Integer} id_user  Id of the User to add.
+         * @apiParam {Integer} login    Login of the User to add.
          *
          * @apiError TokenNotValid    The <code>token</code> given cannot authenticate the User.
          * @apiError ErrorWhileAdding The user couldn't be added.
@@ -118,16 +118,23 @@ class GroupControllerProvider implements ControllerProviderInterface {
                     }
 
                     if($userInGroup) {
-                        $newUser = $userDAO->find($request->get('id_user'));
-                        $groupUsers[] = $newUser;
-                        $group->setUsers($groupUsers);
-                        $groupId = $groupDAO->save($group);
-                        
-                        if($groupId !== null) {
-                            $result['message'] = 'User added to the group';
+                        $newUser = $userDAO->findByLogin($request->get('login'));
+
+                        if($newUser !== null) {
+                            $groupUsers[] = $newUser;
+                            $group->setUsers($groupUsers);
+                            $groupId = $groupDAO->save($group);
+                            
+                            if($groupId !== null) {
+                                $result['message'] = 'User added to the group';
+                            }
+                            else {
+                                $result['message'] = 'Error while adding the user.';
+                                $status = 400;
+                            }
                         }
                         else {
-                            $result['message'] = 'Error while adding the user.';
+                            $result['message'] = 'User to add cannot be found.';
                             $status = 400;
                         }
                     }

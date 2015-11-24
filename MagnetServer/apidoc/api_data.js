@@ -26,8 +26,8 @@ define({ "api": [
             "group": "Parameter",
             "type": "<p>Integer</p> ",
             "optional": false,
-            "field": "id_user",
-            "description": "<p>Id of the User to add.</p> "
+            "field": "login",
+            "description": "<p>Login of the User to add.</p> "
           }
         ]
       }

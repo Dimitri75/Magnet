@@ -63,7 +63,7 @@ class UserControllerProvider implements ControllerProviderInterface {
 			$userDAO = new GroupUserDAO();
 			$user = $userDAO->find($id);
 
-			if($user !== null && $user->getVisible()) {
+			if($user !== null) {
 				$result = $user;
 			}
 			else {
@@ -89,14 +89,14 @@ class UserControllerProvider implements ControllerProviderInterface {
 		 *
 		 * @apiError LoginNotFound The <code>login</code> doesn't match for any User.
 		 */
-        $controllers->get('/{login}', function(Request $request, $login) use($app) {
+        /*$controllers->get('/{login}', function(Request $request, $login) use($app) {
 			$result = array();
 			$status = 200;
 
 			$userDAO = new GroupUserDAO();
 			$user = $userDAO->findByLogin($login);
 
-			if($user !== null && $user->getVisible()) {
+			if($user !== null) {
 				$result = $user;
 			}
 			else {
@@ -105,7 +105,7 @@ class UserControllerProvider implements ControllerProviderInterface {
 			}
 
 			return $app->json($result, $status);
-		});
+		});*/
 
 		/**
 		 * @api {get} /user/:token Request User information
