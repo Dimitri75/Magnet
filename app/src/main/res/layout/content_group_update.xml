@@ -6,18 +6,9 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_group_update"
     tools:context="kei.magnet.activities.GroupUpdateActivity"
-    android:background="#ff9f6b">
-
-    <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:id="@+id/imageView"
-        android:background="@drawable/magnet"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+    android:background="#f2f9ff">
 
     <TextView
         android:textStyle="bold"
@@ -45,15 +36,5 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
-
-    <Button
-        android:onClick="onClick_submit"
-        android:layout_marginTop="30dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Submit"
-        android:id="@+id/group_update_button"
-        android:layout_below="@+id/group_update_editText_GROUPNAME"
-        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
