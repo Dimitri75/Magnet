@@ -12,6 +12,7 @@ import org.json.JSONObject;
  * Created by Dimitri on 27/10/2015.
  */
 public class User implements Parcelable {
+    private int id;
     private String login;
     private Location location;
 
@@ -21,6 +22,7 @@ public class User implements Parcelable {
 
     public User(JSONObject jsonObject){
         try {
+            this.id = jsonObject.getInt("id");
             this.login = jsonObject.getString("login");
 
             Location location = new Location(jsonObject.getJSONObject("location"));
@@ -30,9 +32,8 @@ public class User implements Parcelable {
         }
     }
 
-    public User(String login, Location location) {
-        this.login = login;
-        this.location = location;
+    public int getId() {
+        return id;
     }
 
     public String getLogin() {
@@ -77,6 +78,7 @@ public class User implements Parcelable {
      */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
         dest.writeString(login);
 
         Bundle b = new Bundle();
@@ -89,6 +91,7 @@ public class User implements Parcelable {
      * @param in
      */
     public User(Parcel in) {
+        this.id = in.readInt();
         this.login = in.readString();
 
         Bundle b = in.readBundle(Location.class.getClassLoader());

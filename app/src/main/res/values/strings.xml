@@ -24,4 +24,5 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_pin_creation">PinCreationActivity</string>
     <string name="title_activity_group_creation">GroupCreationActivity</string>
+    <string name="title_activity_group_update">GroupUpdateActivity</string>
 </resources>

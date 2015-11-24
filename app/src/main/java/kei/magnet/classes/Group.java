@@ -15,12 +15,14 @@ import java.util.List;
  * Created by Dimitri on 27/10/2015.
  */
 public class Group implements Parcelable {
-    User creator;
-    String name;
-    List<User> users;
+    private int id;
+    private User creator;
+    private String name;
+    private List<User> users;
 
     public Group(JSONObject jsonObject) {
         try {
+            id = jsonObject.getInt("id");
             name = jsonObject.getString("name");
             users = new ArrayList<>();
             creator = new User(jsonObject.getJSONObject("creator"));
@@ -35,16 +37,13 @@ public class Group implements Parcelable {
         }
     }
 
-
-    public Group(String name, User creator, List<User> users) {
-        this.name = name;
-        this.creator = creator;
-        this.users = users;
-    }
-
     @Override
     public String toString() {
         return name;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public User getCreator() {
@@ -85,6 +84,7 @@ public class Group implements Parcelable {
      */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
         dest.writeString(name);
 
         Bundle b = new Bundle();
@@ -99,10 +99,10 @@ public class Group implements Parcelable {
      * @param in
      */
     public Group(Parcel in) {
+        id = in.readInt();
         name = in.readString();
 
         Bundle b = in.readBundle(User.class.getClassLoader());
-
         creator = b.getParcelable("creator");
         users = b.getParcelableArrayList("users");
     }

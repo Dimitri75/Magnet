@@ -76,6 +76,11 @@
             android:label="@string/title_activity_group_creation"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
+        <activity
+            android:name=".activities.GroupUpdateActivity"
+            android:label="@string/title_activity_group_update"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>

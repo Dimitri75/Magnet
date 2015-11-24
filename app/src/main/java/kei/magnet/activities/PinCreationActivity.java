@@ -76,7 +76,7 @@ public class PinCreationActivity extends AppCompatActivity {
             else
                 Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "Connection to " + URL + " failed", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
         }
     }
 }
