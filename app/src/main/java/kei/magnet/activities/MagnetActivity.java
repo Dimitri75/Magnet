@@ -43,7 +43,6 @@ public class MagnetActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     public GPSHandler gpsHandler;
-    private WifiConnector wifiConnector;
     private Compass compass;
     private SensorManager mSensorManager;
     private ApplicationUser applicationUser;
@@ -62,6 +61,7 @@ public class MagnetActivity extends AppCompatActivity {
         applicationUser = ApplicationUser.getInstance();
         Toast.makeText(this, ((Boolean) (applicationUser.getGroups().isEmpty())).toString(), Toast.LENGTH_LONG).show();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 toolbar, R.string.drawer_open, R.string.drawer_close) {
 
@@ -84,7 +84,6 @@ public class MagnetActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
 
         //bluetoothConnector = new BluetoothConnector(this);
-
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         compass = new Compass(mSensorManager, this);
 
@@ -106,7 +105,7 @@ public class MagnetActivity extends AppCompatActivity {
         // Initializing
         dataList = new ArrayList<DrawerItem>();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        mDrawerList = (ListView) findViewById(R.id.custom_menu_listview);
 
         mDrawerLayout.setDrawerShadow(R.drawable.magnet, GravityCompat.START);
 
@@ -193,7 +192,6 @@ public class MagnetActivity extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
-
             if (dataList.get(position).getItem() instanceof Group) {
                 AddUserFragment dialog = new AddUserFragment();
                 Bundle bundle = new Bundle();
