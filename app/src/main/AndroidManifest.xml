@@ -44,7 +44,7 @@
             android:value="AIzaSyBKXn7rTc7QzcgJJOO1UzQ_E69_SoP0uG4" />
 
         <activity
-            android:name=".activities.SignInActivity"
+            android:name=".activities.MagnetActivity"
             android:label="Magnet"
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
@@ -54,18 +54,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.SignUpActivity"
+            android:name=".activities.SignInActivity"
             android:label="SignUpActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.MagnetActivity"
+            android:name=".activities.SignUpActivity"
             android:label="MagnetActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activities.MainActivity"
-            android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
         <activity
             android:name=".activities.PinCreationActivity"
             android:label="@string/title_activity_pin_creation"

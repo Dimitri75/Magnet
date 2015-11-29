@@ -33,6 +33,7 @@ public class ApplicationUser extends User{
     }
 
     public void init(JSONObject jsonObject){
+        token = null;
         super.init(jsonObject);
 
         groups = new ArrayList<>();

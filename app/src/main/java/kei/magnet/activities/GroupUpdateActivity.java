@@ -4,17 +4,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
-
-import org.json.JSONObject;
 
 import java.util.AbstractMap;
 
-import kei.magnet.task.AddUserToGroupTask;
-import kei.magnet.task.JSONTask;
 import kei.magnet.R;
 import kei.magnet.classes.ApplicationUser;
 import kei.magnet.classes.Group;
+import kei.magnet.task.AddUserToGroupTask;
 
 public class GroupUpdateActivity extends AppCompatActivity {
     private static String URL = "http://bardin.sylvain.perso.sfr.fr/";

@@ -1,7 +1,5 @@
 package kei.magnet.activities;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.hardware.SensorManager;
@@ -14,30 +12,26 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import kei.magnet.R;
+import kei.magnet.classes.ApplicationUser;
 import kei.magnet.classes.Group;
 import kei.magnet.classes.Location;
 import kei.magnet.classes.User;
 import kei.magnet.enumerations.NavigationDrawerType;
 import kei.magnet.fragments.AddUserFragment;
-import kei.magnet.utils.WifiConnector;
-import kei.magnet.utils.Compass;
-import kei.magnet.utils.GPSHandler;
-import kei.magnet.R;
-import kei.magnet.classes.ApplicationUser;
 import kei.magnet.fragments.CustomDrawerAdapter;
 import kei.magnet.fragments.DrawerItem;
+import kei.magnet.utils.Compass;
+import kei.magnet.utils.GPSHandler;
 
 public class MagnetActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
@@ -59,6 +53,13 @@ public class MagnetActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         applicationUser = ApplicationUser.getInstance();
+
+        if (applicationUser.getToken() == null){
+            Intent signInIntent = new Intent(getApplicationContext(), SignInActivity.class);
+            startActivity(signInIntent);
+            onPause();
+        }
+
         Toast.makeText(this, ((Boolean) (applicationUser.getGroups().isEmpty())).toString(), Toast.LENGTH_LONG).show();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -105,7 +106,7 @@ public class MagnetActivity extends AppCompatActivity {
         // Initializing
         dataList = new ArrayList<DrawerItem>();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.custom_menu_listview);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
         mDrawerLayout.setDrawerShadow(R.drawable.magnet, GravityCompat.START);
 
@@ -121,15 +122,24 @@ public class MagnetActivity extends AppCompatActivity {
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
     }
 
-    public List<DrawerItem> formatGroupsInDataList(List<Group> groups){
+    public List<DrawerItem> formatGroupsInDataList(List<Group> groups) {
         dataList = new ArrayList<DrawerItem>();
-        for(Group group : groups){
+        for (Group group : groups) {
             dataList.add(new DrawerItem(group, NavigationDrawerType.GROUP));
-            for(User user : group.getUsers()){
+            for (User user : group.getUsers()) {
                 dataList.add(new DrawerItem(user, NavigationDrawerType.USER));
             }
         }
         return dataList;
+    }
+
+
+    public void init(){
+
+    }
+    
+    public void initMenu(){
+
     }
 
     @Override
@@ -199,8 +209,7 @@ public class MagnetActivity extends AppCompatActivity {
                 dialog.setArguments(bundle);
 
                 dialog.show(getFragmentManager(), "Add user");
-            }
-            else
+            } else
                 Toast.makeText(getApplicationContext(), "Not a valid Group", Toast.LENGTH_LONG).show();
         }
     }
