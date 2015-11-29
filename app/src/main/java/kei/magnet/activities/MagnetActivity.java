@@ -34,13 +34,13 @@ import kei.magnet.utils.Compass;
 import kei.magnet.utils.GPSHandler;
 
 public class MagnetActivity extends AppCompatActivity {
-    private DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle mDrawerToggle;
+    private DrawerLayout menuLayout;
+    private ActionBarDrawerToggle actionBarButtonLink;
     public GPSHandler gpsHandler;
     private Compass compass;
-    private SensorManager mSensorManager;
+    private SensorManager sensorManager;
     private ApplicationUser applicationUser;
-    private ListView mDrawerList;
+    private ListView menuList;
     private CustomDrawerAdapter adapter;
     private List<DrawerItem> dataList;
     public static Group selectedGroup = null;
@@ -49,8 +49,22 @@ public class MagnetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_magnet);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        init();
+    }
+
+    public List<DrawerItem> formatGroupsInDataList(List<Group> groups) {
+        dataList = new ArrayList<>();
+        for (Group group : groups) {
+            dataList.add(new DrawerItem(group, NavigationDrawerType.GROUP));
+            for (User user : group.getUsers()) {
+                dataList.add(new DrawerItem(user, NavigationDrawerType.USER));
+            }
+        }
+        return dataList;
+    }
+
+
+    public void init(){
 
         applicationUser = ApplicationUser.getInstance();
 
@@ -61,9 +75,37 @@ public class MagnetActivity extends AppCompatActivity {
         }
 
         Toast.makeText(this, ((Boolean) (applicationUser.getGroups().isEmpty())).toString(), Toast.LENGTH_LONG).show();
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        compass = new Compass(sensorManager, this);
+
+        try {
+            gpsHandler = new GPSHandler(this, applicationUser);
+            gpsHandler.getGoogleMap().setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                @Override
+                public void onMapLongClick(LatLng latLng) {
+                    Intent intent = new Intent(getApplicationContext(), PinCreationActivity.class);
+                    intent.putExtra("location", new Location(latLng));
+                    startActivity(intent);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        initMenu();
+    }
+    
+    public void initMenu(){
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        menuLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        actionBarButtonLink = new ActionBarDrawerToggle(this, menuLayout,
                 toolbar, R.string.drawer_open, R.string.drawer_close) {
 
             /** Called when a drawer has settled in a completely closed state. */
@@ -79,67 +121,23 @@ public class MagnetActivity extends AppCompatActivity {
             }
         };
 
-        // Set the drawer toggle as the DrawerListener
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        menuLayout.setDrawerListener(actionBarButtonLink);
 
-        //bluetoothConnector = new BluetoothConnector(this);
-        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        compass = new Compass(mSensorManager, this);
-
-        try {
-            //Toast.makeText(this, applicationUser.getGroups().get(0).getCreator().getLogin(),Toast.LENGTH_LONG).show();
-            gpsHandler = new GPSHandler(this, applicationUser);
-            gpsHandler.getGoogleMap().setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
-                @Override
-                public void onMapLongClick(LatLng latLng) {
-                    Intent intent = new Intent(getApplicationContext(), PinCreationActivity.class);
-                    intent.putExtra("location", new Location(latLng));
-                    startActivity(intent);
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // Initializing
         dataList = new ArrayList<DrawerItem>();
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        menuLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        menuList = (ListView) findViewById(R.id.left_drawer);
 
-        mDrawerLayout.setDrawerShadow(R.drawable.magnet, GravityCompat.START);
+        menuLayout.setDrawerShadow(R.drawable.magnet, GravityCompat.START);
 
-        // Add Drawer Item to dataList
         List<Group> groups = ApplicationUser.getInstance().getGroups();
         dataList = formatGroupsInDataList(groups);
 
         adapter = new CustomDrawerAdapter(this, R.layout.custom_drawer_item,
                 dataList);
 
-        mDrawerList.setAdapter(adapter);
+        menuList.setAdapter(adapter);
 
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-    }
-
-    public List<DrawerItem> formatGroupsInDataList(List<Group> groups) {
-        dataList = new ArrayList<DrawerItem>();
-        for (Group group : groups) {
-            dataList.add(new DrawerItem(group, NavigationDrawerType.GROUP));
-            for (User user : group.getUsers()) {
-                dataList.add(new DrawerItem(user, NavigationDrawerType.USER));
-            }
-        }
-        return dataList;
-    }
-
-
-    public void init(){
-
-    }
-    
-    public void initMenu(){
-
+        menuList.setOnItemClickListener(new DrawerItemClickListener());
     }
 
     @Override
@@ -147,7 +145,6 @@ public class MagnetActivity extends AppCompatActivity {
         super.onPause();
         gpsHandler.onPause();
         compass.onPause();
-        //bluetoothConnector.onPause();
     }
 
     @Override
@@ -155,44 +152,36 @@ public class MagnetActivity extends AppCompatActivity {
         super.onResume();
         gpsHandler.onResume();
         compass.onResume();
-        //bluetoothConnector.onResume();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        compass.onDestroy();
-        //bluetoothConnector.onDestroy();
+
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //bluetoothConnector.onActivityResult(requestCode,resultCode,data);
-
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
+        actionBarButtonLink.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
+        actionBarButtonLink.onConfigurationChanged(newConfig);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Pass the event to ActionBarDrawerToggle, if it returns
-        // true, then it has handled the app icon touch event
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
+        if (actionBarButtonLink.onOptionsItemSelected(item)) {
             return true;
         }
-        // Handle your other action bar items...
 
         return super.onOptionsItemSelected(item);
     }
