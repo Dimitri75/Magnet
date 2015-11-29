@@ -43,7 +43,7 @@ public class MagnetActivity extends AppCompatActivity {
     private ListView mDrawerList;
     private CustomDrawerAdapter adapter;
     private List<DrawerItem> dataList;
-
+    public static Group selectedGroup = null;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +57,7 @@ public class MagnetActivity extends AppCompatActivity {
         if (applicationUser.getToken() == null){
             Intent signInIntent = new Intent(getApplicationContext(), SignInActivity.class);
             startActivity(signInIntent);
-            onPause();
+
         }
 
         Toast.makeText(this, ((Boolean) (applicationUser.getGroups().isEmpty())).toString(), Toast.LENGTH_LONG).show();
@@ -206,6 +206,10 @@ public class MagnetActivity extends AppCompatActivity {
                 AddUserFragment dialog = new AddUserFragment();
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("group", (Group) dataList.get(position).getItem());
+
+                selectedGroup = (Group) dataList.get(position).getItem();
+
+
                 dialog.setArguments(bundle);
 
                 dialog.show(getFragmentManager(), "Add user");

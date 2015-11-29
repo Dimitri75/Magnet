@@ -69,8 +69,8 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 
         mLocationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(10)        // 10 seconds, in milliseconds
-                .setFastestInterval(1); // 1 second, in milliseconds
+                .setInterval(10*1000)        // 2 seconds, in milliseconds
+                .setFastestInterval(1000); // 1 second, in milliseconds
     }
 
     public void rotateMap(float bearing) {
@@ -114,12 +114,16 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 
         //if (!isAppUsrRequest) {
             for (Group group : groups) {
+
                 if (group != null && group.getUsers() != null) {
-                    for (User user : group.getUsers()) {
-                        drawMarker(user);
+                    if(MagnetActivity.selectedGroup==null || MagnetActivity.selectedGroup.getId()==group.getId()) {
+                        for (User user : group.getUsers()) {
+                            drawMarker(user);
+                        }
                     }
+
                 } else {
-                    Toast.makeText(parentActivity.getApplicationContext(),";(",Toast.LENGTH_LONG).show();
+                    Toast.makeText(parentActivity.getApplicationContext(),"issue when showing a group",Toast.LENGTH_LONG).show();
                 }
             }
         //}
@@ -197,5 +201,5 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 }
 //bou:aad97bf7214c1bb0f81af4de6f22ae4e9246cd2af3d5563221fc4e8e25c203a2
 //bob:e86158e1d323b5618af99e9879a5b39dd74c77b6844411648113ccab24a21759
-//alice:3462361cc6a1b19cc19dc0fa1445a48921f441c0fcc43922c9c6db87dc1e0efe
-//oscar:4e81c23e3c33027fe188099a1c7433f43ee3542e07a27148e6c5feeec47b4150
+//alice:cd6bcc50af028d1a8f143a100822ec42ce7b70b9790c89df96713a67eb796c8b
+//oscar:63dfc13530fb96c790e63bc40e0f0bf8b9fb60768354913355caa0467829f7c6
