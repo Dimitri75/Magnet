@@ -9,19 +9,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
         <ImageView
             android:id="@+id/profilePicture"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
         <TextView
             android:id="@+id/titleTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textStyle="bold"/>
-
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
@@ -37,8 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textStyle="bold"/>
-
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
@@ -48,15 +44,13 @@
         android:background="#d5eaff"
         android:orientation="vertical"
         android:padding="8dp">
-
         <TextView
             android:id="@+id/userTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textStyle="bold"
-            android:layout_marginLeft="10dp"/>
-
+            android:textStyle="bold" />
     </LinearLayout>
 
 </RelativeLayout>

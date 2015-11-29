@@ -8,13 +8,6 @@ public class DrawerItem {
     int imgResID;
     NavigationDrawerType type;
 
-    public DrawerItem(String itemName, Object item, int imgResID) {
-        super();
-        this.item = item;
-        this.itemName = itemName;
-        this.imgResID = imgResID;
-    }
-
     public DrawerItem(Object object, NavigationDrawerType type) {
         this.item = object;
         this.itemName = object.toString();

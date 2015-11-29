@@ -20,7 +20,6 @@ import kei.magnet.R;
 import kei.magnet.enumerations.NavigationDrawerType;
 
 public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem> {
-
     Context context;
     List<DrawerItem> drawerItemList;
     int layoutResID;
@@ -31,16 +30,12 @@ public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem> {
         this.context = context;
         this.drawerItemList = listItems;
         this.layoutResID = layoutResourceID;
-
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
-
         DrawerItemHolder drawerHolder;
         View view = convertView;
-
         if (view == null) {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             drawerHolder = new DrawerItemHolder();
@@ -58,20 +53,18 @@ public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem> {
             drawerHolder.titleLayout = (LinearLayout) view.findViewById(R.id.titleLayout);
 
             view.setTag(drawerHolder);
-
-        } else {
+        } else
             drawerHolder = (DrawerItemHolder) view.getTag();
-
-        }
 
         DrawerItem dItem = this.drawerItemList.get(position);
 
 
-        if (dItem.getType() == NavigationDrawerType.TITLE){
+        if (dItem.getType() == NavigationDrawerType.TITLE) {
             //TODO
             //            drawerHolder.icon.setImageDrawable(view.getResources().getDrawable(
 //                    dItem.getImgResID()));
-        } else if (dItem.getType() == NavigationDrawerType.USER) {
+        }
+        else if (dItem.getType() == NavigationDrawerType.USER) {
             System.out.println("user");
             drawerHolder.userLayout.setVisibility(LinearLayout.VISIBLE);
             //drawerHolder.userLayout.setBackgroundColor(Color.GREEN);
@@ -82,7 +75,8 @@ public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem> {
 
             drawerHolder.userTitle.setText(dItem.getItemName());
             drawerHolder.userTitle.setVisibility(View.VISIBLE);
-        } else if(dItem.getType() == NavigationDrawerType.GROUP){
+        }
+        else if (dItem.getType() == NavigationDrawerType.GROUP) {
             System.out.println("group");
             drawerHolder.groupLayout.setVisibility(LinearLayout.VISIBLE);
             //drawerHolder.groupLayout.setBackgroundColor(Color.BLUE);
@@ -94,7 +88,6 @@ public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem> {
             drawerHolder.groupTitle.setText(dItem.getItemName());
             drawerHolder.groupTitle.setVisibility(View.VISIBLE);
         }
-
         return view;
     }
 
