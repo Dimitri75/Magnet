@@ -41,44 +41,38 @@ public class MagnetActivity extends AppCompatActivity {
     private SensorManager sensorManager;
     private ApplicationUser applicationUser;
     private ListView menuList;
-    private CustomDrawerAdapter adapter;
-    private List<DrawerItem> dataList;
-    public static Group selectedGroup = null;
+    private CustomDrawerAdapter customDrawerAdapter;
+    private List<DrawerItem> menu_dataList;
+    public static Group selectedGroup;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_magnet);
-
-        init();
-    }
-
-    public List<DrawerItem> formatGroupsInDataList(List<Group> groups) {
-        dataList = new ArrayList<>();
-        for (Group group : groups) {
-            dataList.add(new DrawerItem(group, NavigationDrawerType.GROUP));
-            for (User user : group.getUsers()) {
-                dataList.add(new DrawerItem(user, NavigationDrawerType.USER));
-            }
-        }
-        return dataList;
-    }
-
-
-    public void init(){
-
         applicationUser = ApplicationUser.getInstance();
 
         if (applicationUser.getToken() == null){
             Intent signInIntent = new Intent(getApplicationContext(), SignInActivity.class);
             startActivity(signInIntent);
-
         }
+        else {
+            init();
+        }
+    }
 
-        Toast.makeText(this, ((Boolean) (applicationUser.getGroups().isEmpty())).toString(), Toast.LENGTH_LONG).show();
+    public List<DrawerItem> formatGroupsInDataList(List<Group> groups) {
+        menu_dataList = new ArrayList<>();
+        for (Group group : groups) {
+            menu_dataList.add(new DrawerItem(group, NavigationDrawerType.GROUP));
+            for (User user : group.getUsers()) {
+                menu_dataList.add(new DrawerItem(user, NavigationDrawerType.USER));
+            }
+        }
+        return menu_dataList;
+    }
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
 
+    public void init(){
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         compass = new Compass(sensorManager, this);
 
@@ -104,6 +98,9 @@ public class MagnetActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         menuLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        menuLayout.setDrawerListener(actionBarButtonLink);
+        menuLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        menuList = (ListView) findViewById(R.id.left_drawer);
 
         actionBarButtonLink = new ActionBarDrawerToggle(this, menuLayout,
                 toolbar, R.string.drawer_open, R.string.drawer_close) {
@@ -121,21 +118,11 @@ public class MagnetActivity extends AppCompatActivity {
             }
         };
 
-        menuLayout.setDrawerListener(actionBarButtonLink);
+        menu_dataList = formatGroupsInDataList(applicationUser.getGroups());
 
-        dataList = new ArrayList<DrawerItem>();
-        menuLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        menuList = (ListView) findViewById(R.id.left_drawer);
-
-        menuLayout.setDrawerShadow(R.drawable.magnet, GravityCompat.START);
-
-        List<Group> groups = ApplicationUser.getInstance().getGroups();
-        dataList = formatGroupsInDataList(groups);
-
-        adapter = new CustomDrawerAdapter(this, R.layout.custom_drawer_item,
-                dataList);
-
-        menuList.setAdapter(adapter);
+        customDrawerAdapter = new CustomDrawerAdapter(this, R.layout.custom_drawer_item,
+                menu_dataList);
+        menuList.setAdapter(customDrawerAdapter);
 
         menuList.setOnItemClickListener(new DrawerItemClickListener());
     }
@@ -150,6 +137,7 @@ public class MagnetActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        init();
         gpsHandler.onResume();
         compass.onResume();
     }
@@ -157,7 +145,6 @@ public class MagnetActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
     }
 
     @Override
@@ -191,12 +178,12 @@ public class MagnetActivity extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
-            if (dataList.get(position).getItem() instanceof Group) {
+            if (menu_dataList.get(position).getItem() instanceof Group) {
                 AddUserFragment dialog = new AddUserFragment();
                 Bundle bundle = new Bundle();
-                bundle.putParcelable("group", (Group) dataList.get(position).getItem());
+                bundle.putParcelable("group", (Group) menu_dataList.get(position).getItem());
 
-                selectedGroup = (Group) dataList.get(position).getItem();
+                selectedGroup = (Group) menu_dataList.get(position).getItem();
 
 
                 dialog.setArguments(bundle);
