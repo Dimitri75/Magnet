@@ -30,7 +30,7 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/imageView"
             android:layout_marginTop="20dp"
-            android:text="Pin creation form"
+            android:text="Create a new pin"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold" />
 
@@ -63,48 +63,6 @@
             android:hint="Description"
             android:textColor="#212121" />
 
-        <DatePicker
-            android:id="@+id/pin_creation_datePicker_ACTIVATION"
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            android:layout_alignLeft="@+id/pin_creation_button"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignStart="@+id/pin_creation_button"
-            android:layout_below="@+id/pin_creation_spinner_GROUP"
-            android:layout_marginTop="30dp" />
-
-        <DatePicker
-            android:id="@+id/pin_creation_datePicker_EXPIRATION"
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            android:layout_alignLeft="@+id/pin_creation_button"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignStart="@+id/pin_creation_button"
-            android:layout_below="@+id/pin_creation_datePicker_ACTIVATION"
-            android:layout_marginTop="30dp" />
-
-        <TextView
-            android:id="@+id/pin_creation_textView_ACTIVATION"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignTop="@+id/pin_creation_datePicker_ACTIVATION"
-            android:text="Activation date"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/pin_creation_textView_EXPIRATION"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignTop="@+id/pin_creation_datePicker_EXPIRATION"
-            android:text="Expiration date"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
         <Spinner
             android:layout_marginTop="30dp"
             android:id="@+id/pin_creation_spinner_GROUP"
@@ -112,14 +70,82 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/pin_creation_editText_DESCRIPTION"/>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_below="@id/pin_creation_spinner_GROUP"
+            android:id="@+id/label_activation_date"
+            android:text="Activation date :" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/label_activation_date"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/activation_date">
+
+            <EditText
+                android:layout_width="240dp"
+                android:layout_height="wrap_content"
+                android:editable="false"
+                android:id="@+id/activationDateText" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/activationDateText"
+                android:text="Change"
+                android:onClick="oncClick_showActivationDate"
+                android:id="@+id/activationDateButton" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_below="@id/activation_date"
+            android:id="@+id/label_expiration_date"
+            android:text="Expiration date :" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/label_expiration_date"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/expiration_date">
+
+            <EditText
+                android:layout_width="240dp"
+                android:layout_height="wrap_content"
+                android:editable="false"
+                android:id="@+id/expirationDateText" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/expirationDateText"
+                android:text="Change"
+                android:onClick="oncClick_showExpirationDate"
+                android:id="@+id/expirationDateButton"/>
+        </LinearLayout>
+
         <Button
             android:id="@+id/pin_creation_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/pin_creation_datePicker_EXPIRATION"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
             android:onClick="onClick_submit"
-            android:text="Submit" />
+            android:text="Submit"
+            android:layout_below="@+id/expiration_date"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal" />
     </RelativeLayout>
 </ScrollView>
