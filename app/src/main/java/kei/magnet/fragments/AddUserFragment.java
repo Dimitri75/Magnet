@@ -16,7 +16,9 @@ import java.util.AbstractMap;
 import kei.magnet.R;
 import kei.magnet.classes.ApplicationUser;
 import kei.magnet.classes.Group;
+import kei.magnet.task.AddUserToGroupTask;
 import kei.magnet.task.JSONTask;
+import kei.magnet.task.SignInTask;
 
 /**
  * Created by carlo_000 on 24/11/2015.
@@ -49,17 +51,18 @@ public class AddUserFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         try {
-                            JSONObject jsonObject = JSONTask.getTask().execute(
-                                    new AbstractMap.SimpleEntry<>("url", URL + "group/" + group.getId() + "/user/" + applicationUser.getToken()),
-                                    new AbstractMap.SimpleEntry<>("method", "POST"),
-                                    new AbstractMap.SimpleEntry<>("request", "body"),
-                                    new AbstractMap.SimpleEntry<>("login", txtName.getText().toString())
-                            ).get();
-
-                            if (jsonObject != null)
-                                AddUserFragment.this.getDialog().dismiss();
-                            else
-                                Toast.makeText(getActivity().getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
+                            onClickSubmit();
+//                            JSONObject jsonObject = JSONTask.getTask().execute(
+//                                    new AbstractMap.SimpleEntry<>("url", URL + "group/" + group.getId() + "/user/" + applicationUser.getToken()),
+//                                    new AbstractMap.SimpleEntry<>("method", "POST"),
+//                                    new AbstractMap.SimpleEntry<>("request", "body"),
+//                                    new AbstractMap.SimpleEntry<>("login", txtName.getText().toString())
+//                            ).get();
+//
+//                            if (jsonObject != null)
+//                                AddUserFragment.this.getDialog().dismiss();
+//                            else
+//                                Toast.makeText(getActivity().getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -71,5 +74,10 @@ public class AddUserFragment extends DialogFragment {
                     }
                 });
         return builder.create();
+    }
+
+    public void onClickSubmit() {
+        AddUserToGroupTask task = new AddUserToGroupTask(getActivity(), applicationUser.getToken(), group.getId());
+        task.execute(new AbstractMap.SimpleEntry<>("login", txtName.getText().toString()));
     }
 }
