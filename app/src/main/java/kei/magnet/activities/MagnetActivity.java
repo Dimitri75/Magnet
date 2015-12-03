@@ -140,7 +140,36 @@ public class MagnetActivity extends AppCompatActivity {
                 menu_dataList);
         menuList.setAdapter(customDrawerAdapter);
 
-        menuList.setOnItemClickListener(new DrawerItemClickListener());
+        menuList.setOnItemClickListener(new ListView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (menu_dataList.get(position).getItem() instanceof Group) {
+                    selectedGroup = (Group) menu_dataList.get(position).getItem();
+
+                    // TODO affichage du groupe séléctionné
+                    Toast.makeText(getApplicationContext(), "Display group "+selectedGroup.getId(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        menuList.setOnItemLongClickListener(new ListView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                if (menu_dataList.get(position).getItem() instanceof Group) {
+                    selectedGroup = (Group) menu_dataList.get(position).getItem();
+
+                    AddUserFragment dialog = new AddUserFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("group", selectedGroup);
+                    dialog.setArguments(bundle);
+                    dialog.show(getFragmentManager(), "Add user");
+                    return true;
+                } else {
+                    Toast.makeText(getApplicationContext(), "Not a valid Group", Toast.LENGTH_LONG).show();
+                    return false;
+                }
+            }
+        });
     }
 
     @Override
@@ -208,26 +237,5 @@ public class MagnetActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-private class DrawerItemClickListener implements
-        ListView.OnItemClickListener {
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position,
-                            long id) {
-        if (menu_dataList.get(position).getItem() instanceof Group) {
-            AddUserFragment dialog = new AddUserFragment();
-            Bundle bundle = new Bundle();
-            bundle.putParcelable("group", (Group) menu_dataList.get(position).getItem());
-
-            selectedGroup = (Group) menu_dataList.get(position).getItem();
-
-
-            dialog.setArguments(bundle);
-
-            dialog.show(getFragmentManager(), "Add user");
-        } else
-            Toast.makeText(getApplicationContext(), "Not a valid Group", Toast.LENGTH_LONG).show();
-    }
-}
 }
 

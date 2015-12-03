@@ -15,7 +15,7 @@ public class AddUserToGroupTask extends JSONTask {
         super(activity);
         setMethod("POST");
         setRequest("body");
-        setUrl(URL + groupId + "/user/" + token);
+        setUrl(URL + String.valueOf(groupId) + "/user/" + token);
     }
 
     protected void onPostExecute (JSONObject jsonUser) {
