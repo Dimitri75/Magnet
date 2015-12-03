@@ -69,8 +69,8 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 
         mLocationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(10*1000)        // 2 seconds, in milliseconds
-                .setFastestInterval(1000); // 1 second, in milliseconds
+                .setInterval(100) 
+                .setFastestInterval(100);
     }
 
     public void rotateMap(float bearing) {
@@ -112,22 +112,17 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
         List<Group> groups = applicationUser.getGroups();
         drawMarker(applicationUser);
 
-        //if (!isAppUsrRequest) {
-            for (Group group : groups) {
-
-                if (group != null && group.getUsers() != null) {
-                    if(MagnetActivity.selectedGroup==null || MagnetActivity.selectedGroup.getId()==group.getId()) {
-                        for (User user : group.getUsers()) {
-                            drawMarker(user);
-                        }
+        for (Group group : groups) {
+            if (group != null && group.getUsers() != null) {
+                if (MagnetActivity.selectedGroup == null || MagnetActivity.selectedGroup.getId() == group.getId()) {
+                    for (User user : group.getUsers()) {
+                        drawMarker(user);
                     }
-
-                } else {
-                    Toast.makeText(parentActivity.getApplicationContext(),"issue when showing a group",Toast.LENGTH_LONG).show();
                 }
+            } else {
+                Toast.makeText(parentActivity.getApplicationContext(), "issue when showing a group", Toast.LENGTH_LONG).show();
             }
-        //}
-
+        }
     }
 
     private void drawMarker(User user) {
@@ -192,11 +187,10 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 
             UpdateUserTask task = new UpdateUserTask(parentActivity, applicationUser.getToken());
             task.execute(new AbstractMap.SimpleEntry<>("location", locationJSON.toString()));
+        } catch (Exception e) {
         }
-        catch(Exception e) {}
 
         updateMarkers(true);
-
     }
 }
 //bou:aad97bf7214c1bb0f81af4de6f22ae4e9246cd2af3d5563221fc4e8e25c203a2
