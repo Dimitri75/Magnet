@@ -13,10 +13,10 @@ import org.json.JSONObject;
 
 import java.util.AbstractMap;
 
-import kei.magnet.task.JSONTask;
 import kei.magnet.R;
 import kei.magnet.classes.ApplicationUser;
 import kei.magnet.classes.Group;
+import kei.magnet.task.JSONTask;
 
 /**
  * Created by carlo_000 on 24/11/2015.
