@@ -165,6 +165,18 @@ public class MagnetActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        if (isInitialised){
+            gpsHandler.onResume();
+            compass.onResume();
+        }
+        else if (applicationUser.getToken() != null) {
+            init();
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
     }
