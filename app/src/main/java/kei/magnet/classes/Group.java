@@ -25,6 +25,8 @@ public class Group implements Parcelable {
         return pins;
     }
 
+    public Group(){}
+
     public Group(JSONObject jsonObject) {
         try {
             id = jsonObject.getInt("id");
@@ -73,6 +75,10 @@ public class Group implements Parcelable {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public void setName(String name){
+        this.name = name;
     }
 
     // PARCELABLE

@@ -62,12 +62,28 @@ public class MagnetActivity extends AppCompatActivity {
 
     public List<DrawerItem> formatGroupsInDataList(List<Group> groups) {
         menu_dataList = new ArrayList<>();
+
+        Group groupZero = new Group();
+        groupZero.setCreator(ApplicationUser.getInstance());
+        groupZero.setName("Groupe Zero"); //TODO Nom à déterminer
+        List<User> groupZeroUsers = new ArrayList<>();
+
         for (Group group : groups) {
             menu_dataList.add(new DrawerItem(group, NavigationDrawerType.GROUP));
             for (User user : group.getUsers()) {
                 menu_dataList.add(new DrawerItem(user, NavigationDrawerType.USER));
+                if (!groupZeroUsers.contains(user)) {
+                    groupZeroUsers.add(user);
+                }
             }
         }
+
+        groupZero.setUsers(groupZeroUsers);
+        menu_dataList.add(new DrawerItem(groupZero, NavigationDrawerType.GROUP));
+        for (User user : groupZero.getUsers()) {
+            menu_dataList.add(new DrawerItem(user, NavigationDrawerType.USER));
+        }
+
         return menu_dataList;
     }
 
@@ -181,25 +197,25 @@ public class MagnetActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class DrawerItemClickListener implements
-            ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position,
-                                long id) {
-            if (menu_dataList.get(position).getItem() instanceof Group) {
-                AddUserFragment dialog = new AddUserFragment();
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("group", (Group) menu_dataList.get(position).getItem());
+private class DrawerItemClickListener implements
+        ListView.OnItemClickListener {
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position,
+                            long id) {
+        if (menu_dataList.get(position).getItem() instanceof Group) {
+            AddUserFragment dialog = new AddUserFragment();
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("group", (Group) menu_dataList.get(position).getItem());
 
-                selectedGroup = (Group) menu_dataList.get(position).getItem();
+            selectedGroup = (Group) menu_dataList.get(position).getItem();
 
 
-                dialog.setArguments(bundle);
+            dialog.setArguments(bundle);
 
-                dialog.show(getFragmentManager(), "Add user");
-            } else
-                Toast.makeText(getApplicationContext(), "Not a valid Group", Toast.LENGTH_LONG).show();
-        }
+            dialog.show(getFragmentManager(), "Add user");
+        } else
+            Toast.makeText(getApplicationContext(), "Not a valid Group", Toast.LENGTH_LONG).show();
     }
+}
 }
 
