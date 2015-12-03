@@ -62,9 +62,9 @@ public class MagnetActivity extends AppCompatActivity {
     public List<DrawerItem> formatGroupsInDataList(List<Group> groups) {
         menu_dataList = new ArrayList<>();
 
-        Group groupZero = new Group();
-        groupZero.setCreator(ApplicationUser.getInstance());
-        groupZero.setName("Groupe Zero"); //TODO Nom à déterminer
+        Group globalGroup = new Group();
+        globalGroup.setCreator(ApplicationUser.getInstance());
+        globalGroup.setName("Friend list"); //TODO Nom à déterminer
         List<User> groupZeroUsers = new ArrayList<>();
 
         for (Group group : groups) {
@@ -77,9 +77,9 @@ public class MagnetActivity extends AppCompatActivity {
             }
         }
 
-        groupZero.setUsers(groupZeroUsers);
-        menu_dataList.add(new DrawerItem(groupZero, NavigationDrawerType.GROUP));
-        for (User user : groupZero.getUsers()) {
+        globalGroup.setUsers(groupZeroUsers);
+        menu_dataList.add(new DrawerItem(globalGroup, NavigationDrawerType.GROUP));
+        for (User user : globalGroup.getUsers()) {
             menu_dataList.add(new DrawerItem(user, NavigationDrawerType.USER));
         }
 
