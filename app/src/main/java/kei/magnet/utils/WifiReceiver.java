@@ -3,13 +3,11 @@ package kei.magnet.utils;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.net.wifi.p2p.WifiP2pDevice;
-import android.net.wifi.p2p.WifiP2pManager;
 
 /**
  * Created by carlo_000 on 13/11/2015.
  */
-public class WifiReceiver extends BroadcastReceiver {
+public class git WifiReceiver extends BroadcastReceiver {
 
 
     @Override
