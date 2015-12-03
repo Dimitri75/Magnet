@@ -49,20 +49,18 @@ public class AddUserFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         try {
+                            JSONObject jsonObject = JSONTask.getTask().execute(
+                                    new AbstractMap.SimpleEntry<>("url", URL + "group/" + group.getId() + "/user/" + applicationUser.getToken()),
+                                    new AbstractMap.SimpleEntry<>("method", "POST"),
+                                    new AbstractMap.SimpleEntry<>("request", "body"),
+                                    new AbstractMap.SimpleEntry<>("login", txtName.getText().toString())
+                            ).get();
 
-
-                                JSONObject jsonObject = JSONTask.getTask().execute(
-                                        new AbstractMap.SimpleEntry<>("url", URL + "user/" + group.getId() + "/user/" + applicationUser.getToken()),
-                                        new AbstractMap.SimpleEntry<>("method", "POST"),
-                                        new AbstractMap.SimpleEntry<>("request", "body"),
-                                        new AbstractMap.SimpleEntry<>("login", txtName.getText().toString())
-                                ).get();
-
-                                if (jsonObject != null)
-                                    AddUserFragment.this.getDialog().dismiss();
-                                else
-                                    Toast.makeText(getActivity().getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
-                            } catch (Exception e) {
+                            if (jsonObject != null)
+                                AddUserFragment.this.getDialog().dismiss();
+                            else
+                                Toast.makeText(getActivity().getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
