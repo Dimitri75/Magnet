@@ -30,7 +30,7 @@
 
     <EditText
         android:layout_marginTop="20dp"
-        android:textColor="#212121"
+        android:textColor="#ffffff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"

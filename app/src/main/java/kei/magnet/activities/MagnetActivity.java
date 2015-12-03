@@ -34,6 +34,7 @@ import kei.magnet.utils.Compass;
 import kei.magnet.utils.GPSHandler;
 
 public class MagnetActivity extends AppCompatActivity {
+    private boolean isInitialised = false;
     private DrawerLayout menuLayout;
     private ActionBarDrawerToggle actionBarButtonLink;
     public GPSHandler gpsHandler;
@@ -51,11 +52,10 @@ public class MagnetActivity extends AppCompatActivity {
         setContentView(R.layout.activity_magnet);
         applicationUser = ApplicationUser.getInstance();
 
-        if (applicationUser.getToken() == null){
+        if (applicationUser.getToken() == null) {
             Intent signInIntent = new Intent(getApplicationContext(), SignInActivity.class);
             startActivity(signInIntent);
-        }
-        else {
+        } else {
             init();
         }
     }
@@ -72,7 +72,8 @@ public class MagnetActivity extends AppCompatActivity {
     }
 
 
-    public void init(){
+    public void init() {
+        isInitialised = true;
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         compass = new Compass(sensorManager, this);
 
@@ -92,8 +93,8 @@ public class MagnetActivity extends AppCompatActivity {
 
         initMenu();
     }
-    
-    public void initMenu(){
+
+    public void initMenu() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -130,16 +131,21 @@ public class MagnetActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        gpsHandler.onPause();
-        compass.onPause();
+        if (isInitialised) {
+            gpsHandler.onPause();
+            compass.onPause();
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        init();
-        gpsHandler.onResume();
-        compass.onResume();
+        if (applicationUser.getToken() != null) {
+            init();
+
+            gpsHandler.onResume();
+            compass.onResume();
+        }
     }
 
     @Override
@@ -155,13 +161,15 @@ public class MagnetActivity extends AppCompatActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        actionBarButtonLink.syncState();
+        if (isInitialised)
+            actionBarButtonLink.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        actionBarButtonLink.onConfigurationChanged(newConfig);
+        if (isInitialised)
+            actionBarButtonLink.onConfigurationChanged(newConfig);
     }
 
     @Override

@@ -5,8 +5,6 @@
     android:background="#34598e">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingBottom="@dimen/activity_vertical_margin"
@@ -47,7 +45,7 @@
             android:ems="10"
             android:hint="Pin name"
             android:inputType="textPersonName"
-            android:textColor="#212121" />
+            android:textColor="#ffffff" />
 
         <EditText
             android:id="@+id/pin_creation_editText_DESCRIPTION"
@@ -61,91 +59,91 @@
             android:layout_marginTop="30dp"
             android:ems="10"
             android:hint="Description"
-            android:textColor="#212121" />
+            android:textColor="#ffffff" />
 
         <Spinner
-            android:layout_marginTop="30dp"
             android:id="@+id/pin_creation_spinner_GROUP"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/pin_creation_editText_DESCRIPTION"/>
+            android:layout_below="@id/pin_creation_editText_DESCRIPTION"
+            android:layout_marginTop="30dp" />
 
         <TextView
+            android:id="@+id/label_activation_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_below="@id/pin_creation_spinner_GROUP"
-            android:id="@+id/label_activation_date"
-            android:text="Activation date :" />
+            android:layout_marginTop="20dp"
+            android:text="Activation date :"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <LinearLayout
-            android:orientation="horizontal"
+            android:id="@+id/activation_date"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/label_activation_date"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:id="@+id/activation_date">
+            android:layout_below="@+id/label_activation_date"
+            android:orientation="horizontal">
 
             <EditText
+                android:id="@+id/activationDateText"
                 android:layout_width="240dp"
                 android:layout_height="wrap_content"
-                android:editable="false"
-                android:id="@+id/activationDateText" />
+                android:editable="false" />
 
             <Button
+                android:id="@+id/activationDateButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@+id/activationDateText"
-                android:text="Change"
                 android:onClick="oncClick_showActivationDate"
-                android:id="@+id/activationDateButton" />
+                android:text="Change" />
         </LinearLayout>
 
         <TextView
+            android:id="@+id/label_expiration_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_below="@id/activation_date"
-            android:id="@+id/label_expiration_date"
-            android:text="Expiration date :" />
+            android:layout_marginTop="20dp"
+            android:text="Expiration date :"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <LinearLayout
-            android:orientation="horizontal"
+            android:id="@+id/expiration_date"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/label_expiration_date"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:id="@+id/expiration_date">
+            android:layout_below="@+id/label_expiration_date"
+            android:orientation="horizontal">
 
             <EditText
+                android:id="@+id/expirationDateText"
                 android:layout_width="240dp"
                 android:layout_height="wrap_content"
-                android:editable="false"
-                android:id="@+id/expirationDateText" />
+                android:editable="false" />
 
             <Button
+                android:id="@+id/expirationDateButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@+id/expirationDateText"
-                android:text="Change"
                 android:onClick="oncClick_showExpirationDate"
-                android:id="@+id/expirationDateButton"/>
+                android:text="Change" />
         </LinearLayout>
 
         <Button
             android:id="@+id/pin_creation_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onClick_submit"
-            android:text="Submit"
             android:layout_below="@+id/expiration_date"
             android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:onClick="onClick_submit"
+            android:text="Submit" />
     </RelativeLayout>
 </ScrollView>
