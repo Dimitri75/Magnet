@@ -5,15 +5,24 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ListView;
 
 import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.List;
 
 import kei.magnet.R;
+import kei.magnet.activities.MagnetActivity;
 import kei.magnet.classes.ApplicationUser;
 import kei.magnet.classes.Group;
+import kei.magnet.classes.User;
+import kei.magnet.classes.UserListAdapter;
 import kei.magnet.task.AddUserToGroupTask;
 
 /**
@@ -24,7 +33,7 @@ public class AddUserFragment extends DialogFragment {
     private ApplicationUser applicationUser;
     private EditText txtName;
     private Group group;
-
+    private ListView userList;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -41,9 +50,31 @@ public class AddUserFragment extends DialogFragment {
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
 
-        View v = inflater.inflate(R.layout.activity_group_update, null);
+        final View v = inflater.inflate(R.layout.activity_group_update, null);
+        userList = (ListView)v.findViewById(R.id.applicationUsers);
         txtName = (EditText) v.findViewById(R.id.group_update_editText_GROUPNAME);
+        txtName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //String login = txtName.getText().toString();
+                List<User> users = new ArrayList<>(MagnetActivity.selectedGroup.getUsers());
+
+                UserListAdapter adapter = new UserListAdapter(getActivity().getApplicationContext(),R.layout.activity_group_update_row,users);
+                userList.setAdapter(adapter);
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         builder.setView(v)
                 // Add action buttons
                 .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
