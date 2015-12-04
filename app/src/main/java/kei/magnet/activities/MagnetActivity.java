@@ -2,6 +2,7 @@ package kei.magnet.activities;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -64,7 +65,7 @@ public class MagnetActivity extends AppCompatActivity {
 
         Group globalGroup = new Group();
         globalGroup.setCreator(ApplicationUser.getInstance());
-        globalGroup.setName("Friend list"); //TODO Nom à déterminer
+        globalGroup.setName("Friend list");
         List<User> groupZeroUsers = new ArrayList<>();
 
         for (Group group : groups) {
@@ -145,9 +146,8 @@ public class MagnetActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (menuDataList.get(position).getItem() instanceof Group) {
                     selectedGroup = (Group) menuDataList.get(position).getItem();
-
-                    // TODO affichage du groupe séléctionné
-                    Toast.makeText(getApplicationContext(), "Display group "+selectedGroup.getId(), Toast.LENGTH_SHORT).show();
+                    view.setSelected(true);
+                    gpsHandler.updateMarkers(selectedGroup);
                 }
             }
         });

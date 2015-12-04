@@ -12,7 +12,7 @@ import org.json.JSONObject;
 /**
  * Created by Dimitri on 27/10/2015.
  */
-public class User implements Parcelable {
+public class User implements Parcelable{
     private int id;
     private String login;
     private Location location;
@@ -21,7 +21,7 @@ public class User implements Parcelable {
 
     }
 
-    public User(JSONObject jsonObject){
+    public User(JSONObject jsonObject) {
         init(jsonObject);
     }
 
@@ -53,8 +53,8 @@ public class User implements Parcelable {
         return location;
     }
 
-    public LatLng getLatLng(){
-        return new LatLng(getLocation().getLatitude(),  getLocation().getLongitude());
+    public LatLng getLatLng() {
+        return new LatLng(getLocation().getLatitude(), getLocation().getLongitude());
     }
 
     @Override
@@ -98,6 +98,7 @@ public class User implements Parcelable {
 
     /**
      * Instanciate a User using Parcelable
+     *
      * @param in
      */
     public User(Parcel in) {
@@ -118,5 +119,18 @@ public class User implements Parcelable {
             return new User[size];
         }
     };
+
     //END PARCELABLE
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        return login.equals(user.getLogin());
+
+    }
+
 }
