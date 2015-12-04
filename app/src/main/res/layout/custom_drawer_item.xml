@@ -25,7 +25,7 @@
         android:id="@+id/groupLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#75baff"
+        android:background="@drawable/bg_key"
         android:orientation="vertical"
         android:padding="8dp">
 

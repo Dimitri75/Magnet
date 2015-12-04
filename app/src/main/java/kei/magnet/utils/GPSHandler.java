@@ -66,7 +66,7 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 
         mLocationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(100) 
+                .setInterval(100)
                 .setFastestInterval(100);
     }
 
@@ -100,24 +100,29 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
         applicationUser.setLocation(new kei.magnet.classes.Location(location.getLatitude(), location.getLongitude()));
         CameraPosition pos = CameraPosition.builder().target(applicationUser.getLatLng()).zoom(10).build();
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(pos));
-        updateMarkers(true);
+        updateMarkers();
     }
 
-    public void updateMarkers(boolean isApplicationUser) {
+    public void updateMarkers() {
         googleMap.clear();
         List<Group> groups = applicationUser.getGroups();
         drawMarker(applicationUser);
 
         for (Group group : groups) {
-            if (group != null && group.getUsers() != null) {
-                if (MagnetActivity.selectedGroup == null || MagnetActivity.selectedGroup.getId() == group.getId()) {
-                    for (User user : group.getUsers()) {
-                        drawMarker(user);
-                    }
+            if (group != null && !group.getUsers().isEmpty()) {
+                for (User user : group.getUsers()) {
+                    drawMarker(user);
                 }
-            } else {
+            } else
                 Toast.makeText(parentActivity.getApplicationContext(), "issue when showing a group", Toast.LENGTH_LONG).show();
-            }
+        }
+    }
+
+    public void updateMarkers(Group group) {
+        googleMap.clear();
+        drawMarker(applicationUser);
+        for (User user : group.getUsers()) {
+            drawMarker(user);
         }
     }
 
@@ -180,8 +185,7 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
             task.execute(new AbstractMap.SimpleEntry<>("location", locationJSON.toString()));
         } catch (Exception e) {
         }
-
-        updateMarkers(true);
+        updateMarkers();
     }
 }
 //bou:aad97bf7214c1bb0f81af4de6f22ae4e9246cd2af3d5563221fc4e8e25c203a2
