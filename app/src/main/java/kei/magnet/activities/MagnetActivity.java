@@ -42,7 +42,7 @@ public class MagnetActivity extends AppCompatActivity {
     private ApplicationUser applicationUser;
     private ListView menuList;
     private CustomDrawerAdapter customDrawerAdapter;
-    private List<DrawerItem> menu_dataList;
+    private List<DrawerItem> menuDataList;
     public static Group selectedGroup;
 
     @Override
@@ -60,7 +60,7 @@ public class MagnetActivity extends AppCompatActivity {
     }
 
     public List<DrawerItem> formatGroupsInDataList(List<Group> groups) {
-        menu_dataList = new ArrayList<>();
+        menuDataList = new ArrayList<>();
 
         Group globalGroup = new Group();
         globalGroup.setCreator(ApplicationUser.getInstance());
@@ -68,9 +68,9 @@ public class MagnetActivity extends AppCompatActivity {
         List<User> groupZeroUsers = new ArrayList<>();
 
         for (Group group : groups) {
-            menu_dataList.add(new DrawerItem(group, NavigationDrawerType.GROUP));
+            menuDataList.add(new DrawerItem(group, NavigationDrawerType.GROUP));
             for (User user : group.getUsers()) {
-                menu_dataList.add(new DrawerItem(user, NavigationDrawerType.USER));
+                menuDataList.add(new DrawerItem(user, NavigationDrawerType.USER));
                 if (!groupZeroUsers.contains(user)) {
                     groupZeroUsers.add(user);
                 }
@@ -78,12 +78,12 @@ public class MagnetActivity extends AppCompatActivity {
         }
 
         globalGroup.setUsers(groupZeroUsers);
-        menu_dataList.add(new DrawerItem(globalGroup, NavigationDrawerType.GROUP));
+        menuDataList.add(new DrawerItem(globalGroup, NavigationDrawerType.GROUP));
         for (User user : globalGroup.getUsers()) {
-            menu_dataList.add(new DrawerItem(user, NavigationDrawerType.USER));
+            menuDataList.add(new DrawerItem(user, NavigationDrawerType.USER));
         }
 
-        return menu_dataList;
+        return menuDataList;
     }
 
 
@@ -134,13 +134,42 @@ public class MagnetActivity extends AppCompatActivity {
             }
         };
 
-        menu_dataList = formatGroupsInDataList(applicationUser.getGroups());
+        menuDataList = formatGroupsInDataList(applicationUser.getGroups());
 
         customDrawerAdapter = new CustomDrawerAdapter(this, R.layout.custom_drawer_item,
-                menu_dataList);
+                menuDataList);
         menuList.setAdapter(customDrawerAdapter);
 
-        menuList.setOnItemClickListener(new DrawerItemClickListener());
+        menuList.setOnItemClickListener(new ListView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (menuDataList.get(position).getItem() instanceof Group) {
+                    selectedGroup = (Group) menuDataList.get(position).getItem();
+
+                    // TODO affichage du groupe séléctionné
+                    Toast.makeText(getApplicationContext(), "Display group "+selectedGroup.getId(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        menuList.setOnItemLongClickListener(new ListView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                if (menuDataList.get(position).getItem() instanceof Group) {
+                    selectedGroup = (Group) menuDataList.get(position).getItem();
+
+                    AddUserFragment dialog = new AddUserFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("group", selectedGroup);
+                    dialog.setArguments(bundle);
+                    dialog.show(getFragmentManager(), "Add user");
+                    return true;
+                } else {
+                    Toast.makeText(getApplicationContext(), "Not a valid Group", Toast.LENGTH_LONG).show();
+                    return false;
+                }
+            }
+        });
     }
 
     @Override
@@ -155,11 +184,10 @@ public class MagnetActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (isInitialised){
+        if (isInitialised) {
             gpsHandler.onResume();
             compass.onResume();
-        }
-        else if (applicationUser.getToken() != null) {
+        } else if (applicationUser.getToken() != null) {
             init();
         }
     }
@@ -209,25 +237,8 @@ public class MagnetActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-private class DrawerItemClickListener implements
-        ListView.OnItemClickListener {
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position,
-                            long id) {
-        if (menu_dataList.get(position).getItem() instanceof Group) {
-            AddUserFragment dialog = new AddUserFragment();
-            Bundle bundle = new Bundle();
-            bundle.putParcelable("group", (Group) menu_dataList.get(position).getItem());
-
-            selectedGroup = (Group) menu_dataList.get(position).getItem();
-
-
-            dialog.setArguments(bundle);
-
-            dialog.show(getFragmentManager(), "Add user");
-        } else
-            Toast.makeText(getApplicationContext(), "Not a valid Group", Toast.LENGTH_LONG).show();
+    public List<DrawerItem> getMenuDataList(){
+        return menuDataList;
     }
-}
 }
 

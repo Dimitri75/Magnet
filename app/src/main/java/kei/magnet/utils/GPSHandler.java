@@ -43,7 +43,6 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private LocationRequest mLocationRequest;
     private GoogleMap googleMap;
-    private Marker marker;
     private GoogleApiClient mGoogleApiClient;
     private FragmentActivity parentActivity;
     private ApplicationUser applicationUser;
@@ -56,8 +55,6 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 
         this.parentActivity = parentActivity;
         this.applicationUser = user;
-        /*compass = new Compass(m,view);
-        view.compass=compass;*/
 
         setUpMapIfNeeded();
 
@@ -106,9 +103,8 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
         updateMarkers(true);
     }
 
-    public void updateMarkers(boolean isAppUsrRequest) {
+    public void updateMarkers(boolean isApplicationUser) {
         googleMap.clear();
-
         List<Group> groups = applicationUser.getGroups();
         drawMarker(applicationUser);
 
@@ -133,9 +129,7 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
             userIcon = BitmapFactory.decodeResource(parentActivity.getResources(), R.drawable.map_marker_application_user);
 
         userIcon = Bitmap.createScaledBitmap(userIcon, userIcon.getWidth() / 10, userIcon.getHeight() / 10, false);
-
         markerOptions.icon(BitmapDescriptorFactory.fromBitmap(userIcon));
-
         googleMap.addMarker(markerOptions);
     }
 
@@ -148,10 +142,7 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
         if (googleMap == null) {
             // Try to obtain the map from the SupportMapFragment.
             googleMap = ((SupportMapFragment) parentActivity.getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
-
             googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-            // Check if we were successful in obtaining the map.
-
         }
     }
 
