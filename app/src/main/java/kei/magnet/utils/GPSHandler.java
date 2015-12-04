@@ -66,8 +66,8 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 
         mLocationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(100)
-                .setFastestInterval(100);
+                .setInterval(2*1000)
+                .setFastestInterval(1000);
     }
 
     public void rotateMap(float bearing) {
