@@ -12,7 +12,7 @@ import org.json.JSONObject;
 /**
  * Created by Dimitri on 27/10/2015.
  */
-public class User implements Parcelable, Comparable<User> {
+public class User implements Parcelable{
     private int id;
     private String login;
     private Location location;
@@ -119,11 +119,18 @@ public class User implements Parcelable, Comparable<User> {
             return new User[size];
         }
     };
+
     //END PARCELABLE
 
     @Override
-    public int compareTo(User another) {
-        return login.compareTo(another.login);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        return login.equals(user.getLogin());
+
     }
 
 }
