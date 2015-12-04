@@ -45,7 +45,7 @@ public class MagnetActivity extends AppCompatActivity {
     private CustomDrawerAdapter customDrawerAdapter;
     private List<DrawerItem> menuDataList;
     public static Group selectedGroup;
-    public static User selectedUser;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -151,7 +151,7 @@ public class MagnetActivity extends AppCompatActivity {
                     gpsHandler.updateMarkers(selectedGroup);
                 }
                 if (menuDataList.get(position).getItem() instanceof User) {
-                    selectedUser = (User) menuDataList.get(position).getItem();
+                    User selectedUser = (User) menuDataList.get(position).getItem();
                     gpsHandler.moveCamera(selectedUser.getLatLng(), 10);
                 }
             }
