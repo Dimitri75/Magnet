@@ -108,14 +108,17 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
         List<Group> groups = applicationUser.getGroups();
         drawMarker(applicationUser);
 
-        for (Group group : groups) {
-            if (group != null && !group.getUsers().isEmpty()) {
-                for (User user : group.getUsers()) {
-                    drawMarker(user);
-                }
-            } else
-                Toast.makeText(parentActivity.getApplicationContext(), "issue when showing a group", Toast.LENGTH_LONG).show();
+        if (MagnetActivity.selectedGroup == null) {
+            for (Group group : groups) {
+                if (group != null && !group.getUsers().isEmpty()) {
+                    for (User user : group.getUsers()) {
+                        drawMarker(user);
+                    }
+                } else
+                    Toast.makeText(parentActivity.getApplicationContext(), "issue when showing a group", Toast.LENGTH_LONG).show();
+            }
         }
+        else updateMarkers(MagnetActivity.selectedGroup);
     }
 
     public void updateMarkers(Group group) {
