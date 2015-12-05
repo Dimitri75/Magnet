@@ -1,8 +1,8 @@
 package kei.magnet.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +35,9 @@ import kei.magnet.utils.Compass;
 import kei.magnet.utils.GPSHandler;
 
 public class MagnetActivity extends AppCompatActivity {
+    private static String FILENAME = "magnet_token";
+    private static Integer TOKEN_SIZE = 32;
+
     private boolean isInitialised = false;
     private DrawerLayout menuLayout;
     private ActionBarDrawerToggle actionBarButtonLink;
@@ -54,8 +58,24 @@ public class MagnetActivity extends AppCompatActivity {
         applicationUser = ApplicationUser.getInstance();
 
         if (applicationUser.getToken() == null) {
-            Intent signInIntent = new Intent(getApplicationContext(), SignInActivity.class);
-            startActivity(signInIntent);
+            String token = null;
+            try {
+                byte[] buffer = new byte[TOKEN_SIZE];
+                FileInputStream fis = openFileInput(FILENAME);
+                if(fis.read(buffer, 0, TOKEN_SIZE) != -1) {
+                    token = new String(buffer);
+                }
+                fis.close();
+            }
+            catch(Exception e) {}
+
+            if(token != null) {
+                applicationUser.setToken(token);
+            }
+            else {
+                Intent signInIntent = new Intent(getApplicationContext(), SignInActivity.class);
+                startActivity(signInIntent);
+            }
         } else {
             init();
         }

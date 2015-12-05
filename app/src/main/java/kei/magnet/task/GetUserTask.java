@@ -1,10 +1,12 @@
 package kei.magnet.task;
 
 import android.app.Activity;
+import android.content.Context;
 import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import java.io.FileOutputStream;
 import java.util.AbstractMap;
 
 import kei.magnet.classes.ApplicationUser;
@@ -14,6 +16,7 @@ import kei.magnet.classes.ApplicationUser;
  */
 public class GetUserTask extends JSONTask {
     private static String URL = "http://bardin.sylvain.perso.sfr.fr/user";
+    private static String FILENAME = "magnet_token";
     private String token;
 
     public GetUserTask(Activity activity) {
@@ -37,10 +40,14 @@ public class GetUserTask extends JSONTask {
             ApplicationUser applicationUser = ApplicationUser.getInstance();
             applicationUser.init(userJSON);
             applicationUser.setToken(token);
-            /*
-            Intent intent = new Intent(getActivity(), MagnetActivity.class);
-            getActivity().startActivity(intent);
-            */
+
+            try {
+                FileOutputStream fos = getActivity().openFileOutput(FILENAME, Context.MODE_PRIVATE);
+                fos.write(token.getBytes());
+                fos.close();
+            }
+            catch(Exception e) {}
+
             getActivity().finish();
         } else
             Toast.makeText(getActivity().getApplicationContext(), "Fail Get User", Toast.LENGTH_SHORT).show();

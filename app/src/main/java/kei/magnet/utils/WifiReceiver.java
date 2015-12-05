@@ -7,7 +7,7 @@ import android.content.Intent;
 /**
  * Created by carlo_000 on 13/11/2015.
  */
-public class git WifiReceiver extends BroadcastReceiver {
+public class WifiReceiver extends BroadcastReceiver {
 
 
     @Override
