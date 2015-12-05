@@ -19,6 +19,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.FileInputStream;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,12 +32,13 @@ import kei.magnet.enumerations.NavigationDrawerType;
 import kei.magnet.fragments.AddUserFragment;
 import kei.magnet.fragments.CustomDrawerAdapter;
 import kei.magnet.fragments.DrawerItem;
+import kei.magnet.task.GetUserTask;
 import kei.magnet.utils.Compass;
 import kei.magnet.utils.GPSHandler;
 
 public class MagnetActivity extends AppCompatActivity {
     private static String FILENAME = "magnet_token";
-    private static Integer TOKEN_SIZE = 32;
+    private static Integer TOKEN_SIZE = 64;
 
     private boolean isInitialised = false;
     private DrawerLayout menuLayout;
@@ -63,14 +65,15 @@ public class MagnetActivity extends AppCompatActivity {
                 byte[] buffer = new byte[TOKEN_SIZE];
                 FileInputStream fis = openFileInput(FILENAME);
                 if(fis.read(buffer, 0, TOKEN_SIZE) != -1) {
-                    token = new String(buffer);
+                    token = new String(buffer, "UTF-8");
                 }
                 fis.close();
             }
             catch(Exception e) {}
 
             if(token != null) {
-                applicationUser.setToken(token);
+                GetUserTask task = new GetUserTask(this);
+                task.execute(new AbstractMap.SimpleEntry<>("token", token));
             }
             else {
                 Intent signInIntent = new Intent(getApplicationContext(), SignInActivity.class);

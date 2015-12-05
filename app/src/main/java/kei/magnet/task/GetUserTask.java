@@ -9,6 +9,8 @@ import org.json.JSONObject;
 import java.io.FileOutputStream;
 import java.util.AbstractMap;
 
+import kei.magnet.activities.MagnetActivity;
+import kei.magnet.activities.SignInActivity;
 import kei.magnet.classes.ApplicationUser;
 
 /**
@@ -48,7 +50,13 @@ public class GetUserTask extends JSONTask {
             }
             catch(Exception e) {}
 
-            getActivity().finish();
+            if(getActivity() instanceof SignInActivity) {
+                getActivity().finish();
+            }
+            else if(getActivity() instanceof MagnetActivity) {
+                MagnetActivity magnetActivity = (MagnetActivity)getActivity();
+                magnetActivity.init();
+            }
         } else
             Toast.makeText(getActivity().getApplicationContext(), "Fail Get User", Toast.LENGTH_SHORT).show();
     }
