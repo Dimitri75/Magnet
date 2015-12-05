@@ -24,7 +24,7 @@ define({ "api": [
           },
           {
             "group": "Parameter",
-            "type": "<p>Integer</p> ",
+            "type": "<p>String</p> ",
             "optional": false,
             "field": "login",
             "description": "<p>Login of the User to add.</p> "
@@ -295,6 +295,75 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/search/user/:login",
+    "title": "Search Users using a login or part of it.",
+    "name": "SearchUserByLigin",
+    "group": "Search",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "<p>String</p> ",
+            "optional": false,
+            "field": "login",
+            "description": "<p>Login of the User.</p> "
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "<p>Integer</p> ",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The id of the User</p> "
+          },
+          {
+            "group": "Success 200",
+            "type": "<p>String</p> ",
+            "optional": false,
+            "field": "login",
+            "description": "<p>The login of the User</p> "
+          },
+          {
+            "group": "Success 200",
+            "type": "<p>Location</p> ",
+            "optional": false,
+            "field": "location",
+            "description": "<p>The location of the User</p> "
+          },
+          {
+            "group": "Success 200",
+            "type": "<p>Datetime</p> ",
+            "optional": false,
+            "field": "last_activity",
+            "description": "<p>Last time of activity of the User</p> "
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "LoginNotFound",
+            "description": "<p>The <code>login</code> doesn't match for any User.</p> "
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "src/Magnet/Controller/SearchControllerProvider.php",
+    "groupTitle": "Search"
+  },
+  {
+    "type": "get",
     "url": "/user/",
     "title": "Request All Connected Users",
     "name": "GetConnectedUsers",
@@ -391,75 +460,6 @@ define({ "api": [
             "optional": false,
             "field": "TokenNotValid",
             "description": "<p>The <code>token</code> given cannot authenticate the User.</p> "
-          }
-        ]
-      }
-    },
-    "version": "0.0.0",
-    "filename": "src/Magnet/Controller/UserControllerProvider.php",
-    "groupTitle": "User"
-  },
-  {
-    "type": "get",
-    "url": "/user/:login",
-    "title": "Request data about the User using a login.",
-    "name": "GetUserInfo",
-    "group": "User",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "<p>String</p> ",
-            "optional": false,
-            "field": "login",
-            "description": "<p>Login of the User.</p> "
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "<p>Integer</p> ",
-            "optional": false,
-            "field": "id",
-            "description": "<p>The id of the User</p> "
-          },
-          {
-            "group": "Success 200",
-            "type": "<p>String</p> ",
-            "optional": false,
-            "field": "login",
-            "description": "<p>The login of the User</p> "
-          },
-          {
-            "group": "Success 200",
-            "type": "<p>Location</p> ",
-            "optional": false,
-            "field": "location",
-            "description": "<p>The location of the User</p> "
-          },
-          {
-            "group": "Success 200",
-            "type": "<p>Datetime</p> ",
-            "optional": false,
-            "field": "last_activity",
-            "description": "<p>Last time of activity of the User</p> "
-          }
-        ]
-      }
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "optional": false,
-            "field": "LoginNotFound",
-            "description": "<p>The <code>login</code> doesn't match for any User.</p> "
           }
         ]
       }

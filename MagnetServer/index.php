@@ -8,6 +8,7 @@ use Magnet\Model\UserDAO;
 use Magnet\Controller\UserControllerProvider;
 use Magnet\Controller\GroupControllerProvider;
 use Magnet\Controller\PinControllerProvider;
+use Magnet\Controller\SearchControllerProvider;
 
 $app = new Silex\Application();
 
@@ -16,5 +17,6 @@ $app['debug'] = true;
 $app->mount('/user', new UserControllerProvider());
 $app->mount('/group', new GroupControllerProvider());
 $app->mount('/pin', new PinControllerProvider());
+$app->mount('/search', new SearchControllerProvider());
 
 $app->run();

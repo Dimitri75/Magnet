@@ -75,38 +75,6 @@ class UserControllerProvider implements ControllerProviderInterface {
 		})
 		->assert('id', '\d+');
 
-        /**
-		 * @api {get} /user/:login Request data about the User using a login.
-		 * @apiName GetUserInfo
-		 * @apiGroup User
-		 *
-		 * @apiParam {String} login		Login of the User.
-		 *
-		 * @apiSuccess {Integer}  id 			The id of the User
-		 * @apiSuccess {String}   login 		The login of the User
-		 * @apiSuccess {Location} location  	The location of the User
-		 * @apiSuccess {Datetime} last_activity Last time of activity of the User
-		 *
-		 * @apiError LoginNotFound The <code>login</code> doesn't match for any User.
-		 */
-        /*$controllers->get('/{login}', function(Request $request, $login) use($app) {
-			$result = array();
-			$status = 200;
-
-			$userDAO = new GroupUserDAO();
-			$user = $userDAO->findByLogin($login);
-
-			if($user !== null) {
-				$result = $user;
-			}
-			else {
-				$result['message'] = 'User with given login cannot be found.';
-				$status = 400;
-			}
-
-			return $app->json($result, $status);
-		});*/
-
 		/**
 		 * @api {get} /user/:token Request User information
 		 * @apiName GetUser

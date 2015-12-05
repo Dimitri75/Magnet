@@ -89,7 +89,7 @@ class GroupControllerProvider implements ControllerProviderInterface {
          *
          * @apiParam {Integer} id       Id of the Group to update.
          * @apiParam {String}  token    Token of the User.
-         * @apiParam {Integer} login    Login of the User to add.
+         * @apiParam {String} login    Login of the User to add.
          *
          * @apiError TokenNotValid    The <code>token</code> given cannot authenticate the User.
          * @apiError ErrorWhileAdding The user couldn't be added.

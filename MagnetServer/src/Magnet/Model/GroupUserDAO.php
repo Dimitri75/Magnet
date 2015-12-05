@@ -78,6 +78,23 @@ class GroupUserDAO extends DAO {
 
 		return $result;
 	}
+	
+	public function searchByLogin($login) {
+		$result = array();
+		$login = '%'.$login.'%';
+		$parameters = array(':login' => $login);
+
+		$stmt = $this->getConnection()->prepare('
+			SELECT * FROM user WHERE login LIKE :login ORDER BY login
+		');
+		$stmt->execute($parameters);
+
+		foreach($stmt->fetchAll() as $row) {
+			$result[] = new User($row);
+		}
+
+		return $result;
+	}
 
 	public function save($data) {
 		$id = null;
