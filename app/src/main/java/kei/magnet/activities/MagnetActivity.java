@@ -46,6 +46,7 @@ public class MagnetActivity extends AppCompatActivity {
     private List<DrawerItem> menuDataList;
     public static Group selectedGroup;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -149,6 +150,10 @@ public class MagnetActivity extends AppCompatActivity {
                     view.setSelected(true);
                     gpsHandler.updateMarkers(selectedGroup);
                 }
+                if (menuDataList.get(position).getItem() instanceof User) {
+                    User selectedUser = (User) menuDataList.get(position).getItem();
+                    gpsHandler.moveCamera(selectedUser.getLatLng(), 10);
+                }
             }
         });
 
@@ -195,11 +200,10 @@ public class MagnetActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        if (isInitialised){
+        if (isInitialised) {
             gpsHandler.onResume();
             compass.onResume();
-        }
-        else if (applicationUser.getToken() != null) {
+        } else if (applicationUser.getToken() != null) {
             init();
         }
     }
@@ -237,7 +241,7 @@ public class MagnetActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public List<DrawerItem> getMenuDataList(){
+    public List<DrawerItem> getMenuDataList() {
         return menuDataList;
     }
 }

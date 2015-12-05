@@ -66,8 +66,8 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 
         mLocationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(100)
-                .setFastestInterval(100);
+                .setInterval(2 * 1000)
+                .setFastestInterval(1000);
     }
 
     public void rotateMap(float bearing) {
@@ -94,12 +94,13 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 
     @Override
     public void onConnected(Bundle bundle) {
-        Log.i(TAG, "Location services connected.");
         Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+
         applicationUser.setLocation(new kei.magnet.classes.Location(location.getLatitude(), location.getLongitude()));
-        CameraPosition pos = CameraPosition.builder().target(applicationUser.getLatLng()).zoom(10).build();
-        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(pos));
+
+        moveCamera(applicationUser.getLatLng(), 10);
+
         updateMarkers();
     }
 
@@ -117,8 +118,7 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
                 } else
                     Toast.makeText(parentActivity.getApplicationContext(), "issue when showing a group", Toast.LENGTH_LONG).show();
             }
-        }
-        else updateMarkers(MagnetActivity.selectedGroup);
+        } else updateMarkers(MagnetActivity.selectedGroup);
     }
 
     public void updateMarkers(Group group) {
@@ -127,6 +127,11 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
         for (User user : group.getUsers()) {
             drawMarker(user);
         }
+    }
+
+    public void moveCamera(LatLng location, Integer zoom) {
+        CameraPosition pos = CameraPosition.builder().target(location).zoom(zoom).build();
+        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(pos));
     }
 
     private void drawMarker(User user) {

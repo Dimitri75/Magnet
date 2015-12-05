@@ -9,32 +9,44 @@
     tools:showIn="@layout/activity_group_update"
     tools:context="kei.magnet.activities.GroupUpdateActivity"
     android:background="#f2f9ff">
-
-    <TextView
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Adding a user"
-        android:id="@+id/group_update_textView"
-        android:layout_below="@+id/imageView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="20dp"/>
+        android:orientation="vertical">
 
-    <EditText
-        android:layout_marginTop="20dp"
-        android:textColor="#212121"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:hint="Username"
-        android:ems="10"
-        android:id="@+id/group_update_editText_GROUPNAME"
-        android:layout_below="@+id/group_update_textView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Adding a user"
+            android:id="@+id/group_update_textView"
+            android:layout_below="@+id/imageView"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"/>
+
+        <EditText
+            android:layout_marginTop="20dp"
+            android:textColor="#212121"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:hint="Username"
+            android:ems="10"
+            android:id="@+id/group_update_editText_GROUPNAME"
+            android:layout_below="@+id/group_update_textView"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <ListView
+            android:id="@+id/applicationUsers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </ListView>
+    </LinearLayout>
 
 </RelativeLayout>
