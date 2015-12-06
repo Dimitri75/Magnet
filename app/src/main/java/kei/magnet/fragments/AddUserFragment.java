@@ -24,6 +24,7 @@ import kei.magnet.classes.Group;
 import kei.magnet.classes.User;
 import kei.magnet.classes.UserListAdapter;
 import kei.magnet.task.AddUserToGroupTask;
+import kei.magnet.task.SearchUserTask;
 
 /**
  * Created by carlo_000 on 24/11/2015.
@@ -55,24 +56,15 @@ public class AddUserFragment extends DialogFragment {
         txtName = (EditText) v.findViewById(R.id.group_update_editText_GROUPNAME);
         txtName.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //String login = txtName.getText().toString();
-                List<User> users = new ArrayList<>(MagnetActivity.selectedGroup.getUsers());
-
-                UserListAdapter adapter = new UserListAdapter(getActivity().getApplicationContext(),R.layout.activity_group_update_row,users);
-                userList.setAdapter(adapter);
-
-
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                SearchUserTask task = new SearchUserTask(getActivity(), userList);
+                task.execute(new AbstractMap.SimpleEntry<>("login", txtName.getText().toString()));
             }
         });
         builder.setView(v)
