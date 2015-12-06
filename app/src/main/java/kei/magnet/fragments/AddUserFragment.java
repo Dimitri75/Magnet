@@ -63,8 +63,14 @@ public class AddUserFragment extends DialogFragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                SearchUserTask task = new SearchUserTask(getActivity(), userList);
-                task.execute(new AbstractMap.SimpleEntry<>("login", txtName.getText().toString()));
+                if(s.length() == 0) {
+                    UserListAdapter adapter = new UserListAdapter(getActivity().getApplicationContext(), R.layout.activity_group_update_row, new ArrayList<User>());
+                    userList.setAdapter(adapter);
+                }
+                else {
+                    SearchUserTask task = new SearchUserTask(getActivity(), userList);
+                    task.execute(new AbstractMap.SimpleEntry<>("login", s.toString()));
+                }
             }
         });
         builder.setView(v)
