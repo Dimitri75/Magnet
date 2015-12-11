@@ -33,6 +33,9 @@ public class SignUpTask extends JSONTask {
         if(getException() != null) {
             Toast.makeText(getActivity(), getException().getMessage(), Toast.LENGTH_LONG).show();
         }
+        else if(getStatusCode() != 200) {
+            this.handleHttpError(getStatusCode());
+        }
         else if (jsonUser != null) {
             SignInTask task = new SignInTask(getActivity());
             task.execute(new AbstractMap.SimpleEntry<>("login", login),

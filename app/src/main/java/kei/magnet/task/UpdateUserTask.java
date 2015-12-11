@@ -18,9 +18,13 @@ public class UpdateUserTask extends JSONTask {
         setUrl(URL + token);
     }
 
-    protected void onPostExecute (JSONObject jsonUser) {
+    protected void onPostExecute (JSONObject jsonUser)
+    {
         if(getException() != null) {
             Toast.makeText(getActivity(), getException().getMessage(), Toast.LENGTH_LONG).show();
+        }
+        else if(getStatusCode() != 200) {
+            this.handleHttpError(getStatusCode());
         }
         else if (jsonUser != null) {
 

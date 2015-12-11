@@ -31,6 +31,9 @@ public class AddUserToGroupTask extends JSONTask {
         if(getException() != null) {
             Toast.makeText(getActivity(), getException().getMessage(), Toast.LENGTH_LONG).show();
         }
+        else if(getStatusCode() != 200) {
+            this.handleHttpError(getStatusCode());
+        }
         else if (jsonUser != null) {
             updateMenu();
             getActivity().finish();

@@ -26,6 +26,9 @@ public class CreatePinTask extends JSONTask {
         if(getException() != null) {
             Toast.makeText(getActivity(), getException().getMessage(), Toast.LENGTH_LONG).show();
         }
+        else if(getStatusCode() != 200) {
+            this.handleHttpError(getStatusCode());
+        }
         else if (jsonPin != null) {
             try {
                 int groupId = jsonPin.getInt("group_id");

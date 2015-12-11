@@ -1,6 +1,7 @@
 package kei.magnet.task;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 
@@ -17,6 +18,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.AbstractMap;
 
+import kei.magnet.activities.MagnetActivity;
+import kei.magnet.activities.SignInActivity;
+
 /**
  * Created by Suiken on 26/10/2015.
  */
@@ -26,6 +30,7 @@ public class JSONTask extends AsyncTask<AbstractMap.SimpleEntry<String, String>,
     private String request;
     private Exception exception;
     private Activity activity;
+    private int statusCode;
 
     private JSONTask(){
     }
@@ -76,6 +81,14 @@ public class JSONTask extends AsyncTask<AbstractMap.SimpleEntry<String, String>,
 
     public void setActivity(Activity activity) {
         this.activity = activity;
+    }
+
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
     }
 
     /**
@@ -139,6 +152,7 @@ public class JSONTask extends AsyncTask<AbstractMap.SimpleEntry<String, String>,
             os.close();
 
             connection.connect();
+            statusCode = connection.getResponseCode();
 
             InputStream stream = connection.getInputStream();
 
@@ -164,6 +178,7 @@ public class JSONTask extends AsyncTask<AbstractMap.SimpleEntry<String, String>,
             connection.setDoInput(true);
 
             connection.connect();
+            statusCode = connection.getResponseCode();
 
             InputStream stream = connection.getInputStream();
 
@@ -172,5 +187,20 @@ public class JSONTask extends AsyncTask<AbstractMap.SimpleEntry<String, String>,
             System.out.println("Connection failed");
         }
         return jsonObject;
+    }
+
+    protected void handleHttpError(int statusCode) {
+        if(statusCode == 401) {
+            Intent signInIntent = new Intent(getActivity().getApplicationContext(), SignInActivity.class);
+            getActivity().startActivity(signInIntent);
+
+            if(getActivity() instanceof MagnetActivity) {
+                MagnetActivity magnetActivity = (MagnetActivity)getActivity();
+                magnetActivity.init();
+            }
+            else {
+                getActivity().finish();
+            }
+        }
     }
 }
