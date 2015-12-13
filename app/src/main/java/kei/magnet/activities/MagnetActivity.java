@@ -282,6 +282,8 @@ public class MagnetActivity extends AppCompatActivity {
                     fos.write("".getBytes());
                 }
                 catch(Exception e) {}
+                Intent signInIntent = new Intent(this.getApplicationContext(), SignInActivity.class);
+                this.startActivity(signInIntent);
                 return true;
 
             default:
