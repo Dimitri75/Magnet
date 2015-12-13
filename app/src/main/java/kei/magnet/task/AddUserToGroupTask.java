@@ -36,7 +36,6 @@ public class AddUserToGroupTask extends JSONTask {
         }
         else if (jsonUser != null) {
             updateMenu();
-            getActivity().finish();
         } else
             Toast.makeText(getActivity().getApplicationContext(), "Fail adding a User", Toast.LENGTH_SHORT).show();
     }

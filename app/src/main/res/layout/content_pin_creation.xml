@@ -90,16 +90,8 @@
                 android:id="@+id/activationDateText"
                 android:layout_width="240dp"
                 android:layout_height="wrap_content"
-                android:editable="false" />
-
-            <Button
-                android:id="@+id/activationDateButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@+id/activationDateText"
                 android:onClick="oncClick_showActivationDate"
-                android:text="Change" />
+                android:editable="false" />
         </LinearLayout>
 
         <TextView
@@ -124,16 +116,8 @@
                 android:id="@+id/expirationDateText"
                 android:layout_width="240dp"
                 android:layout_height="wrap_content"
-                android:editable="false" />
-
-            <Button
-                android:id="@+id/expirationDateButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@+id/expirationDateText"
                 android:onClick="oncClick_showExpirationDate"
-                android:text="Change" />
+                android:editable="false" />
         </LinearLayout>
 
         <Button

@@ -5,13 +5,17 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -30,7 +34,6 @@ import kei.magnet.task.SearchUserTask;
  * Created by carlo_000 on 24/11/2015.
  */
 public class AddUserFragment extends DialogFragment {
-    private static String URL = "http://bardin.sylvain.perso.sfr.fr/";
     private ApplicationUser applicationUser;
     private EditText txtName;
     private Group group;
@@ -52,62 +55,53 @@ public class AddUserFragment extends DialogFragment {
         // Pass null as the parent view because its going in the dialog layout
 
         final View v = inflater.inflate(R.layout.activity_group_update, null);
+
         userList = (ListView)v.findViewById(R.id.applicationUsers);
+        userList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Object item = userList.getAdapter().getItem(position);
+                if(item instanceof User) {
+                    User user = (User) item;
+                    AddUserToGroupTask task = new AddUserToGroupTask(getActivity(), applicationUser.getToken(), group.getId());
+                    task.execute(new AbstractMap.SimpleEntry<>("login", user.getLogin()));
+                    dismiss();
+                }
+            }
+        });
+
         txtName = (EditText) v.findViewById(R.id.group_update_editText_GROUPNAME);
         txtName.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(s.length() == 0) {
+                if (s.length() == 0) {
                     UserListAdapter adapter = new UserListAdapter(getActivity().getApplicationContext(), R.layout.activity_group_update_row, new ArrayList<User>());
                     userList.setAdapter(adapter);
-                }
-                else {
+                } else {
                     SearchUserTask task = new SearchUserTask(getActivity(), userList);
                     task.execute(new AbstractMap.SimpleEntry<>("login", s.toString()));
                 }
             }
         });
-        builder.setView(v)
-                // Add action buttons
-                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        try {
-                            onClickSubmit();
-//                            JSONObject jsonObject = JSONTask.getTask().execute(
-//                                    new AbstractMap.SimpleEntry<>("url", URL + "group/" + group.getId() + "/user/" + applicationUser.getToken()),
-//                                    new AbstractMap.SimpleEntry<>("method", "POST"),
-//                                    new AbstractMap.SimpleEntry<>("request", "body"),
-//                                    new AbstractMap.SimpleEntry<>("login", txtName.getText().toString())
-//                            ).get();
-//
-//                            if (jsonObject != null)
-//                                AddUserFragment.this.getDialog().dismiss();
-//                            else
-//                                Toast.makeText(getActivity().getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
 
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        AddUserFragment.this.getDialog().cancel();
-                    }
-                });
+        builder.setView(v);
+
         return builder.create();
     }
 
-    public void onClickSubmit() {
-        AddUserToGroupTask task = new AddUserToGroupTask(getActivity(), applicationUser.getToken(), group.getId());
-        task.execute(new AbstractMap.SimpleEntry<>("login", txtName.getText().toString()));
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        getDialog().setCanceledOnTouchOutside(true);
+
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
 }
