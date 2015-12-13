@@ -9,6 +9,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,6 +21,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,16 +75,19 @@ public class MagnetActivity extends AppCompatActivity {
             catch(Exception e) {}
 
             if(token != null) {
-                GetUserTask task = new GetUserTask(this);
-                task.execute(new AbstractMap.SimpleEntry<>("token", token));
+                try {
+                    GetUserTask task = new GetUserTask(this);
+                    task.execute(new AbstractMap.SimpleEntry<>("token", token)).get();
+                }
+                catch(Exception e) {}
             }
             else {
                 Intent signInIntent = new Intent(getApplicationContext(), SignInActivity.class);
                 startActivity(signInIntent);
             }
-        } else {
-            init();
         }
+
+        init();
     }
 
     public List<DrawerItem> formatGroupsInDataList(List<Group> groups) {
@@ -256,12 +262,34 @@ public class MagnetActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (actionBarButtonLink.onOptionsItemSelected(item)) {
             return true;
         }
 
-        return super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.action_log_out:
+                applicationUser.setToken(null);
+                try {
+                    FileOutputStream fos = this.openFileOutput(FILENAME, Context.MODE_PRIVATE);
+                    fos.write("".getBytes());
+                }
+                catch(Exception e) {}
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 
     public List<DrawerItem> getMenuDataList() {

@@ -28,13 +28,11 @@ public class ApplicationUser extends User{
 
     private ApplicationUser() {
         token = null;
+        groups = new ArrayList<>();
     }
 
     public void init(JSONObject jsonObject){
-        token = null;
         super.init(jsonObject);
-
-        groups = new ArrayList<>();
 
         try {
 

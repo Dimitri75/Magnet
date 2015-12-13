@@ -26,28 +26,6 @@ public class SignInActivity extends AppCompatActivity {
         txtPassword = (EditText) findViewById(R.id.sign_in_editText_PASSWORD);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
 
     public void onClick_submit(View V) {
         SignInTask task = new SignInTask(this);
@@ -57,6 +35,16 @@ public class SignInActivity extends AppCompatActivity {
 
     public void onClick_signUp(View v){
         Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
+        startActivity(intent);
+    }
+
+    //Quit the app if the user doesn't want to sign in (or it will pop a new activity to sign in).
+    @Override
+    public void onBackPressed() {
+        finish();
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addCategory(Intent.CATEGORY_HOME);
         startActivity(intent);
     }
 }

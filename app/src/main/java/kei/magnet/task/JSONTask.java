@@ -191,16 +191,9 @@ public class JSONTask extends AsyncTask<AbstractMap.SimpleEntry<String, String>,
 
     protected void handleHttpError(int statusCode) {
         if(statusCode == 401) {
-            Intent signInIntent = new Intent(getActivity().getApplicationContext(), SignInActivity.class);
-            getActivity().startActivity(signInIntent);
-
-            if(getActivity() instanceof MagnetActivity) {
-                MagnetActivity magnetActivity = (MagnetActivity)getActivity();
-                magnetActivity.init();
-            }
-            else {
-                getActivity().finish();
-            }
+            //to be fixed, so it doesn't show a new activity all the time
+            /*Intent signInIntent = new Intent(getActivity().getApplicationContext(), SignInActivity.class);
+            getActivity().startActivity(signInIntent);*/
         }
     }
 }

@@ -9,13 +9,13 @@
     android:paddingRight="0dp"
     android:paddingTop="0dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="kei.magnet.activities.MagnetActivity"
-    >
+    tools:context="kei.magnet.activities.MagnetActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:elevation="4dp"
         android:minHeight="?attr/actionBarSize" />
 
     <android.support.v4.widget.DrawerLayout
@@ -37,11 +37,11 @@
                 android:layout_margin="3dp"
                 android:clickable="true"
                 />
-          <ImageView
+          <LinearLayout
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="@drawable/activity_background_circle"
-              android:orientation="vertical"></ImageView>
+              android:orientation="vertical"></LinearLayout>
         </FrameLayout>
 
 
