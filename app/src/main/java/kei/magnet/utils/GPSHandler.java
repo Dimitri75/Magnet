@@ -7,6 +7,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -20,6 +21,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONObject;
@@ -66,7 +68,7 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 
         mLocationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(2 * 1000)
+                .setInterval(5 * 1000)
                 .setFastestInterval(1000);
     }
 
@@ -173,6 +175,22 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
             // Try to obtain the map from the SupportMapFragment.
             googleMap = ((SupportMapFragment) parentActivity.getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
             googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+            /*googleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+                @Override
+                public View getInfoWindow(Marker arg0) {
+                    return null;
+                }
+
+                @Override
+                public View getInfoContents(Marker arg0) {
+
+                    View v = parentActivity.getLayoutInflater().inflate(R.layout.pin_infoview, null);
+                    
+                    return v;
+
+                }
+            });*/
         }
     }
 
