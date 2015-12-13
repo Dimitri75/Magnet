@@ -14,7 +14,7 @@ import kei.magnet.fragments.DrawerItem;
 /**
  * Created by .Sylvain on 24/11/2015.
  */
-public class AddUserToGroupTask extends JSONTask {
+public class    AddUserToGroupTask extends JSONTask {
     private static String URL = "http://bardin.sylvain.perso.sfr.fr/group/";
     private String token;
 

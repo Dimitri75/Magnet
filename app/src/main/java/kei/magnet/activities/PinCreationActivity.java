@@ -146,6 +146,7 @@ public class PinCreationActivity extends FragmentActivity {
                     new AbstractMap.SimpleEntry<>("deletion_time", dateToString(expirationYear, expirationMonth, expirationDay)),
                     new AbstractMap.SimpleEntry<>("group_id", String.valueOf(((Group) spinnerGroups.getSelectedItem()).getId()))
             );
+
         } catch (Exception e) {
             e.printStackTrace();
         }

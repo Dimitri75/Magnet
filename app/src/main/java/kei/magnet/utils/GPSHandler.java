@@ -32,6 +32,7 @@ import kei.magnet.R;
 import kei.magnet.activities.MagnetActivity;
 import kei.magnet.classes.ApplicationUser;
 import kei.magnet.classes.Group;
+import kei.magnet.classes.Pin;
 import kei.magnet.classes.User;
 import kei.magnet.task.UpdateUserTask;
 
@@ -127,7 +128,11 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
         for (User user : group.getUsers()) {
             drawMarker(user);
         }
+        for (Pin pin : group.getPins()) {
+            drawPin(pin);
+        }
     }
+
 
     public void moveCamera(LatLng location, Integer zoom) {
         CameraPosition pos = CameraPosition.builder().target(location).zoom(zoom).build();
@@ -145,7 +150,15 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
         markerOptions.icon(BitmapDescriptorFactory.fromBitmap(userIcon));
         googleMap.addMarker(markerOptions);
     }
+    private void drawPin(Pin pin){
+       MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(pin.getLocation().getLatitude(),pin.getLocation().getLongitude()))
+                .title(pin.getName());
+        Bitmap pinIcon =  BitmapFactory.decodeResource(parentActivity.getResources(), R.drawable.gps29);
+        pinIcon = Bitmap.createScaledBitmap(pinIcon, pinIcon.getWidth() / 10, pinIcon.getHeight() / 10, false);
+        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(pinIcon));
+        googleMap.addMarker(markerOptions);
 
+    }
     private LatLng getLatLng(Location location) {
         return new LatLng(location.getLatitude(), location.getLongitude());
     }

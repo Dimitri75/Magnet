@@ -44,7 +44,13 @@ public class Pin implements Parcelable{
         }
     }
 
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public Location getLocation() {
         return location;
@@ -83,8 +89,6 @@ public class Pin implements Parcelable{
         Bundle b = new Bundle();
         b.putParcelable("location", location);
         dest.writeBundle(b);
-
-
     }
 
     /**
@@ -103,15 +107,12 @@ public class Pin implements Parcelable{
         Bundle b = in.readBundle(Location.class.getClassLoader());
         location = b.getParcelable("location");
     }
-
-    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
-
-        public User createFromParcel(Parcel in) {
-            return new User(in);
+    public static final Parcelable.Creator<Pin> CREATOR = new Parcelable.Creator<Pin>() {
+        public Pin createFromParcel(Parcel in) {
+            return new Pin(in);
         }
-
-        public User[] newArray(int size) {
-            return new User[size];
+        public Pin[] newArray(int size) {
+            return new Pin[size];
         }
     };
     //END PARCELABLE
