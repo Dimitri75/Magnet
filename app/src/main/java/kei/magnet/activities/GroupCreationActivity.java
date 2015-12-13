@@ -8,7 +8,7 @@ import android.widget.EditText;
 import java.util.AbstractMap;
 
 import kei.magnet.R;
-import kei.magnet.classes.ApplicationUser;
+import kei.magnet.model.ApplicationUser;
 import kei.magnet.task.CreatePinTask;
 
 public class GroupCreationActivity extends AppCompatActivity {

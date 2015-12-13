@@ -3,30 +3,24 @@ package kei.magnet.fragments;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.List;
 
 import kei.magnet.R;
-import kei.magnet.activities.MagnetActivity;
-import kei.magnet.classes.ApplicationUser;
-import kei.magnet.classes.Group;
-import kei.magnet.classes.User;
-import kei.magnet.classes.UserListAdapter;
+import kei.magnet.model.ApplicationUser;
+import kei.magnet.model.Group;
+import kei.magnet.model.User;
+import kei.magnet.model.UserListAdapter;
 import kei.magnet.task.AddUserToGroupTask;
 import kei.magnet.task.SearchUserTask;
 

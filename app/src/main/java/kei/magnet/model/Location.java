@@ -1,4 +1,4 @@
-package kei.magnet.classes;
+package kei.magnet.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

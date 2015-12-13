@@ -1,59 +1,65 @@
-package kei.magnet.classes;
+package kei.magnet.model;
 
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.util.Date;
 
 /**
  * Created by Dimitri on 27/10/2015.
  */
-public class Pin implements Parcelable{
-    private String name;
-    private String description;
+public class User implements Parcelable{
+    private int id;
+    private String login;
     private Location location;
-    private Date creation_time;
-    private Date deletion_time;
 
-
-    public Pin() {
+    public User() {
 
     }
 
-    public Pin(JSONObject jsonObject){
+    public User(JSONObject jsonObject) {
+        init(jsonObject);
+    }
+
+    protected void init(JSONObject jsonObject) {
         try {
-            this.name = jsonObject.getString("name");
-            this.description = jsonObject.getString("description");
+            this.id = jsonObject.getInt("id");
+            this.login = jsonObject.getString("login");
 
             Location location = new Location(jsonObject.getJSONObject("location"));
             this.location = location;
-
-            this.creation_time = DateFormat.getDateTimeInstance().parse(jsonObject.getString("creation_date"));
-            this.deletion_time = DateFormat.getDateTimeInstance().parse(jsonObject.getString("deletion_time"));
-
         } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
             e.printStackTrace();
         }
     }
 
-    public String getName() {
-        return name;
+    public int getId() {
+        return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public Location getLocation() {
         return location;
+    }
+
+    public LatLng getLatLng() {
+        return new LatLng(getLocation().getLatitude(), getLocation().getLongitude());
+    }
+
+    @Override
+    public String toString() {
+        return login;
     }
 
     public void setLocation(Location location) {
@@ -82,10 +88,9 @@ public class Pin implements Parcelable{
      */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(name);
-        dest.writeString(description);
-        dest.writeString(creation_time.toString());
-        dest.writeString(deletion_time.toString());
+        dest.writeInt(id);
+        dest.writeString(login);
+
         Bundle b = new Bundle();
         b.putParcelable("location", location);
         dest.writeBundle(b);
@@ -93,27 +98,39 @@ public class Pin implements Parcelable{
 
     /**
      * Instanciate a User using Parcelable
+     *
      * @param in
      */
-    public Pin(Parcel in) {
-        this.name = in.readString();
-        this.description = in.readString();
-        try {
-            this.creation_time = DateFormat.getDateTimeInstance().parse(in.readString());
-            this.deletion_time = DateFormat.getDateTimeInstance().parse(in.readString());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+    public User(Parcel in) {
+        this.id = in.readInt();
+        this.login = in.readString();
+
         Bundle b = in.readBundle(Location.class.getClassLoader());
         location = b.getParcelable("location");
     }
-    public static final Parcelable.Creator<Pin> CREATOR = new Parcelable.Creator<Pin>() {
-        public Pin createFromParcel(Parcel in) {
-            return new Pin(in);
+
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+
+        public User createFromParcel(Parcel in) {
+            return new User(in);
         }
-        public Pin[] newArray(int size) {
-            return new Pin[size];
+
+        public User[] newArray(int size) {
+            return new User[size];
         }
     };
+
     //END PARCELABLE
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        return login.equals(user.getLogin());
+
+    }
+
 }

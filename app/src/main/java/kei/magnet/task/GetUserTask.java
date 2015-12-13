@@ -11,7 +11,7 @@ import java.util.AbstractMap;
 
 import kei.magnet.activities.MagnetActivity;
 import kei.magnet.activities.SignInActivity;
-import kei.magnet.classes.ApplicationUser;
+import kei.magnet.model.ApplicationUser;
 
 /**
  * Created by .Sylvain on 23/11/2015.

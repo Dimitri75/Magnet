@@ -27,10 +27,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import kei.magnet.R;
-import kei.magnet.classes.ApplicationUser;
-import kei.magnet.classes.Group;
-import kei.magnet.classes.Location;
-import kei.magnet.classes.User;
+import kei.magnet.model.ApplicationUser;
+import kei.magnet.model.Group;
+import kei.magnet.model.Location;
+import kei.magnet.model.User;
 import kei.magnet.enumerations.NavigationDrawerType;
 import kei.magnet.fragments.AddUserFragment;
 import kei.magnet.fragments.CustomDrawerAdapter;

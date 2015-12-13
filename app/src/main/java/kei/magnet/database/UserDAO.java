@@ -2,7 +2,7 @@ package kei.magnet.database;
 
 import android.content.Context;
 
-import kei.magnet.classes.User;
+import kei.magnet.model.User;
 
 /**
  * Created by .Sylvain on 04/12/2015.

@@ -17,9 +17,9 @@ import java.util.AbstractMap;
 import java.util.Calendar;
 
 import kei.magnet.R;
-import kei.magnet.classes.ApplicationUser;
-import kei.magnet.classes.Group;
-import kei.magnet.classes.Location;
+import kei.magnet.model.ApplicationUser;
+import kei.magnet.model.Group;
+import kei.magnet.model.Location;
 import kei.magnet.task.CreatePinTask;
 
 public class PinCreationActivity extends FragmentActivity {

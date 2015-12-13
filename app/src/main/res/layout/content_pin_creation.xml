@@ -88,10 +88,10 @@
 
             <EditText
                 android:id="@+id/activationDateText"
-                android:layout_width="240dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="oncClick_showActivationDate"
-                android:editable="false" />
+                android:editable="false"
+                android:onClick="oncClick_showActivationDate" />
         </LinearLayout>
 
         <TextView
@@ -114,20 +114,20 @@
 
             <EditText
                 android:id="@+id/expirationDateText"
-                android:layout_width="240dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="oncClick_showExpirationDate"
-                android:editable="false" />
+                android:editable="false"
+                android:onClick="oncClick_showExpirationDate" />
         </LinearLayout>
 
         <Button
-            android:layout_marginTop="40dp"
             android:id="@+id/pin_creation_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/expiration_date"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dp"
             android:onClick="onClick_submit"
             android:text="Submit" />
     </RelativeLayout>

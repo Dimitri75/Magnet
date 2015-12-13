@@ -1,6 +1,5 @@
-package kei.magnet.classes;
+package kei.magnet.model;
 
-import android.content.ClipData;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.List;
-import java.util.Objects;
 
 import kei.magnet.R;
 

@@ -7,14 +7,12 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 
 import kei.magnet.R;
-import kei.magnet.activities.MagnetActivity;
-import kei.magnet.classes.User;
-import kei.magnet.classes.UserListAdapter;
+import kei.magnet.model.User;
+import kei.magnet.model.UserListAdapter;
 
 /**
  * Created by .Sylvain on 05/12/2015.

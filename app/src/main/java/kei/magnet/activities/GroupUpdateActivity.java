@@ -8,8 +8,8 @@ import android.widget.EditText;
 import java.util.AbstractMap;
 
 import kei.magnet.R;
-import kei.magnet.classes.ApplicationUser;
-import kei.magnet.classes.Group;
+import kei.magnet.model.ApplicationUser;
+import kei.magnet.model.Group;
 import kei.magnet.task.AddUserToGroupTask;
 
 public class GroupUpdateActivity extends AppCompatActivity {

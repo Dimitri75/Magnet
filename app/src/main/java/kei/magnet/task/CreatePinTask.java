@@ -5,9 +5,9 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
-import kei.magnet.classes.ApplicationUser;
-import kei.magnet.classes.Group;
-import kei.magnet.classes.Pin;
+import kei.magnet.model.ApplicationUser;
+import kei.magnet.model.Group;
+import kei.magnet.model.Pin;
 
 /**
  * Created by .Sylvain on 24/11/2015.

@@ -20,7 +20,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONObject;
@@ -30,10 +29,10 @@ import java.util.List;
 
 import kei.magnet.R;
 import kei.magnet.activities.MagnetActivity;
-import kei.magnet.classes.ApplicationUser;
-import kei.magnet.classes.Group;
-import kei.magnet.classes.Pin;
-import kei.magnet.classes.User;
+import kei.magnet.model.ApplicationUser;
+import kei.magnet.model.Group;
+import kei.magnet.model.Pin;
+import kei.magnet.model.User;
 import kei.magnet.task.UpdateUserTask;
 
 /**
@@ -98,7 +97,7 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
         Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
 
-        applicationUser.setLocation(new kei.magnet.classes.Location(location.getLatitude(), location.getLongitude()));
+        applicationUser.setLocation(new kei.magnet.model.Location(location.getLatitude(), location.getLongitude()));
 
         moveCamera(applicationUser.getLatLng(), 10);
 
@@ -195,7 +194,7 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
     public void onLocationChanged(Location location) {
         if (applicationUser == null || applicationUser.getLocation() == null || location == null)
             return;
-        applicationUser.setLocation(new kei.magnet.classes.Location(location.getLatitude(), location.getLongitude()));
+        applicationUser.setLocation(new kei.magnet.model.Location(location.getLatitude(), location.getLongitude()));
 
         try {
             JSONObject locationJSON = new JSONObject();
