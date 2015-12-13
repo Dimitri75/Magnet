@@ -1,5 +1,6 @@
 package kei.magnet.activities;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -60,6 +61,7 @@ public class MagnetActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_magnet);
+
         applicationUser = ApplicationUser.getInstance();
 
         if (applicationUser.getToken() == null) {

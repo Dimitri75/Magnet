@@ -9,40 +9,31 @@
     android:paddingRight="0dp"
     android:paddingTop="0dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="kei.magnet.activities.MagnetActivity">
+    tools:context="kei.magnet.activities.MagnetActivity"
+    android:background="#707070">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="4dp"
-        android:minHeight="?attr/actionBarSize" />
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="@drawable/magnet"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/relativeLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
         <!-- The main content view -->
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="200dp">
-
-            <fragment
-                android:id="@+id/map"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="3dp"
-                android:clickable="true" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/activity_background_circle"
-                android:orientation="vertical" />
-        </FrameLayout>
-
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:background="@drawable/activity_background_circle"-->
+            <!--android:orientation="vertical" />-->
 
         <!-- The navigation drawer -->
 
@@ -56,4 +47,37 @@
             android:divider="@android:color/transparent"
             android:dividerHeight="0dp" />
     </android.support.v4.widget.DrawerLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/relativeLayout"
+        android:layout_margin="10dp"
+        android:layout_alignParentBottom="true"
+        android:background="#ffffff"
+        android:padding="5dp">
+
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:layout_gravity="center|bottom"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
+
+    <Switch
+        android:textColor="#ffffff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Private "
+        android:id="@+id/switch_private"
+        android:checked="false"
+        android:layout_below="@+id/imageView"
+        android:layout_alignRight="@+id/relativeLayout"
+        android:layout_alignEnd="@+id/relativeLayout" />
 </RelativeLayout>

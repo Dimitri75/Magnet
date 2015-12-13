@@ -35,6 +35,7 @@
         android:required="true" />
 
     <application
+        android:largeHeap="true"
         android:allowBackup="true"
         android:icon="@drawable/magnet"
         android:label="@string/app_name"
