@@ -18,7 +18,7 @@
             android:layout_height="150dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/magnet" />
+            android:background="@drawable/magnet_light" />
 
         <TextView
             android:id="@+id/pin_creation_textView"
@@ -91,6 +91,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:editable="false"
+                android:textColor="#ffffff"
                 android:onClick="oncClick_showActivationDate" />
         </LinearLayout>
 
@@ -117,6 +118,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:editable="false"
+                android:textColor="#ffffff"
                 android:onClick="oncClick_showExpirationDate" />
         </LinearLayout>
 
