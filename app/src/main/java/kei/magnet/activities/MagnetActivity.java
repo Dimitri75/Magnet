@@ -96,19 +96,19 @@ public class MagnetActivity extends AppCompatActivity {
         Group globalGroup = new Group();
         globalGroup.setCreator(ApplicationUser.getInstance());
         globalGroup.setName("Friend list");
-        List<User> groupZeroUsers = new ArrayList<>();
+        List<User> globalGroupUsers = new ArrayList<>();
 
         for (Group group : groups) {
             menuDataList.add(new DrawerItem(group, NavigationDrawerType.GROUP));
             for (User user : group.getUsers()) {
                 menuDataList.add(new DrawerItem(user, NavigationDrawerType.USER));
-                if (!groupZeroUsers.contains(user)) {
-                    groupZeroUsers.add(user);
+                if (!globalGroupUsers.contains(user)) {
+                    globalGroupUsers.add(user);
                 }
             }
         }
+        globalGroup.setUsers(globalGroupUsers);
 
-        globalGroup.setUsers(groupZeroUsers);
         menuDataList.add(new DrawerItem(globalGroup, NavigationDrawerType.GROUP));
         for (User user : globalGroup.getUsers()) {
             menuDataList.add(new DrawerItem(user, NavigationDrawerType.USER));

@@ -94,14 +94,19 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 
     @Override
     public void onConnected(Bundle bundle) {
-        Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        try {
+            Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
 
-        applicationUser.setLocation(new kei.magnet.model.Location(location.getLatitude(), location.getLongitude()));
+            applicationUser.setLocation(new kei.magnet.model.Location(location.getLatitude(), location.getLongitude()));
 
-        moveCamera(applicationUser.getLatLng(), 10);
+            moveCamera(applicationUser.getLatLng(), 10);
 
-        updateMarkers();
+            updateMarkers();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void updateMarkers() {

@@ -6,6 +6,6 @@
     android:useLevel="false">
 
     <stroke android:color="#ffffff" android:width="150dp"/>
-    <size android:width="150dp" android:height="150dp"/>
+    <size android:width="200dp" android:height="150dp"/>
     <solid android:color="@android:color/transparent"/>
 </shape>

@@ -25,7 +25,10 @@ public class Group implements Parcelable {
         return pins;
     }
 
-    public Group(){}
+    public Group(){
+        users = new ArrayList<>();
+        pins = new ArrayList<>();
+    }
 
     public Group(JSONObject jsonObject) {
         try {
