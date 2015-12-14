@@ -118,26 +118,26 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
             for (Group group : groups) {
                 if (group != null && !group.getUsers().isEmpty()) {
                     for (User user : group.getUsers()) {
-                        drawMarker(user, false);
+                        drawMarker(user);
                     }
                 } else
                     Toast.makeText(parentActivity.getApplicationContext(), "issue when showing a group", Toast.LENGTH_LONG).show();
             }
         } else updateMarkers(MagnetActivity.selectedGroup);
 
-        drawMarker(applicationUser, true);
+        drawMarker(applicationUser);
     }
 
     public void updateMarkers(Group group) {
         googleMap.clear();
         for (User user : group.getUsers()) {
-            drawMarker(user, false);
+            drawMarker(user);
         }
         for (Pin pin : group.getPins()) {
             drawPin(pin);
         }
 
-        drawMarker(applicationUser, true);
+        drawMarker(applicationUser);
     }
 
 
@@ -146,11 +146,11 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(pos));
     }
 
-    private void drawMarker(User user, boolean isApplicationUser) {
+    private void drawMarker(User user) {
         MarkerOptions markerOptions = new MarkerOptions().position(user.getLatLng())
                 .title(user.getLogin()).flat(true);
 
-        if (!isApplicationUser)
+        if (!(user instanceof ApplicationUser))
             markerOptions.alpha(0.7f);
 
         Bitmap userIcon = BitmapFactory.decodeResource(parentActivity.getResources(), R.drawable.pin56);
