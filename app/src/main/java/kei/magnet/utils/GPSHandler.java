@@ -175,7 +175,7 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
             // Try to obtain the map from the SupportMapFragment.
             googleMap = ((SupportMapFragment) parentActivity.getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
             googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-            /*googleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+            googleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
 
                 @Override
                 public View getInfoWindow(Marker arg0) {
@@ -188,9 +188,8 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
                     View v = parentActivity.getLayoutInflater().inflate(R.layout.pin_infoview, null);
                     
                     return v;
-
                 }
-            });*/
+            });
         }
     }
 
