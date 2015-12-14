@@ -105,8 +105,7 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
             moveCamera(applicationUser.getLatLng(), 10);
 
             updateMarkers();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -119,26 +118,26 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
             for (Group group : groups) {
                 if (group != null && !group.getUsers().isEmpty()) {
                     for (User user : group.getUsers()) {
-                        drawMarker(user);
+                        drawMarker(user, false);
                     }
                 } else
                     Toast.makeText(parentActivity.getApplicationContext(), "issue when showing a group", Toast.LENGTH_LONG).show();
             }
         } else updateMarkers(MagnetActivity.selectedGroup);
 
-        drawMarker(applicationUser);
+        drawMarker(applicationUser, true);
     }
 
     public void updateMarkers(Group group) {
         googleMap.clear();
         for (User user : group.getUsers()) {
-            drawMarker(user);
+            drawMarker(user, false);
         }
         for (Pin pin : group.getPins()) {
             drawPin(pin);
         }
-        
-        drawMarker(applicationUser);
+
+        drawMarker(applicationUser, true);
     }
 
 
@@ -147,9 +146,13 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(pos));
     }
 
-    private void drawMarker(User user) {
+    private void drawMarker(User user, boolean isApplicationUser) {
         MarkerOptions markerOptions = new MarkerOptions().position(user.getLatLng())
-                .title(user.getLogin());
+                .title(user.getLogin()).flat(true);
+
+        if (!isApplicationUser)
+            markerOptions.alpha(0.7f);
+
         Bitmap userIcon = BitmapFactory.decodeResource(parentActivity.getResources(), R.drawable.pin56);
         if (user instanceof ApplicationUser)
             userIcon = BitmapFactory.decodeResource(parentActivity.getResources(), R.drawable.map_marker_application_user);
@@ -158,15 +161,17 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
         markerOptions.icon(BitmapDescriptorFactory.fromBitmap(userIcon));
         googleMap.addMarker(markerOptions);
     }
-    private void drawPin(Pin pin){
-       MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(pin.getLocation().getLatitude(),pin.getLocation().getLongitude()))
-                .title(pin.getName());
-        Bitmap pinIcon =  BitmapFactory.decodeResource(parentActivity.getResources(), R.drawable.gps29);
-        pinIcon = Bitmap.createScaledBitmap(pinIcon, pinIcon.getWidth() / 10, pinIcon.getHeight() / 10, false);
+
+    private void drawPin(Pin pin) {
+        MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(pin.getLocation().getLatitude(), pin.getLocation().getLongitude()))
+                .title(pin.getName()).flat(true);
+        Bitmap pinIcon = BitmapFactory.decodeResource(parentActivity.getResources(), R.drawable.gps29);
+        pinIcon = Bitmap.createScaledBitmap(pinIcon, pinIcon.getWidth() / 3, pinIcon.getHeight() / 3, false);
         markerOptions.icon(BitmapDescriptorFactory.fromBitmap(pinIcon));
         googleMap.addMarker(markerOptions);
 
     }
+
     private LatLng getLatLng(Location location) {
         return new LatLng(location.getLatitude(), location.getLongitude());
     }
@@ -178,14 +183,13 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
             googleMap = ((SupportMapFragment) parentActivity.getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
             googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
             googleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-
                 @Override
-                public View getInfoWindow(Marker arg0) {
+                public View getInfoWindow(Marker marker) {
                     return null;
                 }
 
                 @Override
-                public View getInfoContents(Marker arg0) {
+                public View getInfoContents(Marker marker) {
                     View v = parentActivity.getLayoutInflater().inflate(R.layout.pin_infoview, null);
                     return v;
                 }
