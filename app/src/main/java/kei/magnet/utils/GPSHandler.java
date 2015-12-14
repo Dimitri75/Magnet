@@ -114,7 +114,6 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
     public void updateMarkers() {
         googleMap.clear();
         List<Group> groups = applicationUser.getGroups();
-        drawMarker(applicationUser);
 
         if (MagnetActivity.selectedGroup == null) {
             for (Group group : groups) {
@@ -126,17 +125,20 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
                     Toast.makeText(parentActivity.getApplicationContext(), "issue when showing a group", Toast.LENGTH_LONG).show();
             }
         } else updateMarkers(MagnetActivity.selectedGroup);
+
+        drawMarker(applicationUser);
     }
 
     public void updateMarkers(Group group) {
         googleMap.clear();
-        drawMarker(applicationUser);
         for (User user : group.getUsers()) {
             drawMarker(user);
         }
         for (Pin pin : group.getPins()) {
             drawPin(pin);
         }
+        
+        drawMarker(applicationUser);
     }
 
 
@@ -175,7 +177,7 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
             // Try to obtain the map from the SupportMapFragment.
             googleMap = ((SupportMapFragment) parentActivity.getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
             googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-            /*googleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+            googleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
 
                 @Override
                 public View getInfoWindow(Marker arg0) {
@@ -184,13 +186,10 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 
                 @Override
                 public View getInfoContents(Marker arg0) {
-
                     View v = parentActivity.getLayoutInflater().inflate(R.layout.pin_infoview, null);
-                    
                     return v;
-
                 }
-            });*/
+            });
         }
     }
 
