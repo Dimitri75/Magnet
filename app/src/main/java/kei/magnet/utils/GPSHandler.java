@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.DropBoxManager;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
@@ -27,7 +28,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import org.json.JSONObject;
 
 import java.util.AbstractMap;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import kei.magnet.R;
 import kei.magnet.activities.MagnetActivity;
@@ -48,6 +51,7 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
     private GoogleApiClient mGoogleApiClient;
     private FragmentActivity parentActivity;
     private ApplicationUser applicationUser;
+    private HashMap<Object, MarkerOptions> markerDictionnary;
 
     public GoogleMap getGoogleMap() {
         return googleMap;
@@ -57,7 +61,7 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 
         this.parentActivity = parentActivity;
         this.applicationUser = user;
-
+        this.markerDictionnary = new HashMap<>();
         setUpMapIfNeeded();
 
         mGoogleApiClient = new GoogleApiClient.Builder(parentActivity.getApplicationContext())
@@ -118,7 +122,8 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
             for (Group group : groups) {
                 if (group != null && !group.getUsers().isEmpty()) {
                     for (User user : group.getUsers()) {
-                        drawMarker(user);
+                        if (user.getId() != applicationUser.getId())
+                            drawMarker(user);
                     }
                 } else
                     Toast.makeText(parentActivity.getApplicationContext(), "issue when showing a group", Toast.LENGTH_LONG).show();
@@ -130,8 +135,10 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 
     public void updateMarkers(Group group) {
         googleMap.clear();
+
         for (User user : group.getUsers()) {
-            drawMarker(user);
+            if (user.getId() != applicationUser.getId())
+                drawMarker(user);
         }
         for (Pin pin : group.getPins()) {
             drawPin(pin);
@@ -147,24 +154,43 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
     }
 
     private void drawMarker(User user) {
-        MarkerOptions markerOptions = new MarkerOptions().position(user.getLatLng())
-                .title(user.getLogin()).flat(true);
+        MarkerOptions markerOptions;
+        if (!markerDictionnary.containsValue(user)) {
+            markerOptions = new MarkerOptions().position(user.getLatLng())
+                    .title(user.getLogin());
 
-        if (!(user instanceof ApplicationUser))
-            markerOptions.alpha(0.7f);
+            Bitmap userIcon = BitmapFactory.decodeResource(parentActivity.getResources(), R.drawable.pin56);
 
-        Bitmap userIcon = BitmapFactory.decodeResource(parentActivity.getResources(), R.drawable.pin56);
-        if (user instanceof ApplicationUser)
-            userIcon = BitmapFactory.decodeResource(parentActivity.getResources(), R.drawable.map_marker_application_user);
+            if (user.getId() != applicationUser.getId())
+                markerOptions.alpha(0.7f);
+            else
+                userIcon = BitmapFactory.decodeResource(parentActivity.getResources(), R.drawable.map_marker_application_user);
 
-        userIcon = Bitmap.createScaledBitmap(userIcon, userIcon.getWidth() / 10, userIcon.getHeight() / 10, false);
-        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(userIcon));
-        googleMap.addMarker(markerOptions);
+
+            userIcon = Bitmap.createScaledBitmap(userIcon, userIcon.getWidth() / 10, userIcon.getHeight() / 10, false);
+            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(userIcon));
+            googleMap.addMarker(markerOptions);
+            markerDictionnary.put(user, markerOptions);
+        } else {
+            markerOptions = markerDictionnary.get(user);
+            markerOptions.position(user.getLatLng());
+
+        }
+
+    }
+
+    public Object getValueFromHashmap(Marker marker) {
+        for (Map.Entry<Object, MarkerOptions> entry : markerDictionnary.entrySet()) {
+            if (entry.getValue().equals(marker))
+                return entry.getKey();
+        }
+        return null;
     }
 
     private void drawPin(Pin pin) {
+
         MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(pin.getLocation().getLatitude(), pin.getLocation().getLongitude()))
-                .title(pin.getName()).flat(true);
+                .title(pin.getName());
         Bitmap pinIcon = BitmapFactory.decodeResource(parentActivity.getResources(), R.drawable.gps29);
         pinIcon = Bitmap.createScaledBitmap(pinIcon, pinIcon.getWidth() / 3, pinIcon.getHeight() / 3, false);
         markerOptions.icon(BitmapDescriptorFactory.fromBitmap(pinIcon));
@@ -190,6 +216,7 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 
                 @Override
                 public View getInfoContents(Marker marker) {
+
                     View v = parentActivity.getLayoutInflater().inflate(R.layout.pin_infoview, null);
                     return v;
                 }

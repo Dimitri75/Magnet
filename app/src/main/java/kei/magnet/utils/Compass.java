@@ -20,7 +20,7 @@ public class Compass implements SensorEventListener {
     private double angle=0;
     private float mDeclination=0;
     private float[] mRotationMatrix=new float[16];
-
+    private float[] orientation = new float[3];
     public Compass(SensorManager mSensorManager, MagnetActivity activity) {
         this.parentActivity = activity;
         this.mSensorManager = mSensorManager;
@@ -38,7 +38,7 @@ public class Compass implements SensorEventListener {
 
             SensorManager.getRotationMatrixFromVector(
                     mRotationMatrix, event.values);
-            float[] orientation = new float[3];
+
             SensorManager.getOrientation(mRotationMatrix, orientation);
             if (Math.abs(Math.toDegrees(orientation[0]) - angle) > 0.8) {
                 float bearing = (float) Math.toDegrees(orientation[0]) + mDeclination;
