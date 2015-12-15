@@ -265,24 +265,27 @@ public class MagnetActivity extends AppCompatActivity {
                 } else if (menuDataList.get(position).getItem() instanceof User) {
                     final int itemPosition = position;
                     final DrawerItem item = menuDataList.get(position);
-                    final User user = (User) item.getItem();
-                    new AlertDialog.Builder(MagnetActivity.this)
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setTitle("Removing User from Group")
-                            .setMessage("Are you sure you want to remove this user from this group?")
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    //marche pas on dirait
-                                    RemoveUserFromGroupTask task = new RemoveUserFromGroupTask(getParent(), applicationUser.getToken(), item.getGroup().getId());
-                                    task.execute(new AbstractMap.SimpleEntry<>("login", user.getLogin()));
-                                    item.getGroup().getUsers().remove(user);
-                                    updateMenu();
-                                }
+                    Group group = item.getGroup();
+                    if(group.getCreator().getLogin().equals(applicationUser.getLogin())) {
+                        final User user = (User) item.getItem();
+                        new AlertDialog.Builder(MagnetActivity.this)
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .setTitle("Removing User from Group")
+                                .setMessage("Are you sure you want to remove this user from this group?")
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        //marche pas on dirait
+                                        RemoveUserFromGroupTask task = new RemoveUserFromGroupTask(getParent(), applicationUser.getToken(), item.getGroup().getId());
+                                        task.execute(new AbstractMap.SimpleEntry<>("login", user.getLogin()));
+                                        item.getGroup().getUsers().remove(user);
+                                        updateMenu();
+                                    }
 
-                            })
-                            .setNegativeButton("No", null)
-                            .show();
+                                })
+                                .setNegativeButton("No", null)
+                                .show();
+                    }
 
                 }
 
