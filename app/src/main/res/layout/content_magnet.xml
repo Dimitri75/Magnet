@@ -36,7 +36,7 @@
                 android:id="@+id/imageView"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:background="@drawable/magnet_light"
+                android:background="@drawable/magnet"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true" />
 
