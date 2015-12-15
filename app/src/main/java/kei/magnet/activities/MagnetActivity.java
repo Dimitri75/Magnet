@@ -241,6 +241,7 @@ public class MagnetActivity extends AppCompatActivity {
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
+                                    //marche pas on dirait
                                     RemoveUserFromGroupTask task = new RemoveUserFromGroupTask(getParent(), applicationUser.getToken(), item.getGroup().getId());
                                     task.execute(new AbstractMap.SimpleEntry<>("login", user.getLogin()));
                                     item.getGroup().getUsers().remove(user);
