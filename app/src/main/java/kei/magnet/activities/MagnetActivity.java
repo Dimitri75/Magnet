@@ -1,12 +1,14 @@
 package kei.magnet.activities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -17,7 +19,6 @@ import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -39,6 +40,7 @@ import kei.magnet.model.Group;
 import kei.magnet.model.Location;
 import kei.magnet.model.User;
 import kei.magnet.task.GetUserTask;
+import kei.magnet.task.RemoveUserFromGroupTask;
 import kei.magnet.task.UpdateUserTask;
 import kei.magnet.utils.Compass;
 import kei.magnet.utils.GPSHandler;
@@ -209,7 +211,7 @@ public class MagnetActivity extends AppCompatActivity {
                     view.setSelected(true);
                     gpsHandler.updateMarkers(selectedGroup);
                 }
-                if (menuDataList.get(position).getItem() instanceof User) {
+                else if (menuDataList.get(position).getItem() instanceof User) {
                     User selectedUser = (User) menuDataList.get(position).getItem();
                     gpsHandler.moveCamera(selectedUser.getLatLng(), 10);
                 }
@@ -227,11 +229,25 @@ public class MagnetActivity extends AppCompatActivity {
                     bundle.putParcelable("group", selectedGroup);
                     dialog.setArguments(bundle);
                     dialog.show(getFragmentManager(), "Add user");
-                    return true;
-                } else {
-                    Toast.makeText(getApplicationContext(), "Not a valid Group", Toast.LENGTH_LONG).show();
-                    return false;
+                } else if (menuDataList.get(position).getItem() instanceof User) {
+                    final User user = (User) menuDataList.get(position).getItem();
+                    new AlertDialog.Builder(MagnetActivity.this)
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setTitle("Removing User from Group")
+                            .setMessage("Are you sure you want to remove this user from this group?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    RemoveUserFromGroupTask task = new RemoveUserFromGroupTask(getParent(), applicationUser.getToken(), 0);
+                                    task.execute(new AbstractMap.SimpleEntry<>("login", user.getLogin()));
+                                }
+
+                            })
+                            .setNegativeButton("No", null)
+                            .show();
                 }
+
+                return true;
             }
         });
     }
