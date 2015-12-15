@@ -71,19 +71,21 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:gravity="start"
             android:id="@+id/left_drawer"
             android:layout_width="240dp"
             android:layout_height="match_parent">
 
             <Button
                 android:id="@+id/magnet_group_button"
-                android:layout_width="100"
-                android:layout_height="50"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
                 android:layout_alignRight="@+id/left_drawer_listview"
                 android:layout_alignEnd="@+id/left_drawer_listview"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:text="Create a group" />
+                android:text="Create a group"
+                android:onClick="onClick_createGroup"/>
 
             <ListView
                 android:id="@+id/left_drawer_listview"

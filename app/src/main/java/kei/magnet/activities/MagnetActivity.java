@@ -31,6 +31,7 @@ import java.util.List;
 import kei.magnet.R;
 import kei.magnet.enumerations.NavigationDrawerType;
 import kei.magnet.fragments.AddUserFragment;
+import kei.magnet.task.CreateGroupTask;
 import kei.magnet.utils.CustomDrawerAdapter;
 import kei.magnet.utils.DrawerItem;
 import kei.magnet.model.ApplicationUser;
@@ -251,6 +252,11 @@ public class MagnetActivity extends AppCompatActivity {
                 menuDataList);
         menuList.setAdapter(customDrawerAdapter);
 
+    }
+
+    public void onClick_createGroup(View V) {
+        Intent intent = new Intent(getApplicationContext(), GroupCreationActivity.class);
+        startActivity(intent);
     }
 
     @Override
