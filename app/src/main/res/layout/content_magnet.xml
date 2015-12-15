@@ -10,7 +10,7 @@
     android:paddingTop="0dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="kei.magnet.activities.MagnetActivity"
-    android:background="#535353">
+    android:background="@drawable/bg1">
 
 
 

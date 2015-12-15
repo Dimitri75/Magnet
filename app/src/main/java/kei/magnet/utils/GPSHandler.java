@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -229,16 +230,20 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
                 public View getInfoContents(Marker marker) {
 
                     View v = null;
-                    Object obj;
-                    if ((obj = getValueFromHashmap(marker)) instanceof Pin) {
-                        Pin pin = (Pin) obj;
+                    Object object;
+                    if ((object = getValueFromHashmap(marker)) instanceof Pin) {
+                        Pin pin = (Pin) object;
                         v = parentActivity.getLayoutInflater().inflate(R.layout.pin_infoview, null);
-                        ((TextView)v.findViewById(R.id.pin_infoview_textView_PIN_NAME)).setText(pin.getName());
-                        ((TextView)v.findViewById(R.id.pin_infoview_editText_DESCRIPTION)).setText(pin.getDescription());
-                        ((TextView)v.findViewById(R.id.pin_infoview_editText_GROUP)).setText(MagnetActivity.selectedGroup.toString());
-                        ((TextView)v.findViewById(R.id.pin_infoview_editText_expirationDateText)).setText(pin.getDeletion_time().toString());
+                        ((TextView)v.findViewById(R.id.pin_infoview_textView_PINNAME)).setText(pin.getName());
+                        ((EditText)v.findViewById(R.id.pin_infoview_editText_DESCRIPTION)).setText(pin.getDescription());
+                        ((EditText)v.findViewById(R.id.pin_infoview_editText_GROUP)).setText(MagnetActivity.selectedGroup.toString());
 
-                    }else if((obj = getValueFromHashmap(marker)) instanceof User){
+                        String expirationDate = "N/A";
+                        if (pin.getDeletion_time() != null)
+                            expirationDate = pin.getDeletion_time().toString();
+                        ((EditText)v.findViewById(R.id.pin_infoview_editText_expirationDateText)).setText(expirationDate);
+
+                    }else if((object = getValueFromHashmap(marker)) instanceof User){
 
                     }
                     return v;
