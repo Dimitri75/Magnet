@@ -102,7 +102,7 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
         setUpMapIfNeeded();
 
         mGoogleApiClient.connect();
-        moveCamera(applicationUser.getLatLng(),12);
+        moveCamera(applicationUser.getLatLng(), 12);
     }
 
 
@@ -131,6 +131,10 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
                     for (User user : group.getUsers()) {
                         if (user.getId() != applicationUser.getId())
                             drawMarker(user);
+                    }
+
+                    for (Pin pin : group.getPins()) {
+                        drawPin(pin);
                     }
                 } else
                     Toast.makeText(parentActivity.getApplicationContext(), "issue when showing a group", Toast.LENGTH_LONG).show();
