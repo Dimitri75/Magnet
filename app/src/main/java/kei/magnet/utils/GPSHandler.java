@@ -79,11 +79,8 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
     }
 
     public void rotateMap(float bearing) {
-
-        CameraPosition pos = CameraPosition.builder(googleMap.getCameraPosition()).bearing(bearing)
-                .build();
-
-        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(pos));
+        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.builder(googleMap.getCameraPosition()).bearing(bearing)
+                .build()));
         //googleMap.animateCamera(CameraUpdateFactory.zoomTo(16), 2000, null);
     }
 
@@ -118,10 +115,9 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 
     public void updateMarkers() {
         googleMap.clear();
-        List<Group> groups = applicationUser.getGroups();
 
         if (MagnetActivity.selectedGroup == null) {
-            for (Group group : groups) {
+            for (Group group : applicationUser.getGroups()) {
                 if (group != null && !group.getUsers().isEmpty()) {
                     for (User user : group.getUsers()) {
                         if (user.getId() != applicationUser.getId())
@@ -151,12 +147,10 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 
 
     public void moveCamera(LatLng location, Integer zoom) {
-        CameraPosition pos = CameraPosition.builder().target(location).zoom(zoom).build();
-        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(pos));
+        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.builder().target(location).zoom(zoom).build()));
     }
 
     private void drawMarker(User user) {
-
         Marker marker;
         if (!markerDictionnary.containsValue(user)) {
             MarkerOptions markerOptions = new MarkerOptions().position(user.getLatLng())
