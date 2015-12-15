@@ -104,7 +104,6 @@ public class JSONTask extends AsyncTask<AbstractMap.SimpleEntry<String, String>,
                 jsonObject = getJSONObject(entries);
             }
         } catch (Exception e) {
-            System.out.println("Connection to " + getUrl() + " failed");
         }
         return jsonObject;
     }
@@ -158,7 +157,6 @@ public class JSONTask extends AsyncTask<AbstractMap.SimpleEntry<String, String>,
 
             jsonObject = new JSONObject(convertStreamToString(stream));
         } catch (Exception e) {
-            System.out.println("Connection failed");
         }
         return jsonObject;
     }
@@ -184,7 +182,6 @@ public class JSONTask extends AsyncTask<AbstractMap.SimpleEntry<String, String>,
 
             jsonObject = new JSONObject(convertStreamToString(stream));
         } catch (Exception e) {
-            System.out.println("Connection failed");
         }
         return jsonObject;
     }
