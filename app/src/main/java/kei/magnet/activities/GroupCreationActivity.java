@@ -9,6 +9,7 @@ import java.util.AbstractMap;
 
 import kei.magnet.R;
 import kei.magnet.model.ApplicationUser;
+import kei.magnet.task.CreateGroupTask;
 import kei.magnet.task.CreatePinTask;
 
 public class GroupCreationActivity extends AppCompatActivity {
@@ -27,7 +28,7 @@ public class GroupCreationActivity extends AppCompatActivity {
     }
 
     public void onClick_submit(View V) {
-        CreatePinTask task = new CreatePinTask(this, applicationUser.getToken());
+        CreateGroupTask task = new CreateGroupTask(this, applicationUser.getToken());
         task.execute(new AbstractMap.SimpleEntry<>("name", txtName.getText().toString()));
     }
 }
