@@ -18,7 +18,6 @@ import kei.magnet.model.ApplicationUser;
  */
 public class GetUserTask extends JSONTask {
     private static String URL = "http://bardin.sylvain.perso.sfr.fr/user";
-    private static String FILENAME = "magnet_token";
     private String token;
 
     public GetUserTask(Activity activity) {
@@ -45,13 +44,6 @@ public class GetUserTask extends JSONTask {
             ApplicationUser applicationUser = ApplicationUser.getInstance();
             applicationUser.init(userJSON);
             applicationUser.setToken(token);
-
-            try {
-                FileOutputStream fos = getActivity().openFileOutput(FILENAME, Context.MODE_PRIVATE);
-                fos.write(token.getBytes());
-                fos.close();
-            }
-            catch(Exception e) {}
 
             if(getActivity() instanceof SignInActivity) {
                 getActivity().finish();

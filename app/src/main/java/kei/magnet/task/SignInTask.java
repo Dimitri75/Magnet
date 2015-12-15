@@ -1,10 +1,12 @@
 package kei.magnet.task;
 
 import android.app.Activity;
+import android.content.Context;
 import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import java.io.FileOutputStream;
 import java.util.AbstractMap;
 
 /**
@@ -12,6 +14,7 @@ import java.util.AbstractMap;
  */
 public class SignInTask extends JSONTask {
     private static String URL = "http://bardin.sylvain.perso.sfr.fr/user";
+    private static String FILENAME = "magnet_token";
 
     public SignInTask(Activity activity) {
         super(activity);
@@ -29,8 +32,13 @@ public class SignInTask extends JSONTask {
         }
         else if (tokenJSON != null) {
             try {
+                String token = tokenJSON.getString("token");
                 GetUserTask task = new GetUserTask(getActivity());
                 task.execute(new AbstractMap.SimpleEntry<>("token", tokenJSON.getString("token")));
+                FileOutputStream fos = getActivity().openFileOutput(FILENAME, Context.MODE_PRIVATE);
+                fos.write(token.getBytes());
+                fos.close();
+
             }
             catch(Exception e) {}
         } else
