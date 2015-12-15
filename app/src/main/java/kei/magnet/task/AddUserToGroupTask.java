@@ -5,11 +5,15 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import kei.magnet.activities.MagnetActivity;
 import kei.magnet.enumerations.NavigationDrawerType;
 import kei.magnet.fragments.DrawerItem;
+import kei.magnet.model.ApplicationUser;
+import kei.magnet.model.Group;
+import kei.magnet.model.User;
 
 /**
  * Created by .Sylvain on 24/11/2015.
@@ -17,10 +21,12 @@ import kei.magnet.fragments.DrawerItem;
 public class    AddUserToGroupTask extends JSONTask {
     private static String URL = "http://bardin.sylvain.perso.sfr.fr/group/";
     private String token;
+    private int groupId;
 
     public AddUserToGroupTask(Activity activity, String token, int groupId) {
         super(activity);
         this.token = token;
+        this.groupId = groupId;
 
         setMethod("POST");
         setRequest("body");
@@ -42,9 +48,6 @@ public class    AddUserToGroupTask extends JSONTask {
 
     public void updateMenu(){
         MagnetActivity magnetActivity = (MagnetActivity) getActivity();
-        List<DrawerItem> menuDataList =  magnetActivity.getMenuDataList();
-
-
-        menuDataList.add(new DrawerItem(token, NavigationDrawerType.USER));
+        magnetActivity.updateApplicationUser();
     }
 }

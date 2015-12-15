@@ -58,7 +58,10 @@ public class GetUserTask extends JSONTask {
             }
             else if(getActivity() instanceof MagnetActivity) {
                 MagnetActivity magnetActivity = (MagnetActivity)getActivity();
-                magnetActivity.init();
+                if(!magnetActivity.isInitialised)
+                    magnetActivity.init();
+                else
+                    magnetActivity.updateMenu();
             }
         } else
             Toast.makeText(getActivity().getApplicationContext(), "Fail Get User", Toast.LENGTH_SHORT).show();

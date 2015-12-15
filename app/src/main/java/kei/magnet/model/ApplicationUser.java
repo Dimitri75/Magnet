@@ -34,6 +34,7 @@ public class ApplicationUser extends User{
     public void init(JSONObject jsonObject){
         super.init(jsonObject);
 
+        groups = new ArrayList<>();
         try {
 
             JSONArray array = jsonObject.getJSONArray("groups");

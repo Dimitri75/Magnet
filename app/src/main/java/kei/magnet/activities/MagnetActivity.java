@@ -1,6 +1,5 @@
 package kei.magnet.activities;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -28,14 +27,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import kei.magnet.R;
-import kei.magnet.model.ApplicationUser;
-import kei.magnet.model.Group;
-import kei.magnet.model.Location;
-import kei.magnet.model.User;
 import kei.magnet.enumerations.NavigationDrawerType;
 import kei.magnet.fragments.AddUserFragment;
 import kei.magnet.fragments.CustomDrawerAdapter;
 import kei.magnet.fragments.DrawerItem;
+import kei.magnet.model.ApplicationUser;
+import kei.magnet.model.Group;
+import kei.magnet.model.Location;
+import kei.magnet.model.User;
 import kei.magnet.task.GetUserTask;
 import kei.magnet.utils.Compass;
 import kei.magnet.utils.GPSHandler;
@@ -44,7 +43,7 @@ public class MagnetActivity extends AppCompatActivity {
     private static String FILENAME = "magnet_token";
     private static Integer TOKEN_SIZE = 64;
 
-    private boolean isInitialised = false;
+    public boolean isInitialised = false;
     private DrawerLayout menuLayout;
     private ActionBarDrawerToggle actionBarButtonLink;
     public GPSHandler gpsHandler;
@@ -214,6 +213,29 @@ public class MagnetActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void updateApplicationUser(){
+        try {
+            GetUserTask task = new GetUserTask(this);
+            task.execute(new AbstractMap.SimpleEntry<>("token", ApplicationUser.getInstance().getToken())).get();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public void updateMenu(){
+
+        ApplicationUser applicationUser = ApplicationUser.getInstance();
+
+        menuDataList = formatGroupsInDataList(applicationUser.getGroups());
+
+        customDrawerAdapter = new CustomDrawerAdapter(this, R.layout.custom_drawer_item,
+                menuDataList);
+        menuList.setAdapter(customDrawerAdapter);
+
     }
 
     @Override
