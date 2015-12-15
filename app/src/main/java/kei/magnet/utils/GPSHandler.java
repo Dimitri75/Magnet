@@ -165,10 +165,14 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
                         .title(user.getLogin());
 
                 //markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.pin56));
-                try {
-                    markerOptions.icon(ImagesUtils.getInstance().getFriendImage(user.getImageId()));
-                } catch (Exception e) {
-                    Pair<Integer, BitmapDescriptor> pair = ImagesUtils.getInstance().getRandomFriendImage();
+                Pair<Integer, BitmapDescriptor> pair;
+                if (user.getImageId() < 0){
+                    pair = ImagesUtils.getInstance().getRandomFriendImage();
+                    user.setImageId(pair.first);
+                    markerOptions.icon(pair.second);
+                }
+                else {
+                    pair = ImagesUtils.getInstance().getFriendImage(user.getImageId());
                     user.setImageId(pair.first);
                     markerOptions.icon(pair.second);
                 }
@@ -177,8 +181,7 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
                     markerOptions.alpha(0.9f);
                 else
                     markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_application_user));
-
-
+                
                 marker = googleMap.addMarker(markerOptions);
                 markerDictionnary.put(user, new Pair<>(marker, markerOptions));
             }
