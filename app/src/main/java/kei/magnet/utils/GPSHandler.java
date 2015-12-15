@@ -154,7 +154,8 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 
 
     public void moveCamera(LatLng location, Integer zoom) {
-        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.builder().target(location).zoom(zoom).build()));
+        if (location != null)
+            googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.builder().target(location).zoom(zoom).build()));
     }
 
     private void drawMarker(User user) {
@@ -165,23 +166,15 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
                         .title(user.getLogin());
 
                 //markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.pin56));
-                Pair<Integer, BitmapDescriptor> pair;
-                if (user.getImageId() < 0){
-                    pair = ImagesUtils.getInstance().getRandomFriendImage();
-                    user.setImageId(pair.first);
-                    markerOptions.icon(pair.second);
-                }
-                else {
-                    pair = ImagesUtils.getInstance().getFriendImage(user.getImageId());
-                    user.setImageId(pair.first);
-                    markerOptions.icon(pair.second);
-                }
+                Pair<Integer, BitmapDescriptor> pair = ImagesUtils.getInstance().getFriendImage(user.getImageId());
+                user.setImageId(pair.first);
+                markerOptions.icon(pair.second);
 
                 if (user.getId() != applicationUser.getId())
                     markerOptions.alpha(0.9f);
                 else
                     markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_application_user));
-                
+
                 marker = googleMap.addMarker(markerOptions);
                 markerDictionnary.put(user, new Pair<>(marker, markerOptions));
             }
