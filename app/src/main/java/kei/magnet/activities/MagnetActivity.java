@@ -1,14 +1,12 @@
 package kei.magnet.activities;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -19,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -33,6 +32,7 @@ import kei.magnet.R;
 import kei.magnet.enumerations.NavigationDrawerType;
 import kei.magnet.fragments.AddUserFragment;
 import kei.magnet.task.CreateGroupTask;
+import kei.magnet.utils.CallBack;
 import kei.magnet.utils.CustomDrawerAdapter;
 import kei.magnet.utils.DrawerItem;
 import kei.magnet.model.ApplicationUser;
@@ -40,10 +40,10 @@ import kei.magnet.model.Group;
 import kei.magnet.model.Location;
 import kei.magnet.model.User;
 import kei.magnet.task.GetUserTask;
-import kei.magnet.task.RemoveUserFromGroupTask;
 import kei.magnet.task.UpdateUserTask;
 import kei.magnet.utils.Compass;
 import kei.magnet.utils.GPSHandler;
+import kei.magnet.utils.RepeatableTask;
 
 public class MagnetActivity extends AppCompatActivity {
     private static String FILENAME = "magnet_token";
@@ -59,6 +59,7 @@ public class MagnetActivity extends AppCompatActivity {
     private ListView menuList;
     private CustomDrawerAdapter customDrawerAdapter;
     private List<DrawerItem> menuDataList;
+    private RepeatableTask task;
     public static Group selectedGroup;
     private MenuItem userItem;
     private Switch switchPrivate;
@@ -122,8 +123,6 @@ public class MagnetActivity extends AppCompatActivity {
         globalGroup.setName("Friend list");
         List<User> globalGroupUsers = new ArrayList<>();
 
-        menuDataList.add(new DrawerItem("Create Group", NavigationDrawerType.BUTTONGROUP));
-
         for (Group group : groups) {
             menuDataList.add(new DrawerItem(group, NavigationDrawerType.GROUP));
             for (User user : group.getUsers()) {
@@ -161,8 +160,12 @@ public class MagnetActivity extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), PinCreationActivity.class);
                     intent.putExtra("location", new Location(latLng));
                     startActivity(intent);
+
+
                 }
             });
+            //task = new RepeatableTask(mCallBack,2000);
+
         } catch (Exception e) {
             isInitialised = false;
             e.printStackTrace();
@@ -211,9 +214,13 @@ public class MagnetActivity extends AppCompatActivity {
                     view.setSelected(true);
                     gpsHandler.updateMarkers(selectedGroup);
                 }
-                else if (menuDataList.get(position).getItem() instanceof User) {
+                if (menuDataList.get(position).getItem() instanceof User) {
+
                     User selectedUser = (User) menuDataList.get(position).getItem();
-                    gpsHandler.moveCamera(selectedUser.getLatLng(), 10);
+                    if(selectedUser.getLocation()!=null){
+                        gpsHandler.moveCamera(selectedUser.getLatLng(), 10);
+                    }
+
                 }
             }
         });
@@ -229,37 +236,33 @@ public class MagnetActivity extends AppCompatActivity {
                     bundle.putParcelable("group", selectedGroup);
                     dialog.setArguments(bundle);
                     dialog.show(getFragmentManager(), "Add user");
-                } else if (menuDataList.get(position).getItem() instanceof User) {
-                    final User user = (User) menuDataList.get(position).getItem();
-                    new AlertDialog.Builder(MagnetActivity.this)
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setTitle("Removing User from Group")
-                            .setMessage("Are you sure you want to remove this user from this group?")
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    RemoveUserFromGroupTask task = new RemoveUserFromGroupTask(getParent(), applicationUser.getToken(), 0);
-                                    task.execute(new AbstractMap.SimpleEntry<>("login", user.getLogin()));
-                                }
-
-                            })
-                            .setNegativeButton("No", null)
-                            .show();
+                    return true;
+                } else {
+                    Toast.makeText(getApplicationContext(), "Not a valid Group", Toast.LENGTH_LONG).show();
+                    return false;
                 }
-
-                return true;
             }
         });
     }
+    CallBack mCallBack = new CallBack() {
 
+        public void update() {
+            updateApplicationUser();
+        }
+
+        @Override
+        public Object call() throws Exception {
+            update();
+            return super.call();
+        }
+    };
     public void updateApplicationUser(){
         try {
             GetUserTask task = new GetUserTask(this);
-            task.execute(new AbstractMap.SimpleEntry<>("token", ApplicationUser.getInstance().getToken())).get();
+            task.execute(new AbstractMap.SimpleEntry<>("token", ApplicationUser.getInstance().getToken()));
         }catch(Exception e){
             e.printStackTrace();
         }
-
 
     }
 
