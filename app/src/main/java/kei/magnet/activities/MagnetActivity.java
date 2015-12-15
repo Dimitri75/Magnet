@@ -295,7 +295,7 @@ public class MagnetActivity extends AppCompatActivity {
     public void updateApplicationUser(){
         try {
             GetUserTask task = new GetUserTask(this);
-            task.execute(new AbstractMap.SimpleEntry<>("token", ApplicationUser.getInstance().getToken())).get();
+            task.execute(new AbstractMap.SimpleEntry<>("token", ApplicationUser.getInstance().getToken()));
         }catch(Exception e){
             e.printStackTrace();
         }
