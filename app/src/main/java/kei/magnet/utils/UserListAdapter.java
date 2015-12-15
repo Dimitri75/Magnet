@@ -1,4 +1,4 @@
-package kei.magnet.model;
+package kei.magnet.utils;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import kei.magnet.R;
+import kei.magnet.model.User;
 
 /**
  * Created by carlo_000 on 04/12/2015.

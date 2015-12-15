@@ -1,4 +1,4 @@
-package kei.magnet.fragments;
+package kei.magnet.utils;
 
 import kei.magnet.enumerations.NavigationDrawerType;
 

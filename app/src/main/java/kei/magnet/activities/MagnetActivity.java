@@ -31,8 +31,8 @@ import java.util.List;
 import kei.magnet.R;
 import kei.magnet.enumerations.NavigationDrawerType;
 import kei.magnet.fragments.AddUserFragment;
-import kei.magnet.fragments.CustomDrawerAdapter;
-import kei.magnet.fragments.DrawerItem;
+import kei.magnet.utils.CustomDrawerAdapter;
+import kei.magnet.utils.DrawerItem;
 import kei.magnet.model.ApplicationUser;
 import kei.magnet.model.Group;
 import kei.magnet.model.Location;
@@ -168,12 +168,13 @@ public class MagnetActivity extends AppCompatActivity {
 
     public void initMenu() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(applicationUser.getLogin());
         setSupportActionBar(toolbar);
 
         menuLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         menuLayout.setDrawerListener(actionBarButtonLink);
         menuLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        menuList = (ListView) findViewById(R.id.left_drawer);
+        menuList = (ListView) findViewById(R.id.left_drawer_listview);
 
         actionBarButtonLink = new ActionBarDrawerToggle(this, menuLayout,
                 toolbar, R.string.drawer_open, R.string.drawer_close) {

@@ -20,7 +20,7 @@ import kei.magnet.R;
 import kei.magnet.model.ApplicationUser;
 import kei.magnet.model.Group;
 import kei.magnet.model.User;
-import kei.magnet.model.UserListAdapter;
+import kei.magnet.utils.UserListAdapter;
 import kei.magnet.task.AddUserToGroupTask;
 import kei.magnet.task.SearchUserTask;
 

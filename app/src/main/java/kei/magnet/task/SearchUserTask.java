@@ -12,7 +12,7 @@ import java.util.List;
 
 import kei.magnet.R;
 import kei.magnet.model.User;
-import kei.magnet.model.UserListAdapter;
+import kei.magnet.utils.UserListAdapter;
 
 /**
  * Created by .Sylvain on 05/12/2015.

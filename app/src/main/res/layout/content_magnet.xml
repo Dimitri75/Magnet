@@ -4,14 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg2"
     android:paddingBottom="0dp"
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
     android:paddingTop="0dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="kei.magnet.activities.MagnetActivity"
-    android:background="@drawable/bg2">
-
+    tools:context="kei.magnet.activities.MagnetActivity">
 
 
     <android.support.v4.widget.DrawerLayout
@@ -22,71 +21,81 @@
         android:layout_alignParentStart="true">
         <!-- The main content view -->
 
-        <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:background="@drawable/activity_background_circle"-->
-            <!--android:orientation="vertical" />-->
-        <!-- The navigation drawer -->
-
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
+
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:background="@drawable/magnet"
                 android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true" />
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/magnet" />
 
             <RelativeLayout
+                android:id="@+id/relativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="350dp"
-                android:layout_centerHorizontal="true"
-                android:id="@+id/relativeLayout"
-                android:background="#ffffff"
-                android:padding="5dp"
-                android:layout_margin="10dp"
+                android:layout_alignParentBottom="true"
                 android:layout_below="@+id/switch_private"
-                android:layout_alignParentBottom="true">
+                android:layout_centerHorizontal="true"
+                android:layout_margin="10dp"
+                android:background="#ffffff"
+                android:padding="5dp">
 
                 <fragment
                     android:id="@+id/map"
                     android:name="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:clickable="true"
-                    android:layout_gravity="center|bottom"
+                    android:layout_alignParentBottom="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
-                    android:layout_alignParentBottom="true" />
+                    android:layout_gravity="center|bottom"
+                    android:clickable="true" />
             </RelativeLayout>
 
             <Switch
-                android:textColor="#ffffff"
+                android:id="@+id/switch_private"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Private "
-                android:id="@+id/switch_private"
-                android:checked="false"
-                android:layout_below="@+id/imageView"
+                android:layout_alignEnd="@+id/relativeLayout"
                 android:layout_alignRight="@+id/relativeLayout"
-                android:layout_alignEnd="@+id/relativeLayout" />
+                android:layout_below="@+id/imageView"
+                android:checked="false"
+                android:text="Private "
+                android:textColor="#ffffff" />
+
         </RelativeLayout>
 
-        <ListView
+        <RelativeLayout
             android:id="@+id/left_drawer"
             android:layout_width="240dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:background="#94ffffff"
-            android:choiceMode="singleChoice"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="0dp" />
-    </android.support.v4.widget.DrawerLayout>
+            android:layout_height="match_parent">
 
+            <Button
+                android:id="@+id/magnet_group_button"
+                android:layout_width="100"
+                android:layout_height="50"
+                android:layout_alignRight="@+id/left_drawer_listview"
+                android:layout_alignEnd="@+id/left_drawer_listview"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:text="Create a group" />
+
+            <ListView
+                android:id="@+id/left_drawer_listview"
+                android:layout_width="240dp"
+                android:layout_height="match_parent"
+                android:background="#94ffffff"
+                android:choiceMode="singleChoice"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="0dp"
+                android:layout_below="@+id/magnet_group_button" />
+        </RelativeLayout>
+    </android.support.v4.widget.DrawerLayout>
 
 
 </RelativeLayout>

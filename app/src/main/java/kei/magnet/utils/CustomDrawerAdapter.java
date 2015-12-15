@@ -1,4 +1,4 @@
-package kei.magnet.fragments;
+package kei.magnet.utils;
 
 /**
  * Created by Suiken on 20/11/2015.
@@ -63,8 +63,7 @@ public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem> {
             //TODO
             //            drawerHolder.icon.setImageDrawable(view.getResources().getDrawable(
 //                    dItem.getImgResID()));
-        }
-        else if (dItem.getType() == NavigationDrawerType.USER) {
+        } else if (dItem.getType() == NavigationDrawerType.USER) {
             System.out.println("user");
             drawerHolder.userLayout.setVisibility(LinearLayout.VISIBLE);
             //drawerHolder.userLayout.setBackgroundColor(Color.GREEN);
@@ -75,8 +74,7 @@ public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem> {
 
             drawerHolder.userTitle.setText(dItem.getItemName());
             drawerHolder.userTitle.setVisibility(View.VISIBLE);
-        }
-        else if (dItem.getType() == NavigationDrawerType.GROUP) {
+        } else if (dItem.getType() == NavigationDrawerType.GROUP) {
             System.out.println("group");
             drawerHolder.groupLayout.setVisibility(LinearLayout.VISIBLE);
             //drawerHolder.groupLayout.setBackgroundColor(Color.BLUE);
