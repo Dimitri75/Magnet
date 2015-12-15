@@ -32,7 +32,7 @@ public class GroupUpdateActivity extends AppCompatActivity {
     }
 
     public void onClick_submit(View V) {
-        AddUserToGroupTask task = new AddUserToGroupTask(this, applicationUser.getToken(), group.getId());
+        AddUserToGroupTask task = new AddUserToGroupTask(this, applicationUser.getToken(), group);
         task.execute(new AbstractMap.SimpleEntry<>("login", txtName.getText().toString()));
     }
 

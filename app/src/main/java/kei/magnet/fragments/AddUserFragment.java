@@ -57,7 +57,7 @@ public class AddUserFragment extends DialogFragment {
                 Object item = userList.getAdapter().getItem(position);
                 if(item instanceof User) {
                     User user = (User) item;
-                    AddUserToGroupTask task = new AddUserToGroupTask(getActivity(), applicationUser.getToken(), group.getId());
+                    AddUserToGroupTask task = new AddUserToGroupTask(getActivity(), applicationUser.getToken(), group);
                     task.execute(new AbstractMap.SimpleEntry<>("login", user.getLogin()));
                     dismiss();
                 }
