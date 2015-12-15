@@ -1,5 +1,6 @@
 package kei.magnet.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,6 +23,8 @@ import android.widget.Switch;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+
+import org.json.JSONObject;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -47,6 +50,7 @@ import kei.magnet.utils.GPSHandler;
 
 public class MagnetActivity extends AppCompatActivity {
     private static String FILENAME = "magnet_token";
+    public static Integer GROUPE_CREATED = 1;
     private static Integer TOKEN_SIZE = 64;
 
     public boolean isInitialised = false;
@@ -281,7 +285,7 @@ public class MagnetActivity extends AppCompatActivity {
 
     public void onClick_createGroup(View V) {
         Intent intent = new Intent(getApplicationContext(), GroupCreationActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, GROUPE_CREATED);
     }
 
     @Override
@@ -324,6 +328,17 @@ public class MagnetActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == GROUPE_CREATED && resultCode == Activity.RESULT_OK) {
+            String jsonString = data.getDataString();
+            try {
+                JSONObject jsonObject = new JSONObject(jsonString);
+                Group group = new Group(jsonObject);
+                applicationUser.getGroups().add(group);
+                updateMenu();
+            }
+            catch(Exception e) {}
+        }
     }
 
     @Override

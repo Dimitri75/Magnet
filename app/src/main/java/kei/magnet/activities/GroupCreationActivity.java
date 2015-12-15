@@ -27,6 +27,11 @@ public class GroupCreationActivity extends AppCompatActivity {
         txtName = (EditText) findViewById(R.id.group_creation_editText_GROUPNAME);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
     public void onClick_submit(View V) {
         CreateGroupTask task = new CreateGroupTask(this, applicationUser.getToken());
         task.execute(new AbstractMap.SimpleEntry<>("name", txtName.getText().toString()));
