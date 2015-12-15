@@ -26,6 +26,30 @@ public class Pin implements Parcelable{
 
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Date getCreation_time() {
+        return creation_time;
+    }
+
+    public void setCreation_time(Date creation_time) {
+        this.creation_time = creation_time;
+    }
+
+    public Date getDeletion_time() {
+        return deletion_time;
+    }
+
+    public void setDeletion_time(Date deletion_time) {
+        this.deletion_time = deletion_time;
+    }
+
     public Pin(JSONObject jsonObject){
         try {
             this.name = jsonObject.getString("name");
