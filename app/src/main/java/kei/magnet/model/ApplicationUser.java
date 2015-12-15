@@ -18,7 +18,7 @@ public class ApplicationUser extends User{
     private String token;
     private List<Group> groups;
     private static ApplicationUser instance = null;
-
+    private int visible;
     public static ApplicationUser getInstance() {
         if(instance == null) {
             instance = new ApplicationUser();
@@ -35,8 +35,9 @@ public class ApplicationUser extends User{
         super.init(jsonObject);
 
         groups = new ArrayList<>();
-        try {
 
+        try {
+            this.visible = jsonObject.getInt("visible");
             JSONArray array = jsonObject.getJSONArray("groups");
             for (int i = 0; i < array.length(); i++){
                 Group group = new Group(array.getJSONObject(i));
@@ -61,6 +62,13 @@ public class ApplicationUser extends User{
     }
 
 
+    public int getVisible() {
+        return visible;
+    }
+
+    public void setVisible(int visible) {
+        this.visible = visible;
+    }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {

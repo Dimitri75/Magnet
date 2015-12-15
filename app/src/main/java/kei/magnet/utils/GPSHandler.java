@@ -100,7 +100,9 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 
     public void onResume() {
         setUpMapIfNeeded();
+
         mGoogleApiClient.connect();
+        moveCamera(applicationUser.getLatLng(),12);
     }
 
 

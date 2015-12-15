@@ -17,7 +17,7 @@ public class User implements Parcelable{
     private String login;
     private Location location;
     public int imageId = -1;
-    private int visible;
+
 
     public User() {
 
@@ -31,7 +31,7 @@ public class User implements Parcelable{
         try {
             this.id = jsonObject.getInt("id");
             this.login = jsonObject.getString("login");
-            this.visible = jsonObject.getInt("visible");
+
 
             Location location = new Location(jsonObject.getJSONObject("location"));
             this.location = location;
@@ -64,13 +64,6 @@ public class User implements Parcelable{
         return location;
     }
 
-    public int getVisible() {
-        return visible;
-    }
-
-    public void setVisible(int visible) {
-        this.visible = visible;
-    }
 
     public LatLng getLatLng() {
         if (location != null)
