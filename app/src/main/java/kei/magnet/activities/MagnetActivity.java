@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -36,6 +37,7 @@ import kei.magnet.R;
 import kei.magnet.enumerations.NavigationDrawerType;
 import kei.magnet.fragments.AddUserFragment;
 import kei.magnet.task.CreateGroupTask;
+import kei.magnet.utils.CallBack;
 import kei.magnet.utils.CustomDrawerAdapter;
 import kei.magnet.utils.DrawerItem;
 import kei.magnet.model.ApplicationUser;
@@ -66,6 +68,7 @@ public class MagnetActivity extends AppCompatActivity {
     public static Group selectedGroup;
     private MenuItem userItem;
     private Switch switchPrivate;
+
 
 
     @Override
@@ -138,6 +141,7 @@ public class MagnetActivity extends AppCompatActivity {
                         globalGroupUsers.add(user);
                     }
                 }
+
             }
         }
         globalGroup.setUsers(globalGroupUsers);
@@ -168,7 +172,29 @@ public class MagnetActivity extends AppCompatActivity {
                     intent.putExtra("location", new Location(latLng));
                     startActivity(intent);
                 }
+
             });
+            final Handler handler = new Handler();
+            Runnable runnable = new Runnable() {
+
+                @Override
+                public void run() {
+                    try{
+                        //do your code here
+                        //also call the same runnable
+                        updateApplicationUser();
+                    }
+                    catch (Exception e) {
+                        // TODO: handle exception
+                    }
+                    finally{
+                        //also call the same runnable
+                        handler.postDelayed(this, 3000);
+                    }
+                }
+            };
+            handler.postDelayed(runnable, 3000);
+
         } catch (Exception e) {
             isInitialised = false;
             e.printStackTrace();
@@ -237,7 +263,7 @@ public class MagnetActivity extends AppCompatActivity {
                 } else if (menuDataList.get(position).getItem() instanceof User) {
                     final int itemPosition = position;
                     final DrawerItem item = menuDataList.get(position);
-                    final User user = (User)item.getItem();
+                    final User user = (User) item.getItem();
                     new AlertDialog.Builder(MagnetActivity.this)
                             .setIcon(android.R.drawable.ic_dialog_alert)
                             .setTitle("Removing User from Group")
@@ -262,6 +288,7 @@ public class MagnetActivity extends AppCompatActivity {
             }
         });
     }
+
 
     public void updateApplicationUser(){
         try {
