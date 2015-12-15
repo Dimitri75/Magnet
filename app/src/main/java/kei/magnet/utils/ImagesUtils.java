@@ -40,9 +40,9 @@ public class ImagesUtils {
         return new Pair<>(key, dictionnaryFriendImages.get(key));
     }
 
-    public BitmapDescriptor getFriendImage(int key) {
+    public Pair<Integer, BitmapDescriptor> getFriendImage(int key) {
         if (key >= 0 && key < dictionnaryFriendImages.size())
-            return dictionnaryFriendImages.get(key);
-        return getRandomFriendImage().second;
+            return new Pair<>(key, dictionnaryFriendImages.get(key));
+        return getRandomFriendImage();
     }
 }
