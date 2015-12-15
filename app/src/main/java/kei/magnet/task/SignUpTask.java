@@ -40,6 +40,7 @@ public class SignUpTask extends JSONTask {
             SignInTask task = new SignInTask(getActivity());
             task.execute(new AbstractMap.SimpleEntry<>("login", login),
                     new AbstractMap.SimpleEntry<>("password", password));
+            getActivity().finish();
         } else
             Toast.makeText(getActivity().getApplicationContext(), "Fail Sign Up", Toast.LENGTH_SHORT).show();
     }

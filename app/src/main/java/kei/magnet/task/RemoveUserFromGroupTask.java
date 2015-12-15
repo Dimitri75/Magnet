@@ -35,13 +35,8 @@ public class RemoveUserFromGroupTask extends JSONTask {
             this.handleHttpError(getStatusCode());
         }
         else if (jsonUser != null) {
-            updateMenu();
+
         } else
             Toast.makeText(getActivity().getApplicationContext(), "Fail removing a User", Toast.LENGTH_SHORT).show();
-    }
-
-    public void updateMenu(){
-        MagnetActivity magnetActivity = (MagnetActivity) getActivity();
-        magnetActivity.updateMenu();
     }
 }
