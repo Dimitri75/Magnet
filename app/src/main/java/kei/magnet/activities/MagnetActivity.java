@@ -152,6 +152,9 @@ public class MagnetActivity extends AppCompatActivity {
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         compass = new Compass(sensorManager, this);
 
+        Switch sw = (Switch) findViewById(R.id.switch_private);
+        sw.setSelected(ApplicationUser.getInstance().getVisible() == 1);
+
         try {
             gpsHandler = new GPSHandler(this, applicationUser);
             gpsHandler.getGoogleMap().setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {

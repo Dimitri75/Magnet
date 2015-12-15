@@ -154,7 +154,8 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 
 
     public void moveCamera(LatLng location, Integer zoom) {
-        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.builder().target(location).zoom(zoom).build()));
+        if (location != null)
+            googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.builder().target(location).zoom(zoom).build()));
     }
 
     private void drawMarker(User user) {
