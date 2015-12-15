@@ -183,6 +183,8 @@ public class MagnetActivity extends AppCompatActivity {
                         //do your code here
                         //also call the same runnable
                         updateApplicationUser();
+                        gpsHandler.updateMarkers();
+
                     }
                     catch (Exception e) {
                         // TODO: handle exception
