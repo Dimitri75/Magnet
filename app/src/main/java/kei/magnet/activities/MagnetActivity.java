@@ -120,6 +120,8 @@ public class MagnetActivity extends AppCompatActivity {
         globalGroup.setName("Friend list");
         List<User> globalGroupUsers = new ArrayList<>();
 
+        menuDataList.add(new DrawerItem("Create Group", NavigationDrawerType.BUTTONGROUP));
+
         for (Group group : groups) {
             menuDataList.add(new DrawerItem(group, NavigationDrawerType.GROUP));
             for (User user : group.getUsers()) {

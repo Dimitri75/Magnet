@@ -21,6 +21,25 @@
             android:textStyle="bold" />
     </LinearLayout>
 
+
+    <LinearLayout
+        android:id="@+id/menu_buttonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignBottom="@+id/groupLayout"
+        android:layout_alignParentTop="true"
+        android:background="#8e8e8e">
+        <Button
+            android:id="@+id/menu_createButtonGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"
+            android:text="Create Group"
+            android:onClick="onClick_createGroup"/>
+    </LinearLayout>
+
     <LinearLayout
         android:id="@+id/groupLayout"
         android:layout_width="match_parent"
@@ -64,5 +83,4 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold"/>
     </LinearLayout>
-
 </RelativeLayout>

@@ -6,5 +6,6 @@ package kei.magnet.enumerations;
 public enum NavigationDrawerType {
     TITLE,
     GROUP,
-    USER
+    USER,
+    BUTTONGROUP
 }

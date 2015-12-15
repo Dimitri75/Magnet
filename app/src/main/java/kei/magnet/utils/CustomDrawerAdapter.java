@@ -46,8 +46,9 @@ public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem> {
             drawerHolder.groupTitle = (TextView) view.findViewById(R.id.groupTitle);
             drawerHolder.titleTitle = (TextView) view.findViewById(R.id.titleTitle);
 
-//            drawerHolder.icon = (ImageView) view.findViewById(R.id.drawer_icon);
+            // drawerHolder.icon = (ImageView) view.findViewById(R.id.drawer_icon);
 
+            drawerHolder.groupButtonLayout = (LinearLayout) view.findViewById(R.id.menu_buttonLayout);
             drawerHolder.groupLayout = (LinearLayout) view.findViewById(R.id.groupLayout);
             drawerHolder.userLayout = (LinearLayout) view.findViewById(R.id.userLayout);
             drawerHolder.titleLayout = (LinearLayout) view.findViewById(R.id.titleLayout);
@@ -60,31 +61,28 @@ public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem> {
 
 
         if (dItem.getType() == NavigationDrawerType.TITLE) {
-            //TODO
-            //            drawerHolder.icon.setImageDrawable(view.getResources().getDrawable(
-//                    dItem.getImgResID()));
+
         } else if (dItem.getType() == NavigationDrawerType.USER) {
             System.out.println("user");
             drawerHolder.userLayout.setVisibility(LinearLayout.VISIBLE);
-            //drawerHolder.userLayout.setBackgroundColor(Color.GREEN);
-
             drawerHolder.groupLayout.setVisibility(LinearLayout.INVISIBLE);
-
             drawerHolder.titleLayout.setVisibility(LinearLayout.INVISIBLE);
-
+            drawerHolder.groupButtonLayout.setVisibility(LinearLayout.INVISIBLE);
             drawerHolder.userTitle.setText(dItem.getItemName());
             drawerHolder.userTitle.setVisibility(View.VISIBLE);
         } else if (dItem.getType() == NavigationDrawerType.GROUP) {
             System.out.println("group");
             drawerHolder.groupLayout.setVisibility(LinearLayout.VISIBLE);
-            //drawerHolder.groupLayout.setBackgroundColor(Color.BLUE);
-
             drawerHolder.titleLayout.setVisibility(LinearLayout.INVISIBLE);
-
             drawerHolder.userLayout.setVisibility(LinearLayout.INVISIBLE);
-
+            drawerHolder.groupButtonLayout.setVisibility(LinearLayout.INVISIBLE);
             drawerHolder.groupTitle.setText(dItem.getItemName());
             drawerHolder.groupTitle.setVisibility(View.VISIBLE);
+        } else if (dItem.getType().equals(NavigationDrawerType.BUTTONGROUP.BUTTONGROUP)) {
+            drawerHolder.groupButtonLayout.setVisibility(LinearLayout.VISIBLE);
+            drawerHolder.groupLayout.setVisibility(LinearLayout.INVISIBLE);
+            drawerHolder.titleLayout.setVisibility(LinearLayout.INVISIBLE);
+            drawerHolder.userLayout.setVisibility(LinearLayout.INVISIBLE);
         }
         return view;
     }
@@ -92,6 +90,6 @@ public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem> {
     private static class DrawerItemHolder {
         TextView userTitle, groupTitle, titleTitle;
         ImageView profilePicture;
-        LinearLayout titleLayout, userLayout, groupLayout;
+        LinearLayout titleLayout, userLayout, groupLayout, groupButtonLayout;
     }
 }
