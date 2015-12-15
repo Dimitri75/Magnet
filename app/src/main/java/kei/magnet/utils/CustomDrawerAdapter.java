@@ -63,7 +63,6 @@ public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem> {
         if (dItem.getType() == NavigationDrawerType.TITLE) {
 
         } else if (dItem.getType() == NavigationDrawerType.USER) {
-            System.out.println("user");
             drawerHolder.userLayout.setVisibility(LinearLayout.VISIBLE);
             drawerHolder.groupLayout.setVisibility(LinearLayout.INVISIBLE);
             drawerHolder.titleLayout.setVisibility(LinearLayout.INVISIBLE);
@@ -71,7 +70,6 @@ public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem> {
             drawerHolder.userTitle.setText(dItem.getItemName());
             drawerHolder.userTitle.setVisibility(View.VISIBLE);
         } else if (dItem.getType() == NavigationDrawerType.GROUP) {
-            System.out.println("group");
             drawerHolder.groupLayout.setVisibility(LinearLayout.VISIBLE);
             drawerHolder.titleLayout.setVisibility(LinearLayout.INVISIBLE);
             drawerHolder.userLayout.setVisibility(LinearLayout.INVISIBLE);
