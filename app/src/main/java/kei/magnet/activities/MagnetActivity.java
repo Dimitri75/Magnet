@@ -77,19 +77,22 @@ public class MagnetActivity extends AppCompatActivity {
             catch(Exception e) {}
 
             if(token != null) {
+
                 try {
                     GetUserTask task = new GetUserTask(this);
                     task.execute(new AbstractMap.SimpleEntry<>("token", token)).get();
                 }
                 catch(Exception e) {}
+                init();
             }
             else {
+
                 Intent signInIntent = new Intent(getApplicationContext(), SignInActivity.class);
                 startActivity(signInIntent);
             }
         }
 
-        init();
+
     }
 
     public List<DrawerItem> formatGroupsInDataList(List<Group> groups) {
@@ -136,6 +139,7 @@ public class MagnetActivity extends AppCompatActivity {
                 }
             });
         } catch (Exception e) {
+            isInitialised = false;
             e.printStackTrace();
         }
 

@@ -55,9 +55,9 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
     private FragmentActivity parentActivity;
     private ApplicationUser applicationUser;
     private HashMap<Object, Pair<Marker, MarkerOptions>> markerDictionnary;
-    private UpdateUserTask task;
+   /* private UpdateUserTask task;
     private AbstractMap.SimpleEntry<String,String> abstractMap;
-    private JSONObject locationJSON;
+    private JSONObject locationJSON;*/
 
     public GoogleMap getGoogleMap() {
         return googleMap;
@@ -68,9 +68,9 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
         this.parentActivity = parentActivity;
         this.applicationUser = user;
         this.markerDictionnary = new HashMap<>();
-        locationJSON = new JSONObject();
+        /*locationJSON = new JSONObject();
         abstractMap = null;
-        task = new UpdateUserTask(parentActivity,applicationUser.getToken());
+        task = new UpdateUserTask(parentActivity,applicationUser.getToken());*/
 
 
         setUpMapIfNeeded();
@@ -130,7 +130,7 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
             for (Group group : applicationUser.getGroups()) {
                 if (group != null && !group.getUsers().isEmpty()) {
                     for (User user : group.getUsers()) {
-                        if (user.getId() != applicationUser.getId())
+
                             drawMarker(user);
                     }
                 } else
@@ -145,7 +145,7 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
         googleMap.clear();
 
         for (User user : group.getUsers()) {
-            if (user.getId() != applicationUser.getId())
+
                 drawMarker(user);
         }
         for (Pin pin : group.getPins()) {
@@ -279,18 +279,15 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
         applicationUser.getLocation().setLatitude(location.getLongitude());
 
         try {
-
+            JSONObject locationJSON = new JSONObject();
             locationJSON.put("latitude", applicationUser.getLocation().getLatitude());
             locationJSON.put("longitude", applicationUser.getLocation().getLongitude());
 
-            if(abstractMap==null)
-                abstractMap = new AbstractMap.SimpleEntry<>("location",locationJSON.toString());
-            else
-                abstractMap.setValue(locationJSON.toString());
-
-            task.execute();
+            UpdateUserTask task = new UpdateUserTask(parentActivity,applicationUser.getToken());
+            task.execute(new AbstractMap.SimpleEntry<>("location",locationJSON.toString()));
 
         } catch (Exception e) {
+
         }
         updateMarkers();
     }
