@@ -169,7 +169,7 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
                 markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.pin56));
 
                 if (user.getId() != applicationUser.getId())
-                    markerOptions.alpha(0.7f);
+                    markerOptions.alpha(0.9f);
                 else
                     markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_application_user));
 
@@ -199,7 +199,7 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
                     .title(pin.getName());
 
 
-            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.pin56));
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.gps29)).alpha(0.9f);
 
             marker = googleMap.addMarker(markerOptions);
             markerDictionnary.put(pin, new Pair<>(marker, markerOptions));
