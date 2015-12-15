@@ -7,17 +7,6 @@ class PinDAO extends DAO {
 		parent::__constrct($connection);
 	}
 
-	private function findGroup($groupId) {
-		$creator = null;
-
-		if(is_numeric($groupId) && $groupId > 0) {
-			$groupDAO = new GroupDAO($this->getConnection());
-			$creator = $groupDAO->find($groupId);
-		}
-
-		return $creator;
-	}
-
 	public function find($id) {
 		$result = null;
 
@@ -32,8 +21,8 @@ class PinDAO extends DAO {
 			if($stmt->rowCount() > 0) {
 				$row = $stmt->fetch();
 				$result = new Pin($row);
-				$result->setCreator($this->findCreator($row['id_user']));
-				$result->setGroup($this->findGroup($row['id_group']));
+				$groupUserDAO = new GroupUserDAO($this->getConnection());
+				$result->setCreator($groupUserDAO->find($row['id_user']));
 			}
 		}
 
@@ -50,10 +39,30 @@ class PinDAO extends DAO {
 		');
 		$stmt->execute($parameters);
 
+		$groupUserDAO = new GroupUserDAO($this->getConnection());
 		foreach($stmt->fetchAll() as $row) {
 			$pin = new Pin($row);
-			$pin->setCreator($this->findCreator($row['id_user']));
-			$pin->setGroup($this->findGroup($row['id_group']));
+			$pin->setCreator($groupUserDAO->find($row['id_user']));
+			$result[] = $pin;
+		}
+
+		return $result;
+	}
+
+	public function findByGroupId($groupId) {
+		$result = array();
+
+		$parameters = array(':id_group' => $groupId);
+		$stmt = $this->getConnection()->prepare('
+			SELECT * FROM pin
+			WHERE id_group = :id_group ORDER BY name
+		');
+		$stmt->execute($parameters);
+
+		$groupUserDAO = new GroupUserDAO($this->getConnection());
+		foreach($stmt->fetchAll() as $row) {
+			$pin = new Pin($row);
+			$pin->setCreator($groupUserDAO->find($row['id_user']));
 			$result[] = $pin;
 		}
 
@@ -68,10 +77,10 @@ class PinDAO extends DAO {
 		');
 		$stmt->execute();
 
+		$groupUserDAO = new GroupUserDAO($this->getConnection());
 		foreach($stmt->fetchAll() as $row) {
 			$pin = new Pin($row);
-			$pin->setCreator($this->findCreator($row['id_user']));
-			$pin->setGroup($this->findGroup($row['id_group']));
+			$pin->setCreator($groupUserDAO->find($row['id_user']));
 			$result[] = $pin;
 		}
 
@@ -88,7 +97,7 @@ class PinDAO extends DAO {
 			else {
 				$parameters = array(':name' => $data->getName(), ':description' => $data->getDescription(), ':latitude' => $data->getLocation()->getLatitude(),
 					':longitude' => $data->getLocation()->getLongitude(), ':creation_time' => $data->getCreationTime(), ':deletion_time' => $data->getDeletionTime(),
-					':id_user' => $data->getCreator()->getId(), ':id_group' => $data->getGroup()->getId());
+					':id_user' => $data->getCreator()->getId(), ':id_group' => $data->getIdGroup());
 
 				$stmt = $this->getConnection()->prepare('
 					INSERT INTO pin (name, description, latitude, longitude, creation_time, deletion_time, id_user, id_group)
@@ -111,7 +120,7 @@ class PinDAO extends DAO {
 
 			$parameters = array(':name' => $data->getName(), ':description' => $data->getDescription(), ':latitude' => $data->getLocation()->getLatitude(),
 					':longitude' => $data->getLocation()->getLongitude(), ':creation_time' => $data->getCreationTime(), ':deletion_time' => $data->getDeletionTime(),
-					':id_user' => $idCreator, ':id_group' => $data->getGroup()->getId(), ':id' => $data->getId());
+					':id_user' => $idCreator, ':id_group' => $data->getIdGroup(), ':id' => $data->getId());
 			$stmt = $this->getConnection()->prepare('
 				UPDATE pin SET name = :name, description = :description, latitude = :latitude, :longitude = :longitude, creation_time = :creation_time,
 				deletion_time = :deletion_time, id_user = :id_user, id_group = :id_group WHERE id = :id

@@ -9,6 +9,7 @@ class Group implements JsonSerializable {
 	private $name;
 	private $creator;
 	private $users;
+	private $pins;
 
 	public function __construct($data = array()) {
 		if(is_array($data)) {
@@ -29,6 +30,13 @@ class Group implements JsonSerializable {
 			}
 			else {
 				$this->setUsers(array());
+			}
+
+			if(isset($data['pins'])) {
+				$this->setPins($data['pins']);
+			}
+			else {
+				$this->setPins(array());
 			}
 		}
 	}
@@ -73,12 +81,23 @@ class Group implements JsonSerializable {
 		}
 	}
 
+	public function getPins() {
+		return $this->pins;
+	}
+
+	public function setPins($pins) {
+		if(is_array($pins)) {
+			$this->pins = $pins;
+		}
+	}
+
 	public function jsonSerialize() {
 		return [
 			'id' => $this->getId(),
 			'name' => $this->getName(),
 			'creator' => $this->getCreator(),
-			'users' => $this->getUsers()
+			'users' => $this->getUsers(),
+			'pins' => $this->getPins()
 		];
 	}
 }

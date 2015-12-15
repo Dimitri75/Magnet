@@ -84,7 +84,7 @@ class GroupControllerProvider implements ControllerProviderInterface {
 
         /**
          * @api {post} /group/:id/user/:token Add a User to a Group
-         * @apiName AddUserTpGroup
+         * @apiName AddUserToGroup
          * @apiGroup Group
          *
          * @apiParam {Integer} id       Id of the Group to update.
@@ -140,6 +140,96 @@ class GroupControllerProvider implements ControllerProviderInterface {
                     }
                     else {
                         $result['message'] = 'Cannot add user in a group the user is not in.';
+                        $status = 400;
+                    }
+                }
+                else {
+                    $result['message'] = 'Group not valid.';
+                    $status = 400;
+                }
+            }
+            else {
+                $result['message'] = 'Token not valid.';
+                $status = 401;
+            }
+
+            return $app->json($result, $status);
+        });
+
+        /**
+         * @api {delete} /group/:id/user/:token Remove a User from a Group
+         * @apiName RemoveUserFromGroup
+         * @apiGroup Group
+         *
+         * @apiParam {Integer} id       Id of the Group to update.
+         * @apiParam {String}  token    Token of the User.
+         * @apiParam {String}  login    Login of the User to remove.
+         *
+         * @apiError TokenNotValid          The <code>token</code> given cannot authenticate the User.
+         * @apiError ErrorWhileRemoving     The user couldn't be removed.
+         * @apiError UserNotInGroup         Cannot remove user to a group the user is not in.
+         * @apiError UserNotFoundInGroup    The User is not in the Group.
+         * @apiError GroupNotValid          The group doesn't exist.
+         */
+        $controllers->delete('/{id}/user/{token}', function(Request $request, $id, $token) use($app) {
+            $result = array();
+            $status = 200;
+            $userDAO = new UserDAO();
+            $user = $userDAO->findByToken($token); 
+
+            if($user !== null) {
+                $groupDAO = new GroupDAO($userDAO->getConnection());
+                $group = $groupDAO->find($id);
+                
+                if($group !== null) {
+                    $groupUsers = $group->getUsers();
+                    $userInGroup = false;
+
+                    foreach($groupUsers as $groupUser) {
+                        if($groupUser->getLogin() === $user->getLogin()) {
+                            $userInGroup = true;
+                            break;
+                        }
+                    }
+
+                    if($userInGroup) {
+                        $newUser = $userDAO->findByLogin($request->get('login'));
+
+                        if($newUser !== null) {
+                            $userIndex = -1;
+                            foreach($groupUsers as $index => $groupUser) {
+                                if($groupUser->getLogin() === $newUser->getLogin()) {
+                                    $userIndex = $index;
+                                    break;
+                                }
+                            }
+
+                            if($userIndex > -1) {
+                                unset($groupUsers[$userIndex]);
+                                $group->setUsers($groupUsers);
+                                $groupId = $groupDAO->save($group);
+                                
+                                if($groupId !== null) {
+                                    $result['message'] = 'User removed from the group';
+                                }
+                                else {
+                                    $result['message'] = 'Error while adding the user.';
+                                    $status = 400;
+                                }
+                                
+                            }
+                            else {
+                                $result['message'] = 'The user to remove is not in the group.';
+                                $status = 400;
+                            }
+                        }
+                        else {
+                            $result['message'] = 'User to add cannot be found.';
+                            $status = 400;
+                        }  
+                    }
+                    else {
+                        $result['message'] = 'Cannot remove user in a group the user is not in.';
                         $status = 400;
                     }
                 }

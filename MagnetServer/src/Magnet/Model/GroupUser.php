@@ -42,12 +42,11 @@ class GroupUser implements JsonSerializable {
 				$this->setLastActivity("0000-00-00 00:00:00");
 			}
 
+			$visible = 1;
 			if(isset($data['visible'])) {
-				$this->setVisible(intval($data['visible']) === 1);
+				$visible = intval($data['visible']);
 			}
-			else {
-				$this->setVisible(false);
-			}
+			$this->setVisible($visible);
 		}
 	}
 
@@ -92,16 +91,20 @@ class GroupUser implements JsonSerializable {
 	}
 
 	public function setVisible($visible) {
-		if(is_bool($visible)) {
+		if($visible === 0 || $visible === 1) {
 			$this->visible = $visible;
 		}
 	}
 
 	public function jsonSerialize() {
+		$location = null;
+		if($this->getVisible()) {
+			$location = $this->getLocation();
+		}
 		return [
 			'id' => $this->getId(),
 			'login' => $this->getLogin(),
-			'location' => $this->getLocation(),
+			'location' => $location,
 			'last_activity' => $this->getLastActivity(),
 		];
 	}

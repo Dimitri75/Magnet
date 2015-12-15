@@ -8,12 +8,11 @@ class Pin implements JsonSerializable {
 	private $id;
 	private $name;
 	private $description;
-	private $latitude;
-	private $longitude;
+	private $location;
 	private $creationTime;
 	private $deletionTime;
 	private $creator;
-	private $group;
+	private $idGroup;
 
 	public function __construct($data = array()) {
 		if(is_array($data)) {
@@ -55,8 +54,8 @@ class Pin implements JsonSerializable {
 				$this->setCreator($data['creator']);
 			}
 
-			if(isset($data['group'])) {
-				$this->setGroup($data['group']);
+			if(isset($data['id_group'])) {
+				$this->setIdGroup($data['id_group']);
 			}
 		}
 	}
@@ -120,18 +119,18 @@ class Pin implements JsonSerializable {
 	}
 
 	public function setCreator($creator) {
-		if($creator instanceof User) {
+		if($creator instanceof GroupUser) {
 			$this->creator = $creator;
 		}
 	}
 
-	public function getGroup() {
-		return $this->group;
+	public function getIdGroup() {
+		return $this->idGroup;
 	}
 
-	public function setGroup($group) {
-		if($group instanceof Group) {
-			$this->group = $group;
+	public function setIdGroup($idGroup) {
+		if(is_numeric($idGroup)) {
+			$this->idGroup = $idGroup;
 		}
 	}
 
@@ -140,12 +139,11 @@ class Pin implements JsonSerializable {
 			'id' => $this->getId(),
 			'name' => $this->getName(),
 			'description' => $this->getDescription(),
-			'latitude' => $this->getLocation()->getLatitude(),
-			'longitude' => $this->getLocation()->getLongitude(),
+			'location' => $this->getLocation(),
 			'creation_time' => $this->getCreationTime(),
 			'deletion_time' => $this->getDeletionTime(),
 			'creator' => $this->getCreator(),
-			'group' => $this->getGroup()
+			'id_group' => $this->getIdGroup()
 		];
 	}
 }

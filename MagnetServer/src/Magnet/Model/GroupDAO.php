@@ -10,6 +10,7 @@ class GroupDAO extends DAO {
 	private function saveUsers($group) {
 		$users = $group->getUsers();
 		$userDAO = new GroupUserDAO($this->getConnection());
+		$userIds = array();
 
 		$stmt1 = $this->getConnection()->prepare('
 			SELECT * FROM group_has_users WHERE id_group = :id_group AND id_user = :id_user
@@ -18,19 +19,38 @@ class GroupDAO extends DAO {
 		$stmt2 = $this->getConnection()->prepare('
 			INSERT INTO group_has_users (id_group, id_user) VALUES (:id_group, :id_user)
 		');
-		$parameters = array('id_group' => $group->getId(), 'id_user' => 0);
+		$parameters = array(':id_group' => $group->getId(), ':id_user' => 0);
 
 		foreach($users as $user) {
 			if($user->getId() === null) {
 				$user = $userDAO->findByLogin($user->getLogin());
 			}
 
-			$parameters['id_user'] = $user->getId();
+			$userIds[] = $user->getId();
+			$parameters[':id_user'] = $user->getId();
 
 			$stmt1->execute($parameters);
 			if($stmt1->rowCount() === 0) {
 				$stmt2->execute($parameters);
 			}			
+		}
+
+		$stmt = $this->getConnection()->prepare('
+			SELECT id_user FROM group_has_users WHERE id_group = :id_group
+		');
+
+		$parameters2 = array(':id_group' => $group->getId());
+		$stmt->execute($parameters2);
+
+		$stmt2 = $this->getConnection()->prepare('
+			DELETE FROM group_has_users WHERE id_group = :id_group AND id_user = :id_user
+		');
+
+		foreach($stmt->fetchAll() as $row) {
+			if(!in_array($row['id_user'], $userIds)) {
+				$parameters['id_user'] = $row['id_user'];
+				$stmt2->execute($parameters);
+			}
 		}
 	}
 
@@ -51,7 +71,9 @@ class GroupDAO extends DAO {
 				
 				$groupUserDAO = new GroupUserDAO($this->getConnection());
 				$result->setCreator($groupUserDAO->find($row['id_user']));
-				$result->setUsers($groupUserDAO->findbyGroupId($row['id']));
+				$result->setUsers($groupUserDAO->findByGroupId($row['id']));
+				$pinDAO = new PinDAO($this->getConnection());
+				$result->setPins($pinDAO->findByGroupId($row['id']));
 			}
 		}
 
@@ -67,11 +89,13 @@ class GroupDAO extends DAO {
 		');
 		$stmt->execute($parameters);
 
+		$groupUserDAO = new GroupUserDAO($this->getConnection());
+		$pinDAO = new PinDAO($this->getConnection());
 		foreach($stmt->fetchAll() as $row) {
 			$group = new Group($row);
-			$groupUserDAO = new GroupUserDAO($this->getConnection());
 			$group->setCreator($groupUserDAO->find($row['id_user']));
-			$group->setUsers($groupUserDAO->findbyGroupId($row['id']));
+			$group->setUsers($groupUserDAO->findByGroupId($row['id']));
+			$group->setPins($pinDAO->findByGroupId($row['id_group']));
 			$result[] = $group;
 		}
 
@@ -86,11 +110,13 @@ class GroupDAO extends DAO {
 		');
 		$stmt->execute();
 
+		$groupUserDAO = new GroupUserDAO($this->getConnection());
+		$pinDAO = new PinDAO($this->getConnection());
 		foreach($stmt->fetchAll() as $row) {
 			$group = new Group($row);
-			$groupUserDAO = new GroupUserDAO($this->getConnection());
 			$group->setCreator($groupUserDAO->find($row['id_user']));
 			$group->setUsers($groupUserDAO->findbyGroupId($row['id']));
+			$group->setPins($pinDAO->findByGroupId($row['id']));
 			$result[] = $group;
 		}
 
@@ -143,6 +169,11 @@ class GroupDAO extends DAO {
 		$result = false;
 
 		if($data !== null && $data instanceof Group) {
+			$pinsDAO = new PinDAO($this->getConnection());
+			foreach($data->getPins() as $pin) {
+				$pinDAO->delete($pin);
+			}
+
 			$stmt = $this->getConnection()->prepare('
 				DELETE FROM group_has_users WHERE id_group = :id_group
 			');

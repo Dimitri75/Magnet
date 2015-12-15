@@ -222,7 +222,7 @@ class UserControllerProvider implements ControllerProviderInterface {
                 }
 
                 if($request->get('visible') !== null) {
-                	$user->setVisible($request->get('visible'));
+                	$user->setVisible(intval($request->get('visible')));
                 }
 
                 $user->setLastActivity(date("Y-m-d H:i:s"));

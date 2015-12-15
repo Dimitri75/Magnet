@@ -3,7 +3,7 @@ define({ "api": [
     "type": "post",
     "url": "/group/:id/user/:token",
     "title": "Add a User to a Group",
-    "name": "AddUserTpGroup",
+    "name": "AddUserToGroup",
     "group": "Group",
     "parameter": {
       "fields": {
@@ -163,6 +163,79 @@ define({ "api": [
     "groupTitle": "Group"
   },
   {
+    "type": "delete",
+    "url": "/group/:id/user/:token",
+    "title": "Remove a User from a Group",
+    "name": "RemoveUserFromGroup",
+    "group": "Group",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "<p>Integer</p> ",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Id of the Group to update.</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "<p>String</p> ",
+            "optional": false,
+            "field": "token",
+            "description": "<p>Token of the User.</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "<p>String</p> ",
+            "optional": false,
+            "field": "login",
+            "description": "<p>Login of the User to remove.</p> "
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TokenNotValid",
+            "description": "<p>The <code>token</code> given cannot authenticate the User.</p> "
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ErrorWhileRemoving",
+            "description": "<p>The user couldn't be removed.</p> "
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "UserNotInGroup",
+            "description": "<p>Cannot remove user to a group the user is not in.</p> "
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "UserNotFoundInGroup",
+            "description": "<p>The User is not in the Group.</p> "
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "GroupNotValid",
+            "description": "<p>The group doesn't exist.</p> "
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "src/Magnet/Controller/GroupControllerProvider.php",
+    "groupTitle": "Group"
+  },
+  {
     "type": "get",
     "url": "/pin/:token",
     "title": "Request Pins of the User.",
@@ -297,7 +370,7 @@ define({ "api": [
     "type": "get",
     "url": "/search/user/:login",
     "title": "Search Users using a login or part of it.",
-    "name": "SearchUserByLigin",
+    "name": "SearchUserByLogin",
     "group": "Search",
     "parameter": {
       "fields": {

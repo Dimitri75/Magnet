@@ -71,12 +71,10 @@ class PinControllerProvider implements ControllerProviderInterface {
 
             if($user !== null) {
                 $pinDAO = new PinDAO($userDAO->getConnection());
-                $groupDAO = new GroupDAO($userDAO->getConnection());
                 $location = new Location(json_decode($request->get('location'), true));
-                $group = $groupDAO->find($request->get('group_id'));
                 $pin = new Pin(array('name' => $request->get('name'), 'description' => $request->get('description'), 'location' => $location,
                     'creation_time' => date($request->get('creation_time')), 'deletion_time' => date($request->get('deletion_time')), 'creator' => $user,
-                    'group' => $group));
+                    'id_group' => $request->get('group_id')));
                 $pinId = $pinDAO->save($pin);
 
                 if($pinId !== null) {
