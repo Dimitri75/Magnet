@@ -16,6 +16,7 @@ public class User implements Parcelable{
     private int id;
     private String login;
     private Location location;
+    public int imageId = -1;
 
     public User() {
 
@@ -39,6 +40,14 @@ public class User implements Parcelable{
 
     public int getId() {
         return id;
+    }
+
+    public int getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(int imageId) {
+        this.imageId = imageId;
     }
 
     public String getLogin() {

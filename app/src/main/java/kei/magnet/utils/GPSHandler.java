@@ -19,6 +19,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -29,7 +30,6 @@ import org.json.JSONObject;
 
 import java.util.AbstractMap;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import kei.magnet.R;
@@ -127,7 +127,7 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
             for (Group group : applicationUser.getGroups()) {
                 if (group != null && !group.getUsers().isEmpty()) {
                     for (User user : group.getUsers()) {
-                        if(user.getId()!=applicationUser.getId())
+                        if (user.getId() != applicationUser.getId())
                             drawMarker(user);
                     }
                 } else
@@ -142,7 +142,7 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
         googleMap.clear();
 
         for (User user : group.getUsers()) {
-            if(user.getId()!=applicationUser.getId())
+            if (user.getId() != applicationUser.getId())
                 drawMarker(user);
         }
         for (Pin pin : group.getPins()) {
@@ -165,7 +165,13 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
                         .title(user.getLogin());
 
                 //markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.pin56));
-                markerOptions.icon(ImagesUtils.getInstance().getRandomFriendImage());
+                try {
+                    markerOptions.icon(ImagesUtils.getInstance().getFriendImage(user.getImageId()));
+                } catch (Exception e) {
+                    Pair<Integer, BitmapDescriptor> pair = ImagesUtils.getInstance().getRandomFriendImage();
+                    user.setImageId(pair.first);
+                    markerOptions.icon(pair.second);
+                }
 
                 if (user.getId() != applicationUser.getId())
                     markerOptions.alpha(0.9f);
@@ -232,16 +238,16 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
                     if ((object = getValueFromHashmap(marker)) instanceof Pin) {
                         Pin pin = (Pin) object;
                         v = parentActivity.getLayoutInflater().inflate(R.layout.pin_infoview, null);
-                        ((TextView)v.findViewById(R.id.pin_infoview_textView_PINNAME)).setText(pin.getName());
-                        ((EditText)v.findViewById(R.id.pin_infoview_editText_DESCRIPTION)).setText(pin.getDescription());
-                        ((EditText)v.findViewById(R.id.pin_infoview_editText_GROUP)).setText(MagnetActivity.selectedGroup.toString());
+                        ((TextView) v.findViewById(R.id.pin_infoview_textView_PINNAME)).setText(pin.getName());
+                        ((EditText) v.findViewById(R.id.pin_infoview_editText_DESCRIPTION)).setText(pin.getDescription());
+                        ((EditText) v.findViewById(R.id.pin_infoview_editText_GROUP)).setText(MagnetActivity.selectedGroup.toString());
 
                         String expirationDate = "N/A";
                         if (pin.getDeletion_time() != null)
                             expirationDate = pin.getDeletion_time().toString();
-                        ((EditText)v.findViewById(R.id.pin_infoview_editText_expirationDateText)).setText(expirationDate);
+                        ((EditText) v.findViewById(R.id.pin_infoview_editText_expirationDateText)).setText(expirationDate);
 
-                    }else if((object = getValueFromHashmap(marker)) instanceof User){
+                    } else if ((object = getValueFromHashmap(marker)) instanceof User) {
 
                     }
                     return v;
@@ -281,8 +287,8 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
             locationJSON.put("latitude", applicationUser.getLocation().getLatitude());
             locationJSON.put("longitude", applicationUser.getLocation().getLongitude());
 
-            UpdateUserTask task = new UpdateUserTask(parentActivity,applicationUser.getToken());
-            task.execute(new AbstractMap.SimpleEntry<>("location",locationJSON.toString()));
+            UpdateUserTask task = new UpdateUserTask(parentActivity, applicationUser.getToken());
+            task.execute(new AbstractMap.SimpleEntry<>("location", locationJSON.toString()));
 
         } catch (Exception e) {
 

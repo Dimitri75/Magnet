@@ -1,5 +1,7 @@
 package kei.magnet.utils;
 
+import android.util.Pair;
+
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
@@ -32,8 +34,15 @@ public class ImagesUtils {
         return instance;
     }
 
-    public BitmapDescriptor getRandomFriendImage() {
+    public Pair<Integer, BitmapDescriptor> getRandomFriendImage() {
         Random random = new Random();
-        return dictionnaryFriendImages.get(random.nextInt(dictionnaryFriendImages.size()));
+        int key = random.nextInt(dictionnaryFriendImages.size());
+        return new Pair<>(key, dictionnaryFriendImages.get(key));
+    }
+
+    public BitmapDescriptor getFriendImage(int key) {
+        if (key >= 0 && key < dictionnaryFriendImages.size())
+            return dictionnaryFriendImages.get(key);
+        return getRandomFriendImage().second;
     }
 }

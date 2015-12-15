@@ -10,6 +10,7 @@ import java.util.List;
 import kei.magnet.activities.MagnetActivity;
 import kei.magnet.enumerations.NavigationDrawerType;
 import kei.magnet.fragments.DrawerItem;
+import kei.magnet.model.ApplicationUser;
 
 /**
  * Created by .Sylvain on 24/11/2015.
