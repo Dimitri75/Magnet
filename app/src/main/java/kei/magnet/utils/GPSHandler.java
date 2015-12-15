@@ -54,6 +54,9 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
     private FragmentActivity parentActivity;
     private ApplicationUser applicationUser;
     private HashMap<Object, Pair<Marker, MarkerOptions>> markerDictionnary;
+    private UpdateUserTask task;
+    private AbstractMap.SimpleEntry<String,String> abstractMap;
+    private JSONObject locationJSON;
 
     public GoogleMap getGoogleMap() {
         return googleMap;
@@ -64,6 +67,11 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
         this.parentActivity = parentActivity;
         this.applicationUser = user;
         this.markerDictionnary = new HashMap<>();
+        locationJSON = new JSONObject();
+        abstractMap = null;
+        task = new UpdateUserTask(parentActivity,applicationUser.getToken());
+
+
         setUpMapIfNeeded();
 
         mGoogleApiClient = new GoogleApiClient.Builder(parentActivity.getApplicationContext())
@@ -156,16 +164,14 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
             MarkerOptions markerOptions = new MarkerOptions().position(user.getLatLng())
                     .title(user.getLogin());
 
-            Bitmap userIcon = BitmapFactory.decodeResource(parentActivity.getResources(), R.drawable.pin56);
+           markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.pin56));
 
             if (user.getId() != applicationUser.getId())
                 markerOptions.alpha(0.7f);
             else
-                userIcon = BitmapFactory.decodeResource(parentActivity.getResources(), R.drawable.map_marker_application_user);
+                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_application_user));
 
 
-            userIcon = Bitmap.createScaledBitmap(userIcon, userIcon.getWidth() / 10, userIcon.getHeight() / 10, false);
-            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(userIcon));
             marker = googleMap.addMarker(markerOptions);
             markerDictionnary.put(user, new Pair<>(marker, markerOptions));
         } else {
@@ -188,9 +194,10 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
         if (!markerDictionnary.containsValue(pin)) {
             MarkerOptions markerOptions = new MarkerOptions().position(pin.getLocation().getLatLng())
                     .title(pin.getName());
-            Bitmap pinIcon = BitmapFactory.decodeResource(parentActivity.getResources(), R.drawable.gps29);
-            pinIcon = Bitmap.createScaledBitmap(pinIcon, pinIcon.getWidth() / 3, pinIcon.getHeight() / 3, false);
-            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(pinIcon));
+
+
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.pin56));
+
             marker = googleMap.addMarker(markerOptions);
             markerDictionnary.put(pin, new Pair<>(marker, markerOptions));
         } else {
@@ -261,15 +268,21 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
     public void onLocationChanged(Location location) {
         if (applicationUser == null || applicationUser.getLocation() == null || location == null)
             return;
-        applicationUser.setLocation(new kei.magnet.model.Location(location.getLatitude(), location.getLongitude()));
+        applicationUser.getLocation().setLatitude(location.getLatitude());
+        applicationUser.getLocation().setLatitude(location.getLongitude());
 
         try {
-            JSONObject locationJSON = new JSONObject();
+
             locationJSON.put("latitude", applicationUser.getLocation().getLatitude());
             locationJSON.put("longitude", applicationUser.getLocation().getLongitude());
 
-            UpdateUserTask task = new UpdateUserTask(parentActivity, applicationUser.getToken());
-            task.execute(new AbstractMap.SimpleEntry<>("location", locationJSON.toString()));
+            if(abstractMap==null)
+                abstractMap = new AbstractMap.SimpleEntry<>("location",locationJSON.toString());
+            else
+                abstractMap.setValue(locationJSON.toString());
+
+            task.execute();
+
         } catch (Exception e) {
         }
         updateMarkers();
