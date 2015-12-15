@@ -14,7 +14,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -36,6 +38,7 @@ import kei.magnet.model.Group;
 import kei.magnet.model.Location;
 import kei.magnet.model.User;
 import kei.magnet.task.GetUserTask;
+import kei.magnet.task.UpdateUserTask;
 import kei.magnet.utils.Compass;
 import kei.magnet.utils.GPSHandler;
 
@@ -54,6 +57,8 @@ public class MagnetActivity extends AppCompatActivity {
     private CustomDrawerAdapter customDrawerAdapter;
     private List<DrawerItem> menuDataList;
     public static Group selectedGroup;
+    private MenuItem userItem;
+    private Switch switchPrivate;
 
 
     @Override
@@ -91,7 +96,19 @@ public class MagnetActivity extends AppCompatActivity {
             }
         }
 
-
+        switchPrivate = (Switch)findViewById(R.id.switch_private);
+        switchPrivate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                int visible = 1;
+                if(isChecked) {
+                    visible = 0;
+                }
+                applicationUser.setVisible(visible);
+                UpdateUserTask task = new UpdateUserTask(null, applicationUser.getToken());
+                task.execute(new AbstractMap.SimpleEntry<>("visible", String.valueOf(applicationUser.getVisible())));
+            }
+        });
     }
 
     public List<DrawerItem> formatGroupsInDataList(List<Group> groups) {
@@ -226,10 +243,7 @@ public class MagnetActivity extends AppCompatActivity {
 
     }
 
-    public void updateMenu(){
-
-        ApplicationUser applicationUser = ApplicationUser.getInstance();
-
+    public void updateMenu() {
         menuDataList = formatGroupsInDataList(applicationUser.getGroups());
 
         customDrawerAdapter = new CustomDrawerAdapter(this, R.layout.custom_drawer_item,
@@ -256,6 +270,7 @@ public class MagnetActivity extends AppCompatActivity {
         } else if (applicationUser.getToken() != null) {
             init();
         }
+        switchPrivate.setChecked(applicationUser.getVisible() == 1);
     }
 
     @Override
@@ -297,6 +312,8 @@ public class MagnetActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
+        userItem = menu.findItem(R.id.action_user);
+        userItem.setTitle(applicationUser.getLogin());
         return true;
     }
 
