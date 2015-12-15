@@ -235,11 +235,10 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
                         v = parentActivity.getLayoutInflater().inflate(R.layout.pin_infoview, null);
                         ((TextView)v.findViewById(R.id.pin_infoview_textView_PIN_NAME)).setText(pin.getName());
                         ((TextView)v.findViewById(R.id.pin_infoview_editText_DESCRIPTION)).setText(pin.getDescription());
-                        ((TextView)v.findViewById(R.id.pin_infoview_editText_GROUP)).setText("Groupe 1");
-
+                        ((TextView)v.findViewById(R.id.pin_infoview_editText_GROUP)).setText(MagnetActivity.selectedGroup.toString());
+                        ((TextView)v.findViewById(R.id.pin_infoview_editText_expirationDateText)).setText(pin.getDeletion_time().toString());
 
                     }else if((obj = getValueFromHashmap(marker)) instanceof User){
-                        User user = (User) obj;
 
                     }
                     return v;

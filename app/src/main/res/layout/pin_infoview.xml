@@ -17,11 +17,11 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentStart="true"
             android:layout_marginTop="20dp"
-            android:hint="Pin name"
             android:inputType="textPersonName"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#ffffff"
-            android:textStyle="bold" />
+            android:textColor="#252525"
+            android:textStyle="bold"
+            android:text="Pin Name"/>
 
         <TextView
             android:id="@+id/pin_infoview_textView_DESCRIPTION"
@@ -33,10 +33,10 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/pin_infoview_textView_PIN_NAME"
             android:layout_marginTop="30dp"
-            android:hint="Description"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="#ffffff"
-            android:textStyle="bold" />
+            android:textColor="#252525"
+            android:textStyle="bold"
+            android:text="Description" />
 
         <EditText
             android:inputType="textMultiLine"
@@ -56,10 +56,10 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/pin_infoview_editText_DESCRIPTION"
             android:layout_marginTop="30dp"
-            android:hint="Group"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="#ffffff"
-            android:textStyle="bold" />
+            android:textColor="#252525"
+            android:textStyle="bold"
+            android:text="Group"/>
 
         <EditText
             android:id="@+id/pin_infoview_editText_GROUP"
@@ -76,7 +76,9 @@
             android:layout_marginTop="30dp"
             android:text="Expiration date :"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="#252525"
+            />
 
         <LinearLayout
             android:id="@+id/expiration_date"
@@ -88,7 +90,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/expirationDateText"
+                android:id="@+id/pin_infoview_editText_expirationDateText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
