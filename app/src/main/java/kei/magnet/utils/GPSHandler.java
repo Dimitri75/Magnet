@@ -80,8 +80,8 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 
         mLocationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(5 * 1000)
-                .setFastestInterval(1000);
+                .setInterval(1000)
+                .setFastestInterval(500);
 
     }
 
@@ -127,7 +127,7 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
             for (Group group : applicationUser.getGroups()) {
                 if (group != null && !group.getUsers().isEmpty()) {
                     for (User user : group.getUsers()) {
-
+                        if(user.getId()!=applicationUser.getId())
                             drawMarker(user);
                     }
                 } else
@@ -142,7 +142,7 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
         googleMap.clear();
 
         for (User user : group.getUsers()) {
-
+            if(user.getId()!=applicationUser.getId())
                 drawMarker(user);
         }
         for (Pin pin : group.getPins()) {
@@ -274,7 +274,7 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
         if (applicationUser == null || applicationUser.getLocation() == null || location == null)
             return;
         applicationUser.getLocation().setLatitude(location.getLatitude());
-        applicationUser.getLocation().setLatitude(location.getLongitude());
+        applicationUser.getLocation().setLongitude(location.getLongitude());
 
         try {
             JSONObject locationJSON = new JSONObject();
