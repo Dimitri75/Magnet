@@ -1,11 +1,8 @@
 package kei.magnet.utils;
 
 import android.content.IntentSender;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.DropBoxManager;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.util.Pair;
@@ -167,7 +164,8 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
                 MarkerOptions markerOptions = new MarkerOptions().position(user.getLatLng())
                         .title(user.getLogin());
 
-                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.pin56));
+                //markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.pin56));
+                markerOptions.icon(ImagesUtils.getInstance().getRandomFriendImage());
 
                 if (user.getId() != applicationUser.getId())
                     markerOptions.alpha(0.9f);
