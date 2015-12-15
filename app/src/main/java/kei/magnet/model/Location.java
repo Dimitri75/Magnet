@@ -35,6 +35,7 @@ public class Location implements Parcelable{
     public LatLng getLatLng(){
         return new LatLng(latitude,longitude);
     }
+
     public double getLatitude() {
         return latitude;
     }

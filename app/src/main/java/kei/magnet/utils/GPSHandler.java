@@ -84,6 +84,7 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
                 .setInterval(5 * 1000)
                 .setFastestInterval(1000);
+
     }
 
     public void rotateMap(float bearing) {
@@ -161,19 +162,21 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
     private void drawMarker(User user) {
         Marker marker;
         if (!markerDictionnary.containsValue(user)) {
-            MarkerOptions markerOptions = new MarkerOptions().position(user.getLatLng())
-                    .title(user.getLogin());
+            if (user.getLatLng() != null) {
+                MarkerOptions markerOptions = new MarkerOptions().position(user.getLatLng())
+                        .title(user.getLogin());
 
-           markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.pin56));
+                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.pin56));
 
-            if (user.getId() != applicationUser.getId())
-                markerOptions.alpha(0.7f);
-            else
-                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_application_user));
+                if (user.getId() != applicationUser.getId())
+                    markerOptions.alpha(0.7f);
+                else
+                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_application_user));
 
 
-            marker = googleMap.addMarker(markerOptions);
-            markerDictionnary.put(user, new Pair<>(marker, markerOptions));
+                marker = googleMap.addMarker(markerOptions);
+                markerDictionnary.put(user, new Pair<>(marker, markerOptions));
+            }
         } else {
             markerDictionnary.get(user).first.setPosition(user.getLatLng());
             markerDictionnary.get(user).second.position(user.getLatLng());

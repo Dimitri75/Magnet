@@ -54,7 +54,9 @@ public class User implements Parcelable{
     }
 
     public LatLng getLatLng() {
-        return new LatLng(getLocation().getLatitude(), getLocation().getLongitude());
+        if (location != null)
+            return location.getLatLng();
+        return null;
     }
 
     @Override
