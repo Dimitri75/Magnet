@@ -191,11 +191,11 @@ public class MagnetActivity extends AppCompatActivity {
                     }
                     finally{
                         //also call the same runnable
-                        handler.postDelayed(this, 3000);
+                        handler.postDelayed(this, 6000);
                     }
                 }
             };
-            handler.postDelayed(runnable, 3000);
+            handler.postDelayed(runnable, 6000);
 
         } catch (Exception e) {
             isInitialised = false;

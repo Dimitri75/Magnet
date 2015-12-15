@@ -15,8 +15,8 @@ import java.util.Date;
  * Created by Dimitri on 27/10/2015.
  */
 public class Pin implements Parcelable{
-    private String name;
-    private String description;
+    private String name = "";
+    private String description = "";
     private Location location;
     private Date creation_time;
     private Date deletion_time;

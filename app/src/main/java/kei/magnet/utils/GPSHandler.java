@@ -132,10 +132,6 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
                         if (user.getId() != applicationUser.getId())
                             drawMarker(user);
                     }
-
-                    for (Pin pin : group.getPins()) {
-                        drawPin(pin);
-                    }
                 } else
                     Toast.makeText(parentActivity.getApplicationContext(), "issue when showing a group", Toast.LENGTH_LONG).show();
             }
@@ -201,10 +197,12 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 
     private void drawPin(Pin pin) {
         Marker marker;
+        if (pin.getLocation() == null)
+            return;
+
         if (!markerDictionnary.containsValue(pin)) {
             MarkerOptions markerOptions = new MarkerOptions().position(pin.getLocation().getLatLng())
                     .title(pin.getName());
-
 
             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.gps29)).alpha(0.9f);
 
