@@ -52,14 +52,17 @@
         android:layout_height="wrap_content"
         android:background="#d5eaff"
         android:orientation="vertical"
-        android:padding="8dp">
+        android:padding="8dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignBottom="@+id/groupLayout"
+        android:layout_marginBottom="1dp">
         <TextView
             android:id="@+id/userTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
     </LinearLayout>
 
 </RelativeLayout>

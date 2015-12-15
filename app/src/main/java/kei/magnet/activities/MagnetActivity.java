@@ -107,7 +107,7 @@ public class MagnetActivity extends AppCompatActivity {
             menuDataList.add(new DrawerItem(group, NavigationDrawerType.GROUP));
             for (User user : group.getUsers()) {
                 menuDataList.add(new DrawerItem(user, NavigationDrawerType.USER));
-                if (!globalGroupUsers.contains(user)) {
+                if (!globalGroupUsers.contains(user) && user.getId() != applicationUser.getId()) {
                     globalGroupUsers.add(user);
                 }
             }
