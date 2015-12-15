@@ -1,17 +1,20 @@
 package kei.magnet.utils;
 
 import kei.magnet.enumerations.NavigationDrawerType;
+import kei.magnet.model.Group;
 
 public class DrawerItem {
     Object item;
     String itemName;
     int imgResID;
     NavigationDrawerType type;
+    private Group group;
 
-    public DrawerItem(Object object, NavigationDrawerType type) {
+    public DrawerItem(Object object, NavigationDrawerType type, Group group) {
         this.item = object;
         this.itemName = object.toString();
         this.type = type;
+        this.group = group;
     }
 
     public Object getItem() {
@@ -34,4 +37,11 @@ public class DrawerItem {
         return type;
     }
 
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
 }
