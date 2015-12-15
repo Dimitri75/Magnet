@@ -276,7 +276,7 @@ public class GPSHandler implements GoogleApiClient.ConnectionCallbacks, GoogleAp
         if (applicationUser == null || applicationUser.getLocation() == null || location == null)
             return;
         applicationUser.getLocation().setLatitude(location.getLatitude());
-        applicationUser.getLocation().setLatitude(location.getLongitude());
+        applicationUser.getLocation().setLongitude(location.getLongitude());
 
         try {
             JSONObject locationJSON = new JSONObject();
