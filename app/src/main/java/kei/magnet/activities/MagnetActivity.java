@@ -106,9 +106,12 @@ public class MagnetActivity extends AppCompatActivity {
         for (Group group : groups) {
             menuDataList.add(new DrawerItem(group, NavigationDrawerType.GROUP));
             for (User user : group.getUsers()) {
-                menuDataList.add(new DrawerItem(user, NavigationDrawerType.USER));
-                if (!globalGroupUsers.contains(user)) {
-                    globalGroupUsers.add(user);
+                if (user.getId() != applicationUser.getId()){
+                    menuDataList.add(new DrawerItem(user, NavigationDrawerType.USER));
+
+                    if (!globalGroupUsers.contains(user)) {
+                        globalGroupUsers.add(user);
+                    }
                 }
             }
         }
@@ -116,7 +119,8 @@ public class MagnetActivity extends AppCompatActivity {
 
         menuDataList.add(new DrawerItem(globalGroup, NavigationDrawerType.GROUP));
         for (User user : globalGroup.getUsers()) {
-            menuDataList.add(new DrawerItem(user, NavigationDrawerType.USER));
+            if (user.getId() != applicationUser.getId())
+                menuDataList.add(new DrawerItem(user, NavigationDrawerType.USER));
         }
 
         return menuDataList;
