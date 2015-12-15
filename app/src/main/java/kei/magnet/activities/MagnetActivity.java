@@ -122,13 +122,13 @@ public class MagnetActivity extends AppCompatActivity {
         globalGroup.setName("Friend list");
         List<User> globalGroupUsers = new ArrayList<>();
 
-        menuDataList.add(new DrawerItem("Create Group", NavigationDrawerType.BUTTONGROUP));
+        menuDataList.add(new DrawerItem("Create Group", NavigationDrawerType.BUTTONGROUP, null));
 
         for (Group group : groups) {
-            menuDataList.add(new DrawerItem(group, NavigationDrawerType.GROUP));
+            menuDataList.add(new DrawerItem(group, NavigationDrawerType.GROUP, group));
             for (User user : group.getUsers()) {
                 if (user.getId() != applicationUser.getId()){
-                    menuDataList.add(new DrawerItem(user, NavigationDrawerType.USER));
+                    menuDataList.add(new DrawerItem(user, NavigationDrawerType.USER, group));
 
                     if (!globalGroupUsers.contains(user)) {
                         globalGroupUsers.add(user);
@@ -138,10 +138,10 @@ public class MagnetActivity extends AppCompatActivity {
         }
         globalGroup.setUsers(globalGroupUsers);
 
-        menuDataList.add(new DrawerItem(globalGroup, NavigationDrawerType.GROUP));
+        menuDataList.add(new DrawerItem(globalGroup, NavigationDrawerType.GROUP,null));
         for (User user : globalGroup.getUsers()) {
             if (user.getId() != applicationUser.getId())
-                menuDataList.add(new DrawerItem(user, NavigationDrawerType.USER));
+                menuDataList.add(new DrawerItem(user, NavigationDrawerType.USER, null));
         }
 
         return menuDataList;
@@ -175,7 +175,6 @@ public class MagnetActivity extends AppCompatActivity {
 
     public void initMenu() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(applicationUser.getLogin());
         setSupportActionBar(toolbar);
 
         menuLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -232,7 +231,9 @@ public class MagnetActivity extends AppCompatActivity {
                     dialog.setArguments(bundle);
                     dialog.show(getFragmentManager(), "Add user");
                 } else if (menuDataList.get(position).getItem() instanceof User) {
-                    final User user = (User) menuDataList.get(position).getItem();
+                    final int itemPosition = position;
+                    final DrawerItem item = menuDataList.get(position);
+                    final User user = (User)item.getItem();
                     new AlertDialog.Builder(MagnetActivity.this)
                             .setIcon(android.R.drawable.ic_dialog_alert)
                             .setTitle("Removing User from Group")
@@ -240,13 +241,17 @@ public class MagnetActivity extends AppCompatActivity {
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    RemoveUserFromGroupTask task = new RemoveUserFromGroupTask(getParent(), applicationUser.getToken(), 0);
+                                    //marche pas on dirait
+                                    RemoveUserFromGroupTask task = new RemoveUserFromGroupTask(getParent(), applicationUser.getToken(), item.getGroup().getId());
                                     task.execute(new AbstractMap.SimpleEntry<>("login", user.getLogin()));
+                                    item.getGroup().getUsers().remove(user);
+                                    updateMenu();
                                 }
 
                             })
                             .setNegativeButton("No", null)
                             .show();
+
                 }
 
                 return true;

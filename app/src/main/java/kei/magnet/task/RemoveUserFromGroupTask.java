@@ -42,9 +42,6 @@ public class RemoveUserFromGroupTask extends JSONTask {
 
     public void updateMenu(){
         MagnetActivity magnetActivity = (MagnetActivity) getActivity();
-        List<DrawerItem> menuDataList =  magnetActivity.getMenuDataList();
-
-
-        menuDataList.add(new DrawerItem(token, NavigationDrawerType.USER));
+        magnetActivity.updateMenu();
     }
 }

@@ -29,7 +29,7 @@
         android:orientation="vertical"
         android:layout_alignBottom="@+id/groupLayout"
         android:layout_alignParentTop="true"
-        android:background="#8e8e8e">
+        android:background="#000000">
         <Button
             android:id="@+id/menu_createButtonGroup"
             android:layout_width="match_parent"
