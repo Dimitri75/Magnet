@@ -35,6 +35,7 @@ public class SignInTask extends JSONTask {
                 String token = tokenJSON.getString("token");
                 GetUserTask task = new GetUserTask(getActivity());
                 task.execute(new AbstractMap.SimpleEntry<>("token", tokenJSON.getString("token")));
+
                 FileOutputStream fos = getActivity().openFileOutput(FILENAME, Context.MODE_PRIVATE);
                 fos.write(token.getBytes());
                 fos.close();
